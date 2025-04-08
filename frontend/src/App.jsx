@@ -47,7 +47,7 @@ import QuizJoin from './pages/QuizJoin';
 
 import AuthLogin from './pages/AuthLogin';
 import AuthRegister from './pages/AuthRegister';
-import AuthLogout from './pages/AuthLogout';
+import AuthLogout from './git pages/AuthLogout';
 import Dashboard from './pages/Dashboard';
 import QuizCreate from './pages/QuizCreate';
 
