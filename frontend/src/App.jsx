@@ -43,13 +43,12 @@ GET     /play/:playerid/results
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import QuizJoin from './pages/QuizJoin';
-
 import AuthLogin from './pages/AuthLogin';
 import AuthRegister from './pages/AuthRegister';
-import AuthLogout from './git pages/AuthLogout';
+import AuthLogout from './pages/AuthLogout';
 import Dashboard from './pages/Dashboard';
 import QuizCreate from './pages/QuizCreate';
+import QuizJoin from './pages/QuizJoin';
 
 function App() {
   return (
