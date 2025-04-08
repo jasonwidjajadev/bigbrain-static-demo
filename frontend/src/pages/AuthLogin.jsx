@@ -180,3 +180,33 @@ function AuthLogin() {
             {errorMessage}
           </div>
         )}
+
+        {/* <button type="submit" aria-label="Login now"
+          style={{
+            padding: '0.5rem 1rem',
+            borderRadius: '5px',
+            textDecoration: 'none',
+          }}>
+          Let&apos;s go!
+        </button> */}
+
+        <button
+          type="submit"
+          disabled={loading}
+          aria-label="Login now"
+          style={{
+            padding: '0.5rem 1rem',
+            borderRadius: '5px',
+            textDecoration: 'none',
+            opacity: loading ? 0.6 : 1,
+            cursor: loading ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {loading ? 'Logging in..' : "Let's go!"}
+        </button>
+
+      </form>
+    </div>
+  );
+}
+export default AuthLogin;
