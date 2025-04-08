@@ -14,8 +14,10 @@ src
 ├── main.jsx
 ├── pages
 │   ├── AuthLogin.jsx
+│   ├── AuthLogout.jsx
 │   ├── AuthRegister.jsx
 │   ├── Dashboard.jsx
+│   ├── Home.jsx
 │   └── QuizCreate.jsx
 ├── setup.js
 └── util
@@ -30,7 +32,6 @@ PUT     /admin/games                              /quiz/update
 POST    /admin/game/:gameid/mutate
 GET     /admin/session/:sessionid/status
 GET     /admin/session/:sessionid/results
-
                                                  /join
 POST    /play/join/:sessionid                    /play/:id
 GET     /play/:playerid/status
@@ -40,7 +41,8 @@ PUT     /play/:playerid/answer
 GET     /play/:playerid/results
 */
 
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
 import AuthLogin from './pages/AuthLogin';
 import AuthRegister from './pages/AuthRegister';
 import AuthLogout from './pages/AuthLogout';
@@ -51,12 +53,8 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <nav>
-          <Link to="/auth/register">Register</Link> | <Link to="/auth/login">Login</Link> | <Link to="/auth/logout">Logout</Link>
-        </nav>
         <Routes>
-          {/* TODO Might Need To do a separate homepage URL if have time */}
-          <Route path="/" element={<AuthLogin />} />
+          <Route path="/" element={<Home />} />
           <Route path="/auth/login" element={<AuthLogin />} />
           <Route path="/auth/register" element={<AuthRegister />} />
           <Route path="/auth/logout" element={<AuthLogout />} />
