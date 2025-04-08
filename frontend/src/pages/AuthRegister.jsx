@@ -190,3 +190,83 @@ function AuthRegister() {
             </div>
           )}
         </div>
+
+        {/* Password */}
+        <div style={{ marginBottom: '1rem' }}>
+          <label htmlFor="password">Password:</label><br />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            aria-label="Password"
+            autoComplete="new-password"
+            minLength={6}
+            required
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrorMessage('');
+              setPasswordErrors('');
+            }}
+          />
+          {passwordErrors && (
+            <div style={{ color: 'red', fontSize: '0.9rem', marginTop: '0.25rem' }} role="alert">
+              {passwordErrors}
+            </div>
+          )}
+        </div>
+
+        {/* Confirm Password */}
+        <div style={{ marginBottom: '1rem' }}>
+          <label htmlFor="confirmPassword">Confirm Password:</label><br />
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            aria-label="Confirm Password"
+            autoComplete="new-password"
+            minLength={6}
+            required
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setErrorMessage('');
+              setConfirmPasswordErrors('');
+            }}
+          />
+          {confirmPasswordErrors && (
+            <div style={{ color: 'red', fontSize: '0.9rem', marginTop: '0.25rem' }} role="alert">
+              {confirmPasswordErrors}
+            </div>
+          )}
+        </div>
+
+        {/* Other Error Message */}
+        {errorMessage && (
+          <div style={{ color: 'red', fontSize: '0.9rem', marginTop: '0.5rem' }} role="alert">
+            {errorMessage}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          aria-label="Register now"
+          style={{
+            padding: '0.5rem 1rem',
+            borderRadius: '5px',
+            textDecoration: 'none',
+            opacity: loading ? 0.6 : 1,
+            cursor: loading ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {loading ? 'Registering...' : 'Submit'}
+        </button>
+
+      </form>
+    </div>
+  );
+}
+
+export default AuthRegister;
+
