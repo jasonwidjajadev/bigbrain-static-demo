@@ -43,6 +43,7 @@ GET     /play/:playerid/results
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import AuthLogin from './pages/AuthLogin';
 import AuthRegister from './pages/AuthRegister';
+import AuthLogout from './pages/AuthLogout';
 import Dashboard from './pages/Dashboard';
 import QuizCreate from './pages/QuizCreate';
 
@@ -50,18 +51,18 @@ function App() {
   return (
     <>
       <BrowserRouter>
-
         <nav>
-          <Link to="/auth/register">Register</Link> | <Link to="/auth/login">Login</Link> | <Link to="/auth/login">Logout</Link>
+          <Link to="/auth/register">Register</Link> | <Link to="/auth/login">Login</Link> | <Link to="/auth/logout">Logout</Link>
         </nav>
         <Routes>
           {/* TODO Might Need To do a separate homepage URL if have time */}
           <Route path="/" element={<AuthLogin />} />
           <Route path="/auth/login" element={<AuthLogin />} />
           <Route path="/auth/register" element={<AuthRegister />} />
+          <Route path="/auth/logout" element={<AuthLogout />} />
           <Route path="/dashboard" element={<Dashboard />} />
-
           <Route path="/quiz/create" element={<QuizCreate />} />
+
           {/* <Route path='/quiz/edit/:quizId' element={ <QuizEdit/>} />
           <Route path='/quiz/edit/:quizId/:questionId' element={ <QuizEditQuestion/>} />
           <Route path='/quiz/play/:sessionid' element={ <ActiveQuiz/>} />
