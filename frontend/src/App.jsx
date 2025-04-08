@@ -43,6 +43,8 @@ GET     /play/:playerid/results
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import QuizJoin from './pages/QuizJoin';
+
 import AuthLogin from './pages/AuthLogin';
 import AuthRegister from './pages/AuthRegister';
 import AuthLogout from './pages/AuthLogout';
@@ -55,20 +57,25 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/auth/login" element={<AuthLogin />} />
           <Route path="/auth/register" element={<AuthRegister />} />
           <Route path="/auth/logout" element={<AuthLogout />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/quiz/create" element={<QuizCreate />} />
 
-          {/* <Route path='/quiz/edit/:quizId' element={ <QuizEdit/>} />
-          <Route path='/quiz/edit/:quizId/:questionId' element={ <QuizEditQuestion/>} />
-          <Route path='/quiz/play/:sessionid' element={ <ActiveQuiz/>} />
+          {/* TODO Get Request */}
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          {/* TODO Can QuizCreate and Quiz Edit be the same code? but different url*/}
+          <Route path="/quiz/create" element={<QuizCreate />} />
+          {/* <Route path='/quiz/edit/:quizId' element={ <QuizEdit/>} /> */}
+          {/* <Route path='/quiz/edit/:quizId/:questionId' element={ <QuizEditQuestion/>} /> */}
+
+          {/* <Route path='/quiz/play/:sessionid' element={ <ActiveQuiz/>} /> */}
           <Route path='/quiz/join' element={ <QuizJoin/>} />
-          <Route path='/quiz/join/:sessionId' element={ <QuizPlay/>} />
-          <Route path='/lobby' element={ <Lobby/>} />
-          <Route path='/results' element={ <AdminResults/>} />
-          <Route path='/game/results/:sessionid' element={ <GameResults/>} /> */}
+          {/* <Route path='/quiz/join/:sessionId' element={ <QuizPlay/>} /> */}
+          {/* <Route path='/lobby' element={ <Lobby/>} /> */}
+          {/* <Route path='/results' element={ <AdminResults/>} /> */}
+          {/* <Route path='/game/results/:sessionid' element={ <GameResults/>} /> */}
         </Routes>
       </BrowserRouter>
     </>
