@@ -73,7 +73,7 @@ function Home() {
 
       <div className="flex flex-col gap-1 sm:flex-row sm:justify-between items-center text-sm text-gray-400 text-center absolute bottom-1 w-full py-2 sm:px-8">
         <p className="mb-0 hover:text-orange-400">© Copyright 2025. All Rights Reserved.</p>
-        <p className="hidden sm:block mb-0 hover:text-orange-400">🚀 Powered by neurons & nonsense</p>
+        <p className="hidden sm:block mb-0 hover:text-orange-400">🚀&nbsp; Powered by neurons & nonsense</p>
       </div>
     </div>
   );
