@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import logonoborder from '../assets/logonoborder.png';
+import { RiAddCircleLine } from "react-icons/ri";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ function Dashboard() {
     const token = localStorage.getItem('bigbrain_token');
     if (!token) {
       navigate('/home');
-      //TODO nice graceul errors
+      //TODO nice graceul errors (please login first, etc... so if user enter url without token should be invalid)
     }
   }, []);
   //TODO Get API Call
@@ -29,9 +30,10 @@ function Dashboard() {
         <div className="flex gap-3 items-center">
           <Link
             to="/quiz/create"
-            className="px-6 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
+            className="flex items-center gap-2 px-6 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
             transition-all duration-300 ease-in-out hover:bg-orange-400 hover:-translate-y-1"
           >
+            <RiAddCircleLine className="text-xl"/>
             Create
           </Link>
           <Link
