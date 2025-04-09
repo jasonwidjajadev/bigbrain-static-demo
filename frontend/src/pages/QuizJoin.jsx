@@ -13,6 +13,8 @@ function QuizJoin() {
     setLoading(true);
 
     // TODO: Add validation here if needed
+
+    //TODO logic who can enter this URL? should there be a logout button
     try {
       console.log('Joining game with ID:', gameId);
     } catch (err) {
@@ -35,7 +37,7 @@ function QuizJoin() {
         <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline">
           <img
             src={logonoborder}
-            className="h-[43px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
+            className="h-[48px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
               hover:-translate-y-1 hover:shadow-[0_4px_0_0_#f97316] hover:bg-orange-50"
             alt="brain-logo"
           />
@@ -48,7 +50,7 @@ function QuizJoin() {
         aria-label="Join Game form"
         className="flex-1 flex flex-col justify-center items-center text-center p-8"
       >
-        <h1 className="text-4xl sm:text-6xl text-orange-500 font-Nunito-Black mb-8">
+        <h1 className="text-4xl sm:text-5xl text-orange-500 font-Nunito-Black mb-8">
           Join a Game
         </h1>
 

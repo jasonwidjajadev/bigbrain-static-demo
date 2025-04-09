@@ -22,7 +22,7 @@ function Dashboard() {
         <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline">
           <img
             src={logonoborder}
-            className="h-[43px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
+            className="h-[48px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
             hover:-translate-y-1 hover:shadow-[0_4px_0_0_#f97316] hover:bg-orange-50"
             alt="brain-logo"
           />
@@ -30,15 +30,15 @@ function Dashboard() {
         <div className="flex gap-3 items-center">
           <Link
             to="/quiz/create"
-            className="flex items-center gap-2 px-6 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
+            className="sm:text-xl flex items-center gap-2 px-6 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
             transition-all duration-300 ease-in-out hover:bg-orange-400 hover:-translate-y-1"
           >
-            <RiAddCircleLine className="text-xl"/>
+            <RiAddCircleLine className="text-2xl"/>
             Create
           </Link>
           <Link
             to="/auth/logout"
-            className="px-6 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
+            className="sm:text-xl px-6 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
             transition-all duration-300 ease-in-out hover:bg-orange-400 hover:-translate-y-1"
           >
             Log out
@@ -49,7 +49,7 @@ function Dashboard() {
       {/* Games Feed */}
       <div className="flex-1 flex flex-col justify-center items-center text-center p-8">
         <div className="w-full max-w-6xl">
-          <h1 className="text-4xl font-semibold text-left mb-6 text-orange-500 font-Nunito-Black">
+          <h1 className="text-5xl font-semibold text-left mb-6 text-orange-500 font-Nunito-Black">
             My Games
           </h1>
 
