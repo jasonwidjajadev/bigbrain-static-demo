@@ -1,27 +1,24 @@
 /**
 src
+.
 ├── App.jsx
 ├── __test__
 │   └── example.test.jsx
 ├── assets
 │   └── react.svg
 ├── component
-│   ├── AuthLoginForm.jsx
-│   ├── AuthLogout.jsx
-│   ├── AuthRegisterForm.jsx
-│   ├── Header.jsx
-│   └── Navbar.jsx
+├── index.css
 ├── main.jsx
-├── pages
+├── pages - if its a diff url
 │   ├── AuthLogin.jsx
 │   ├── AuthLogout.jsx
 │   ├── AuthRegister.jsx
 │   ├── Dashboard.jsx
 │   ├── Home.jsx
-│   └── QuizCreate.jsx
+│   ├── QuizCreate.jsx
+│   └── QuizJoin.jsx
 ├── setup.js
 └── util
-    └── api.js
 
 POST    /admin/auth/login                         /login
 POST    /admin/auth/register                      /register
@@ -64,11 +61,14 @@ function App() {
           {/* TODO Get Request */}
           <Route path="/dashboard" element={<Dashboard />} />
 
+          {/* ================================================================ */}
           {/* TODO Can QuizCreate and Quiz Edit be the same code? but different url*/}
           <Route path="/quiz/create" element={<QuizCreate />} />
+
           {/* <Route path='/quiz/edit/:quizId' element={ <QuizEdit/>} /> */}
           {/* <Route path='/quiz/edit/:quizId/:questionId' element={ <QuizEditQuestion/>} /> */}
 
+          {/* ================================================================ */}
           {/* <Route path='/quiz/play/:sessionid' element={ <ActiveQuiz/>} /> */}
           <Route path='/quiz/join' element={ <QuizJoin/>} />
           {/* <Route path='/quiz/join/:sessionId' element={ <QuizPlay/>} /> */}
