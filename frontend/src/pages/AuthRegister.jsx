@@ -89,7 +89,7 @@ function AuthRegister() {
         <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline">
           <img
             src={logonoborder}
-            className="h-[43px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
+            className="h-[48px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
             hover:-translate-y-1 hover:shadow-[0_4px_0_0_#f97316] hover:bg-orange-50"
             alt="brain-logo"
           />
@@ -97,14 +97,14 @@ function AuthRegister() {
         <div className="flex gap-3 items-center">
           <Link
             to="/quiz/join"
-            className="px-4 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
+            className="sm:text-xl px-4 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
               transition-all duration-300 ease-in-out  hover:bg-orange-400 hover:-translate-y-1"
           >
             Join a game
           </Link>
           <Link
             to="/auth/login"
-            className="px-4 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
+            className="sm:text-xl px-4 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
             transition-all duration-300 ease-in-out hover:bg-orange-400 hover:-translate-y-1"
           >
             Log in
@@ -118,7 +118,7 @@ function AuthRegister() {
         aria-label="Registration form"
         className="flex-1 flex flex-col justify-center items-center text-center p-8"
       >
-        <h1 className="text-4xl mb-6 font-semibold text-orange-500 font-Nunito-Black">Register ✍</h1>
+        <h1 className="text-5xl mb-6 font-semibold text-orange-500 font-Nunito-Black">Register ✍</h1>
 
         {/* Full Name */}
         <div className="mb-4 w-full max-w-sm text-left">
@@ -215,7 +215,7 @@ function AuthRegister() {
         <button
           type="submit"
           disabled={loading}
-          className={`mt-4 px-6 py-2.5 rounded-md font-semibold text-white shadow-[0_4px_0_0_#c2410c]
+          className={`sm:text-xl mt-4 px-6 py-2.5 rounded-md font-semibold text-white shadow-[0_4px_0_0_#c2410c]
           transition-all duration-300 ease-in-out ${ loading ? 'bg-orange-300 cursor-not-allowed opacity-60' : 'bg-orange-500 hover:bg-orange-400 hover:-translate-y-1'}`}
         >
           {loading ? 'Registering...' : 'Submit'}
