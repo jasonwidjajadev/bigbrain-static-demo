@@ -1,17 +1,16 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import logonoborder from '../assets/logonoborder.png';
+import { useAuthContext } from '../context/useAuthContext';
+import LogoNavBar from '../component/LogoNavBar';
 import { RiAddCircleLine } from "react-icons/ri";
+import { orangeButtonClass} from '../component/tailwind';
 
 function Dashboard() {
   const navigate = useNavigate();
-  React.useEffect(() => {
-    const token = localStorage.getItem('bigbrain_token');
-    if (!token) {
-      navigate('/home');
-      //TODO nice graceul errors (please login first, etc... so if user enter url without token should be invalid)
-    }
-  }, []);
+  const { token } = useAuthContext();
+  React.useEffect(() => { if (!token) navigate('/home'); }, [token, navigate]);
+
+  //TODO to test if user enter url without token should be invalid
   //TODO Get API Call
   //TODO make grids, look at airbnb website
 
@@ -19,30 +18,12 @@ function Dashboard() {
     <div className="min-h-screen overflow-y-auto flex flex-col">
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
-        <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline">
-          <img
-            src={logonoborder}
-            className="h-[48px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
-            hover:-translate-y-1 hover:shadow-[0_4px_0_0_#f97316] hover:bg-orange-50"
-            alt="brain-logo"
-          />
-        </Link>
+        <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline"><LogoNavBar /></Link>
         <div className="flex gap-3 items-center">
-          <Link
-            to="/quiz/create"
-            className="sm:text-xl flex items-center gap-2 px-6 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
-            transition-all duration-300 ease-in-out hover:bg-orange-400 hover:-translate-y-1"
-          >
-            <RiAddCircleLine className="text-2xl"/>
-            Create
+          <Link to="/quiz/create" className={`${orangeButtonClass} flex items-center gap-2`}>
+            <RiAddCircleLine className="text-2xl"/> Create
           </Link>
-          <Link
-            to="/auth/logout"
-            className="sm:text-xl px-6 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
-            transition-all duration-300 ease-in-out hover:bg-orange-400 hover:-translate-y-1"
-          >
-            Log out
-          </Link>
+          <Link to="/auth/logout" className={`${orangeButtonClass} px-5`}>Log out</Link>
         </div>
       </nav>
 
