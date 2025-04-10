@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import classroom from '../assets/classroom.mp4';
-import logonoborder from '../assets/logonoborder.png';
+import LogoNavBar from '../component/LogoNavBar';
+import LogoBigRotate from '../component/LogoBigRotate';
+import { orangeButtonClass } from '../component/tailwind';
 
 function Home() {
   const navigate = useNavigate();
@@ -19,39 +21,22 @@ function Home() {
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 text-center  bg-cyan-200 h-[65px]">
         <Link to="/home"className="text-orange-500 font-bold no-underline">
-          <img
-            src={logonoborder}
-            className="h-[48px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
-             hover:-translate-y-1 hover:shadow-[0_4px_0_0_#f97316] hover:bg-orange-50"
-            alt="brain-logo"
-          />
-
+          <LogoNavBar />
         </Link>
-        <Link to="/quiz/join"
-          className="sm:text-xl -mt-1 px-4 py-2.5 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c]
-          transition-all duration-300 ease-in-out  hover:bg-orange-400 hover:-translate-y-1"
-        > Join a game
-        </Link>
+        <Link to="/quiz/join" className={orangeButtonClass}>Join a game</Link>
       </nav>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col sm:flex-row items-center justify-center w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-8 pb-35 ">
         {/* Left Side */}
         <div className="w-full sm:w-1/2 flex justify-center items-center">
-          <video
-            src={classroom}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-[300px] md:w-[500px]"
-          />
+          <video src={classroom} autoPlay loop muted playsInline className="w-[300px] md:w-[500px]"/>
         </div>
 
         {/* Right Side*/}
         <div className="w-full sm:w-1/2 flex flex-col items-center text-center">
-          <div className="flex items-center mb-6 gap-4" >
-            <img src={logonoborder} className="h-[100px] shrink-0 transition-transform duration-500 ease-in-out hover:rotate-180" alt="brain-logo" />
+          <div className="flex items-center mb-6 gap-4 sm:gap-6" >
+            <LogoBigRotate />
             <h1 className="text-5xl sm:text-7xl text-orange-500 whitespace-nowrap font-Nunito-Black">Big Brain</h1>
           </div>
           <div className="flex gap-6 items-center text-center">
