@@ -1,37 +1,24 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import config from '../../backend.config.json';
+import { useAuthContext } from '../context/useAuthContext';
+import { apiCall } from '../util/apiCall';
 
 function AuthLogout() {
   const navigate = useNavigate();
+  const { token, logout } = useAuthContext();
 
-  React.useEffect(() => {
-    const logout = async () => {
+  useEffect(() => {
+    const doLogout = async () => {
       try {
-        const token = localStorage.getItem('bigbrain_token');
-        const response = await fetch(`http://localhost:${config.BACKEND_PORT}/admin/auth/logout`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        const data = await response.json();
-        if (response.status !== 200) {
-          console.error('Logout error:', data.error);
-        }
+        await apiCall('/admin/auth/logout', 'POST', null, token);
       } catch (err) {
-        console.error('Network error during logout:', err.message);
+        console.error('Logout failed:', err.message);
       } finally {
-        localStorage.clear();
-        navigate('/home');
+        logout();
       }
     };
-
-    logout();
-  }, [navigate]);
-
+    doLogout();
+  }, [token, logout, navigate]);
   return null;
 }
 
