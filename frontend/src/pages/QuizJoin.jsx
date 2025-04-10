@@ -1,8 +1,32 @@
+/**
+host click play
+host/join
+  -> dashboardpage -> 1.host click >Host
+  -> https://classic.blooket.com/host/join , generate id
+        -> 7287587
+        -> copy link with the url
+
+user1
+  -> https://play.blooket.com/play (navbar: homepage + login)
+            -> error message invalid game id or no game id
+                - Invalid game ID
+                - Please enter a game ID
+  -> https://classic.blooket.com/play/register: Enter a Nickname
+            -> error message "Please Provide a Nickname"
+  -> automatically host, populates: https://classic.blooket.com/host/join
+  -> https://classic.blooket.com/play/lobby
+            -> chosen avatar by default, if user change avatar it gets updates in host page
+            -> shows a message waiting for host, (can play game if want to)
+            -> if user disconnect, host page removes the user
+  -> host start hgame
+
+ */
+
 import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import config from '../../backend.config.json';
 import { Link } from 'react-router-dom';
-import logonoborder from '../assets/logonoborder.png';
+import LogoNavBar from '../component/LogoNavBar';
 
 function QuizJoin() {
   const [gameId, setGameId] = React.useState('');
@@ -11,6 +35,8 @@ function QuizJoin() {
 
   async function joinGame() {
     setLoading(true);
+    // Case1 Navbar for host, depending on token
+    // Case2 Navbar for player, depending on token
 
     // TODO: Add validation here if needed
 
@@ -35,12 +61,7 @@ function QuizJoin() {
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline">
-          <img
-            src={logonoborder}
-            className="h-[48px] shrink-0 rounded-md bg-white p-1 shadow-md transition-all duration-300 ease-in-out
-              hover:-translate-y-1 hover:shadow-[0_4px_0_0_#f97316] hover:bg-orange-50"
-            alt="brain-logo"
-          />
+          <LogoNavBar />
         </Link>
       </nav>
 
@@ -84,7 +105,7 @@ function QuizJoin() {
           type="submit"
           disabled={loading || !gameId}
           aria-label="Join game now"
-          className={`sm:text-xl px-6 py-2 rounded-md font-semibold transition-all duration-300 ease-in-out shadow-[0_4px_0_0_#c2410c]
+          className={`sm:text-xl px-8 py-2 rounded-md font-semibold transition-all duration-300 ease-in-out shadow-[0_4px_0_0_#c2410c]
             ${ loading || !gameId ? 'bg-orange-300 cursor-not-allowed text-white' : 'bg-orange-500 text-white hover:bg-orange-400 hover:-translate-y-1'}`}
         >
           {loading ? 'Joining...' : 'Join'}
