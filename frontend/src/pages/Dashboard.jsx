@@ -7,8 +7,14 @@ import { orangeButtonClass} from '../component/tailwind';
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { token } = useAuthContext();
-  React.useEffect(() => { if (!token) navigate('/home'); }, [token, navigate]);
+  const { token, email } = useAuthContext();
+  React.useEffect(() => {
+    console.log('Initial token:', token);
+    console.log('Initial email:', email);
+    if (!token) {
+      navigate('/home');
+    }
+  }, [token, navigate]);
 
   //TODO to test if user enter url without token should be invalid
   //TODO Get API Call
