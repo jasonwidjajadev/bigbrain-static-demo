@@ -1,12 +1,12 @@
-import config from '../../backend.config.json';
+import config from "../../backend.config.json";
 const API_BASE_URL = `http://localhost:${config.BACKEND_PORT}`;
 
-export async function apiCall(path, method = 'GET', body = null, token = null) {
+export async function apiCall(path, method = "GET", body = null, token = null) {
   const headers = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   };
 
-  if (token) headers['Authorization'] = `Bearer ${token}`;
+  if (token) headers["Authorization"] = `Bearer ${token}`;
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method,
     headers,
@@ -14,7 +14,7 @@ export async function apiCall(path, method = 'GET', body = null, token = null) {
   });
 
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'Something went wrong');
+  if (!response.ok) throw new Error(data.error || "Something went wrong");
   return data;
 }
 
@@ -38,4 +38,3 @@ export async function apiCall(path, method, body, token) {
   return data;
 }
 */
-
