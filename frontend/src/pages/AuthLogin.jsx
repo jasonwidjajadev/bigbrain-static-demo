@@ -8,12 +8,12 @@ import { orangeButtonClass, input } from '../component/tailwind';
 
 function AuthLogin() {
   const navigate = useNavigate();
-  const { token, setToken } = useAuthContext();
+  const { token, setToken, setEmail } = useAuthContext();
   React.useEffect(() => {
     if (token) navigate('/dashboard');
   }, [token, navigate]);
 
-  const [email, setEmail] = React.useState('');
+  const [emailInput, setEmailInput] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -25,11 +25,12 @@ function AuthLogin() {
 
     try {
       const data = await apiCall('/admin/auth/login', 'POST', {
-        email: email.trim(),
+        email: emailInput.trim(),
         password: password.trim(),
       });
 
       setToken(data.token);
+      setEmail(emailInput.trim());
       navigate('/dashboard');
     } catch (err) {
       setErrorMessage(err.message || 'Network error. Please try again.');
@@ -59,10 +60,10 @@ function AuthLogin() {
 
         {/* Email */}
         <div className="mb-4 w-full max-w-sm text-left">
-          <label htmlFor="email" className="block mb-1 text-sm font-medium">Email Address:</label>
-          <input type="email" id="email" name="email" required autoComplete="email" value={email} className={input}
+          <label htmlFor="emailInput" className="block mb-1 text-sm font-medium">Email Address:</label>
+          <input type="email" id="emailInput" name="emailInput" required autoComplete="email" value={emailInput} className={input}
             onChange={(e) => {
-              setEmail(e.target.value);
+              setEmailInput(e.target.value);
               setErrorMessage('');
             }}
           />

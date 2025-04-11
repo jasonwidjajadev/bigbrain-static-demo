@@ -18,6 +18,7 @@ GET     /play/:playerid/results
 */
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AuthProvider from './context/AuthContext';
 import Home from './pages/Home';
 import AuthLogin from './pages/AuthLogin';
 import AuthRegister from './pages/AuthRegister';
@@ -25,7 +26,7 @@ import AuthLogout from './pages/AuthLogout';
 import Dashboard from './pages/Dashboard';
 import QuizCreate from './pages/QuizCreate';
 import QuizJoin from './pages/QuizJoin';
-import AuthProvider from './context/AuthContext';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           {/* Quiz Results */}
           {/* <Route path='/results' element={ <AdminResults/>} /> */}
           {/* <Route path='/game/results/:sessionid' element={ <GameResults/>} /> */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
