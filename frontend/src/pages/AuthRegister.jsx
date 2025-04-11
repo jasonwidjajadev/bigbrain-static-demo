@@ -8,13 +8,13 @@ import { apiCall } from '../util/apiCall';
 
 function AuthRegister() {
   const navigate = useNavigate();
-  const { token, setToken } = useAuthContext();
+  const { token, setToken, setEmail} = useAuthContext();
   React.useEffect(() => {
     if (token) navigate('/dashboard');
   }, [token, navigate]);
 
   const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
+  const [emailInput, setEmailInput] = React.useState('');
   const [emailErrors, setEmailErrors] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [passwordErrors, setPasswordErrors] = React.useState('');
@@ -27,12 +27,13 @@ function AuthRegister() {
     setLoading(true);
     try {
       const data = await apiCall('/admin/auth/register', 'POST', {
-        email: email.trim(),
+        email: emailInput.trim(),
         password: password.trim(),
         name: name.trim(),
       });
 
       setToken(data.token);
+      setEmail(emailInput.trim());
       navigate('/dashboard');
     } catch (err) {
       const errMsg = err.message.toLowerCase();
@@ -95,12 +96,12 @@ function AuthRegister() {
           />
         </div>
 
-        {/* Email */}
+        {/* Email Input */}
         <div className="mb-4 w-full max-w-sm text-left">
-          <label htmlFor="email" className="block mb-1 text-sm font-medium">Email Address:</label>
-          <input type="email" id="email" name="email" required autoComplete="email" value={email} className={input}
+          <label htmlFor="emailInput" className="block mb-1 text-sm font-medium">Email Address:</label>
+          <input type="email" id="emailInput" name="emailInput" required autoComplete="email" value={emailInput} className={input}
             onChange={(e) => {
-              setEmail(e.target.value);
+              setEmailInput(e.target.value);
               setErrorMessage('');
               setEmailErrors('');
             }}
