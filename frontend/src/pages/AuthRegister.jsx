@@ -8,7 +8,7 @@ import { apiCall } from "../util/apiCall";
 
 function AuthRegister() {
   const navigate = useNavigate();
-  const { token, setToken, setEmailContext } = useAuthContext();
+  const { token, setToken } = useAuthContext();
   React.useEffect(() => {
     if (token) navigate("/dashboard");
   }, [token, navigate]);
@@ -33,7 +33,6 @@ function AuthRegister() {
       });
 
       setToken(data.token);
-      setEmailContext(email.trim());
 
       navigate("/dashboard");
     } catch (err) {
