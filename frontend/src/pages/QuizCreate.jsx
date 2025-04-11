@@ -4,6 +4,7 @@ import { useAuthContext } from "../context/useAuthContext";
 import LogoNavBar from "../component/LogoNavBar";
 import { orangeButtonClass } from "../component/tailwind";
 import ImgSelection from "../component/ImgSelection";
+import { fetchGames, updateAllGames } from "../util/gamesApi";
 
 function AdminQuizCreate() {
   // State of Form data
@@ -12,7 +13,7 @@ function AdminQuizCreate() {
     description: "",
     image: null,
   });
-  const [loading, setLoading] = React.useState(false);
+  // const [loading, setLoading] = React.useState(false);
 
   const navigate = useNavigate();
   const { token } = useAuthContext();
@@ -40,11 +41,32 @@ function AdminQuizCreate() {
     }
   };
 
-  const unique_id = Date.now();
+  // const unique_id = Date.now();
+  // Sumbit the form and push to database
+  // async function sumbitCreateJob() {
+
+  const handleSubmit = async () => {
+    // e.preventDefault();
+    // setLoading(true);
+
+    const gamesData = await fetchGames(localStorage.getItem("bigbrain_token"));
+    console.log("Games data is", gamesData);
+
+    // Create new game
+    const newGameId = Date.now();
+    const newGame = {
+      id: newGameId,
+      name: formData.title,
+      questions: [],
+      description: formData.description,
+    };
+  };
+
+  handleSubmit();
 
   // Debugging:
   React.useEffect(() => {
-    console.log("formData changed:", formData);
+    // console.log("formData changed:", formData);
   }, [formData]);
 
   return (
@@ -70,7 +92,10 @@ function AdminQuizCreate() {
             Create Quiz
           </h1>
           {/* Quiz creation UI can go here */}
-          <form className="w-full sm:w-[80%] md:w-[60%] lg:w-[50%]">
+          <form
+            onSubmit={handleSubmit}
+            className="w-full sm:w-[80%] md:w-[60%] lg:w-[50%]"
+          >
             {/* Pass the image handler to the child component */}
             <ImgSelection handleImgChange={handleImgChange} />
             <div className="w-full flex flex-col bg-white w-full border-gray-500 drop-shadow-md/25 rounded-lg p-8 mb-6 items-center justify-center transition-colors">
