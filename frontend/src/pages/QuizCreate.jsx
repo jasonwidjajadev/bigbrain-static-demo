@@ -5,6 +5,7 @@ import LogoNavBar from "../component/LogoNavBar";
 import { orangeButtonClass } from "../component/tailwind";
 import ImgSelection from "../component/ImgSelection";
 import { fetchGames, updateAllGames } from "../util/gamesApi";
+import convertImageToBase64 from "../util/imgToBase64";
 
 function AdminQuizCreate() {
   // State of Form data
@@ -18,8 +19,8 @@ function AdminQuizCreate() {
   const navigate = useNavigate();
   const { token, email } = useAuthContext();
   React.useEffect(() => {
-    console.log('Initial token:', token);
-    console.log('Initial email:', email);
+    console.log("Initial token:", token);
+    console.log("Initial email:", email);
     if (!token) navigate("/home");
   }, [token, navigate]);
 
@@ -45,26 +46,68 @@ function AdminQuizCreate() {
 
   // const unique_id = Date.now();
   // Sumbit the form and push to database
-  // async function sumbitCreateJob() {
+  // async function sumbitCreateJob()
 
-  const handleSubmit = async () => {
-    // e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     // setLoading(true);
+    try {
+      const gamesData = await fetchGames(token);
+      console.log("Games data is", gamesData);
 
-    const gamesData = await fetchGames(localStorage.getItem("bigbrain_token"));
-    console.log("Games data is", gamesData);
+      // Turn the image into base64
+      let base64Img = null;
+      if (formData.image) {
+        try {
+          base64Img = await convertImageToBase64(formData.image);
+        } catch (imgError) {
+          console.error("Failed to convert image:", imgError);
+        }
+      }
 
-    // Create new game
-    const newGameId = Date.now();
-    const newGame = {
-      id: newGameId,
-      name: formData.title,
-      questions: [],
-      description: formData.description,
-    };
+      // Create new game
+      const newGameId = Date.now();
+      const newGame = {
+        id: newGameId,
+        owner: email,
+        name: formData.title,
+        questions: [],
+        thumbnail: base64Img,
+        description: formData.description,
+        active: null,
+        oldSessions: [],
+      };
+
+      // Append new game to current game data
+      const updatedGames = [...gamesData, newGame];
+      const updatedGamesObj = { games: updatedGames };
+
+      // Put updated games data back to the database
+      const updateResult = await updateAllGames(updatedGamesObj, token);
+      if (updateResult.error) {
+        throw new Error(updateResult.error);
+      }
+
+      // Success! Navigate to the dashboard
+      // TODO: Update this to be edit page when we have an edit page
+      console.log("Quiz created successfully!");
+      navigate(`/dashboard`);
+
+      // Reset the form
+      setFormData({
+        title: "",
+        description: "",
+        image: null,
+      });
+
+      // Put updated games data back to the database
+    } catch (error) {
+      console.error("Error creating game:", error);
+      // Set error state or show error message
+    } finally {
+      // setLoading(false);
+    }
   };
-
-  handleSubmit();
 
   // Debugging:
   React.useEffect(() => {
