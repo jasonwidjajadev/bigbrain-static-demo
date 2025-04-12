@@ -5,7 +5,7 @@ import LogoNavBar from "../component/LogoNavBar";
 import { orangeButtonClass } from "../component/tailwind";
 import ImgSelection from "../component/ImgSelection";
 import { fetchGames, updateAllGames } from "../util/gamesApi";
-import convertImageToBase64 from "../util/imgToBase64";
+import { convertImageToBase64 } from "../util/imageUtils";
 
 function AdminQuizCreate() {
   // State of Form data
@@ -56,6 +56,7 @@ function AdminQuizCreate() {
       console.log("Games data is", gamesData);
 
       // Turn the image into base64
+      // TODO: Image is not saving correctly, need to update this
       let base64Img = null;
       if (formData.image) {
         try {
@@ -64,6 +65,7 @@ function AdminQuizCreate() {
           console.error("Failed to convert image:", imgError);
         }
       }
+      console.log("Image converted to base64", base64Img);
 
       // Create new game
       const newGameId = Date.now();
