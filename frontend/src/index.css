@@ -11,15 +11,40 @@
 }
 
 @font-face {
+  font-family: 'Nunito-Medium';
+  src: url('styles/fonts/Nunito/Nunito-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nunito-SemiBold';
+  src: url('styles/fonts/Nunito/Nunito-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nunito-Bold';
+  src: url('styles/fonts/Nunito/Nunito-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nunito-ExtraBold';
+  src: url('styles/fonts/Nunito/Nunito-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
   font-family: 'Nunito-Black';
   src: url('styles/fonts/Nunito/Nunito-Black.ttf') format('truetype');
 }
 
 @import "tailwindcss";
+@plugin "daisyui";
 
 /* Custom Themes for color, fonts etc goes here */
 @theme {
   --font-Nunito-Regular: Nunito-Regular, "sans-serif";
+  --font-Nunito-Medium: Nunito-Medium, "sans-serif";
+  --font-Nunito-SemiBold: Nunito-SemiBold, "sans-serif";
+  --font-Nunito-Bold: Nunito-Bold, "sans-serif";
+  --font-Nunito-ExtraBold: Nunito-ExtraBold, "sans-serif";
   --font-Nunito-Black: Nunito-Black, "sans-serif";
 }
 
