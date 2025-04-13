@@ -70,7 +70,7 @@ function Dashboard() {
             </li>
             <li>
               <Link to="/quiz/join" className="font-semibold flex items-center gap-[20px]">
-                <FaPlay className="text-[16px]"/> Play
+                <FaPlay className="text-[16px]"/> Join a game
               </Link>
             </li>
             <li>

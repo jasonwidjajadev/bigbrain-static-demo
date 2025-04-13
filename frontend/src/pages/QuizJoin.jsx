@@ -15,6 +15,7 @@ user1
             -> error message invalid game id or no game id
                 - Invalid game ID
                 - Please enter a game ID
+
   -> https://classic.blooket.com/play/register: Enter a Nickname
             -> error message "Please Provide a Nickname"
   -> automatically host, populates: https://classic.blooket.com/host/join
@@ -24,10 +25,65 @@ user1
             -> if user disconnect, host page removes the user
   -> host start hgame
 
+
+HOST
+dashboard, 
+    1.host click play -> this automatically start quiz (ui card has automatically stop quiz and view quiz)
+  -> generate ID, Join here 431288,
+      -> copylink and (backend generates new number each time)
+          -> quiz/play/431288, music, animation, text moving
+              -> host can got back to dashboard where there is a stop
+              -> or view quiz back to previous state
+      -> start or END (end shows leaderboard on host side, on player side shows incorrect answer should have a default host ended game early)
+
+      quizzes:
+          "994004996": {
+          "name": "monkeyfriday",
+          "owner": "kaws@gmail.com",
+          "questions": [],
+          "thumbnail": null,
+          "active": null,
+          "createdAt": "2025-04-13T16:29:17.563Z"
+        }
+      session:
+          gamepin generated "982370": {
+      "quizId": "994004996",
+      "position": -1,
+      "isoTimeLastQuestionStarted": null,
+      "players": {},
+      "questions": [],
+      "active": true,
+      "answerAvailable": false
+    },
+PLAYER
+  -> 1.quiz/join, enter invalid quizID regardless brings into part 2 -> where it fails if invalid quizId
+  -> 2.enter valid pin, quiz/join/sessionid bring into please enter name
+      -> msut enter a name
+              -> this is where the error is invalid quiz ID, popup on the bottom
+              -> quizId is already finish
+  -> 3. enters into lobby, quiz/play/431288 waiting for HOST
+
  */
 
 
 
+/**
+ import { useLocation } from 'react-router-dom';
+
+function PlayerGameEnterName() {
+  const location = useLocation();
+  const nickname = location.state?.nickname || localStorage.getItem('nickname');
+
+  if (!nickname) {
+    // Redirect back or show error
+    navigate('/quiz/join');
+  }
+
+  // ...
+}
+
+
+ */
 import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import config from '../../backend.config.json';
@@ -46,17 +102,11 @@ function QuizJoin() {
   const [errorMessage, setErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
+  // TODO can an admin play its own game? to double check this
+  // TODO: Should have an error if invalid game ID
+  // TODO: mark have 8 digit for pin
   async function joinGame() {
-
     setLoading(true);
-    // TODO can an admin play its own game?
-
-    // TODO: Add validation here if needed
-    /**
-    TODO mark 7/8 numbers for game id
-    TODO needs a error msg
-    */
-    //TODO logic who can enter this URL? should there be a logout button
     try {
       console.log('Joining game with ID:', gameId);
     } catch (err) {
@@ -80,7 +130,6 @@ function QuizJoin() {
           <LogoNavBar />
         </Link>
         <Link to={authLink.path} className={`${orangeButtonClass} px-6`}>{authLink.label}</Link>
-
       </nav>
 
       {/* Join Game Form */}
@@ -89,7 +138,6 @@ function QuizJoin() {
         aria-label="Join Game form"
         className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-[#fabf24] pb-25"
       >
-        {/* <img src={keyboard_big_brain} className="h-[180px] sm:h-[100px] mb-10 sm:mb-11" alt="keboard-logo"/> */}
         <div className="flex items-center mb-6 gap-5" >
           <LogoBigRotate sizeClass="h-[50px] sm:h-[70px]"/>
           <h1 className="text-4xl sm:text-5xl text-orange-500 whitespace-nowrap font-Nunito-ExtraBold">Big Brain</h1>

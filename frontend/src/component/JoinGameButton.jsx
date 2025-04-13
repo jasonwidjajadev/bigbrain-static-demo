@@ -7,7 +7,7 @@ const JoinGameButton = () => {
       to="/quiz/join"
       className={`${orangeButtonClass} flex items-center gap-2 px-5`}
     >
-      <FaPlay className="text-[16px]"/>Play
+      <FaPlay className="text-[16px]"/>Join a game
     </Link>
   );
 };
