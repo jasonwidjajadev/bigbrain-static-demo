@@ -1,9 +1,14 @@
 import { formatBase64Image } from "../util/imageUtils";
-import { LuPlay } from "react-icons/lu";
+import { LuPencil, LuPlay, LuTrash2 } from "react-icons/lu";
+import { orangeButtonClass } from "../component/tailwind";
 
 function GameDashboardTile({ game }) {
   console.log("Individual game data is: ", game);
   console.log("Title is", game.name);
+
+  // Calculate play count from oldSessions length
+  const playCount = game.oldSessions?.length || 0;
+
   return (
     <>
       <div className="w-full h-[400px] bg-white rounded-md border border-gray-300 overflow-hidden drop-shadow-md">
@@ -30,10 +35,34 @@ function GameDashboardTile({ game }) {
         <div className="p-4">
           <h2 className="text-xl font-semibold text-gray-800">{game.name}</h2>
 
+          {game.description && (
+            <p className="text-sm text-gray-600 mt-1">{game.description}</p>
+          )}
+
           <div className="flex items-center mt-2 text-gray-600">
             <LuPlay size={16} className="mr-1" />
-            <span className="mr-1">{game.playCount || 1}</span>
-            <span>Play</span>
+            <span className="mr-1">{playCount}</span>
+            <span>{playCount === 1 ? "Play" : "Plays"}</span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="p-2 flex flex-col justify-end items-center gap-2">
+            <div className="w-full border-t border-b border-gray-300 grid grid-cols-2">
+              <button className="p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-gray-100">
+                <LuPencil size={20} />
+              </button>
+              <button className="p-2 flex justify-center items-center text-gray-600 hover:bg-gray-100">
+                <LuTrash2 size={20} />
+              </button>
+            </div>
+
+            {/* Game Mode Buttons */}
+            <button
+              className={`flex justify-center items-center ${orangeButtonClass}`}
+            >
+              <LuPlay size={20} className="mr-2" />
+              <span>Host</span>
+            </button>
           </div>
         </div>
       </div>
