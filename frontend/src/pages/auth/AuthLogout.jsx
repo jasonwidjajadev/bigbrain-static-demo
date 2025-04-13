@@ -6,6 +6,7 @@ function AuthLogout() {
   const {token, logout } = useAuthContext();
   const hasLoggedOut = useRef(false);
 
+  //TODO need to end all existing quiz
   useEffect(() => {
     if (!token  || hasLoggedOut.current ) return;
     const doLogout = async () => {

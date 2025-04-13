@@ -1,2 +1,11 @@
-//TODO reuse card LHS
-//RHS statistic
+//TODO reuse card from game
+//TODO RHS statistic?
+
+function HostGameResults() {
+  return (
+    <>
+    HostGameResults
+    </>
+  )
+}
+export default HostGameResults;
