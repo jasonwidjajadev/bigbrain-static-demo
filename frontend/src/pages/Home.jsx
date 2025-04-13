@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import classroom from '../assets/classroom.mp4';
 import LogoNavBar from '../component/LogoNavBar';
 import LogoBigRotate from '../component/LogoBigRotate';
-import { orangeButtonClass } from '../component/tailwind';
+import JoinGameButton from '../component/JoinGameButton';
 
 function Home() {
   const navigate = useNavigate();
@@ -23,21 +23,21 @@ function Home() {
         <Link to="/home"className="text-orange-500 font-bold no-underline">
           <LogoNavBar />
         </Link>
-        <Link to="/quiz/join" className={orangeButtonClass}>Join a game</Link>
+        <JoinGameButton />
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col sm:flex-row items-center justify-center w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-8 pb-35 ">
-        {/* Left Side */}
+      <div className="flex-1 flex flex-col sm:flex-row items-center justify-center w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-8 pb-30">
+        {/* //* Left Side Animation */}
         <div className="w-full sm:w-1/2 flex justify-center items-center">
-          <video src={classroom} autoPlay loop muted playsInline className="w-[300px] md:w-[500px]"/>
+          <video src={classroom} autoPlay loop muted playsInline className="w-[300px] md:w-[550px]"/>
         </div>
 
-        {/* Right Side*/}
+        {/* //* Right Side*/}
         <div className="w-full sm:w-1/2 flex flex-col items-center text-center">
-          <div className="flex items-center mb-6 gap-4 sm:gap-6" >
+          <div className="flex items-center mb-6 gap-4 sm:gap-7" >
             <LogoBigRotate />
-            <h1 className="text-5xl sm:text-7xl text-orange-500 whitespace-nowrap font-Nunito-Black">Big Brain</h1>
+            <h1 className="text-5xl sm:text-7xl text-orange-500 whitespace-nowrap font-Nunito-ExtraBold">Big Brain</h1>
           </div>
           <div className="flex gap-6 items-center text-center">
             <Link
