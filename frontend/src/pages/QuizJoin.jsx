@@ -1,64 +1,5 @@
-/**
-                quizzes:
-                  "994004996": {
-                  "name": "monkeyfriday",
-                  "owner": "kaws@gmail.com",
-                  "questions": [],
-                  "thumbnail": null,
-                  "active": null,
-                  "createdAt": "2025-04-13T16:29:17.563Z"
-                }
-              session:
-                  gamepin generated "982370": {
-              "quizId": "994004996",
-              "position": -1,
-              "isoTimeLastQuestionStarted": null,
-              "players": {},
-              "questions": [],
-              "active": true,
-              "answerAvailable": false
-            },
-HOST
-dashboard,
-    0.
-    1.host click play -> this automatically start quiz (ui card has automatically stop quiz and view quiz)
-    2 generate ID, Join here 431288, OR copy link with the url
-      -> copylink and (backend generates new number each time)
-      -> open quiz  -> quiz/play/431288, music, animation, text moving
-                    -> option to start quiz
-                    -> option to end quiz
-                    -> option to go back and have multiple quiz happenign at the same time
-              -> host can got back to dashboard where there is a stop
-              -> or view quiz back to previous state
-      -> start or END (end shows leaderboard on host side, on player side shows incorrect answer should have a default host ended game early)
-
-  THE LOBBY
-  -> automatically host, populates of users who joined: https://classic.blooket.com/host/join
-  -> https://classic.blooket.com/play/lobby
-            -> chosen avatar by default, if user change avatar it gets updates in host page
-            -> shows a message waiting for host, (can play game if want to)
-            -> if user disconnect, host page removes the user
-  -> host start hgame
-
-PLAYER
-  -> 1.quiz/join, enter invalid quizID regardless brings into part 2 -> where it fails if invalid quizId
-  -> 2.enter valid pin, quiz/join/sessionid bring into please enter name
-      -> msut enter a name,
-              -> this is where the error is invalid quiz ID, popup on the bottom
-                    -> error message invalid game id or no game id
-                        - Invalid game ID
-                        - Please enter a game ID
-              -> OR quizId is not active
-  -> 3. enters into lobby, quiz/play/431288 waiting for HOST
-
- */
-
-// TODO can an admin play its own game? i.e should disable clicking
-// TODO: Should have an error if invalid game ID
-
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import LogoNavBar from '../component/LogoNavBar';
 import { orangeButtonClass } from '../component/tailwind';
 import { useAuthContext } from '../context/useAuthContext';
@@ -72,30 +13,32 @@ function QuizJoin() {
   const authLink = token ? { path: '/dashboard', label: 'Dashboard' } : { path: '/auth/login', label: 'Log in' };
 
   //Game Id and Nickname
-  const [sessionId, setSessionId] = React.useState('');
+  const [sessionIdInput, setSessionIdInput] = React.useState('');
   const [nickName, setNickName] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [isNickFocused, setIsNickFocused] = React.useState(false);
 
   // Api Call
   const navigate = useNavigate();
-  async function joinGame() {
+  async function goToLobby() {
     setLoading(true);
     try {
-      console.log('Attempting to join game with ID:', sessionId);
+      console.log('Attempting to join game with ID:', sessionIdInput);
       console.log('Attempting to join game with nickName:', nickName);
-      const data = await apiCall(`/play/join/${sessionId}`, 'POST', {
+      const data = await apiCall(`/play/join/${sessionIdInput}`, 'POST', {
         name: nickName.trim(),
       })
 
       //Success player goes to lobby -> PlayerGameLobby
       localStorage.setItem('playerId', data.playerId);
-      navigate(`/quiz/lobby/${sessionId}`, {
+      navigate(`/quiz/lobby/${sessionIdInput}`, {
         state: {
           nickname: nickName,
           isAdmin: false,
         }
       });
+
     } catch (err) {
       setErrorMessage(err.message || 'Network error. Please try again.');
     } finally {
@@ -105,8 +48,13 @@ function QuizJoin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // const playerId = localStorage.getItem('playerId');
+    // if (playerId) {
+    //   setErrorMessage('You already have an active game in this browser');
+    //   return;
+    // }
     setErrorMessage('');
-    joinGame();
+    goToLobby();
   };
 
   return (
@@ -140,71 +88,80 @@ function QuizJoin() {
             />
           </div>
         </div>
+
+        {/* Game Pin */}
         <div className='px-4 pt-4 pb-5 rounded-xl bg-white'>
           <div className="mb-3">
             <input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
               title="Please enter numbers only"
-              id="sessionId"
-              name="sessionId"
+              id="sessionIdInput"
+              name="sessionIdInput"
               aria-label="Game ID"
-              placeholder="Enter Game PIN Number"
+              placeholder="Enter Game PIN"
               autoComplete="off"
               required
-              value={sessionId}
+              value={sessionIdInput}
               onChange={(e) => {
-                const onlyNums = e.target.value.replace(/\D/g, '');
-                setSessionId(onlyNums);
-                setErrorMessage('');
+                const value = e.target.value.trimStart();
+                setSessionIdInput(value);
+                if (value === '') {
+                  setErrorMessage('');
+                } else if (!/^[0-9]+$/.test(value)) {
+                  setErrorMessage('Game PIN must be numbers only');
+                } else {
+                  setErrorMessage('');
+                }
               }}
-
-              className="placeholder:font-Nunito-Bold placeholder:text-gray-400 p-3 text-lg border border-gray-300 rounded-md w-[290px] text-center focus:outline-none focus:ring-2 focus:ring-orange-400"
+              onFocus={() => setErrorMessage('')}
+              className="placeholder:font-Nunito-Bold placeholder:text-gray-400 p-3 text-lg border-2 border-gray-200 rounded-md w-[290px] text-center focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-400 text-md font-Nunito-Bold"
             />
           </div>
-          {errorMessage && (<div className="text-red-500 text-sm mb-4" role="alert"> {errorMessage} </div>)}
 
+          {/* Nickname */}
           <div className="mb-3">
             <input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              title="Please enter numbers only"
-              id="sessionId"
-              name="sessionId"
-              aria-label="Game ID"
+              id="nickName"
+              name="nickName"
+              aria-label="Player Name"
               placeholder="Enter Nickname"
               autoComplete="off"
               required
-              value={sessionId}
+              value={nickName}
               onChange={(e) => {
-                // const onlyNums = e.target.value.replace(/\D/g, '');
-                setSessionId(e.target.value);
-                setErrorMessage('');
+                setNickName(e.target.value);
               }}
-
-              className="placeholder:font-Nunito-Bold placeholder:text-gray-400 p-3 text-lg border border-gray-300 rounded-md w-[290px] text-center focus:outline-none focus:ring-2 focus:ring-orange-400"
+              onFocus={() => {
+                setErrorMessage('');
+                setIsNickFocused(true);
+              }}
+              onBlur={() => setIsNickFocused(false)}
+              className="placeholder:font-Nunito-Bold placeholder:text-gray-400 p-3 text-lg border-2 border-gray-200 rounded-md w-[290px] text-center focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-400 font-Nunito-Bold"
             />
           </div>
 
           <button
             type="submit"
-            disabled={loading || !sessionId}
+            disabled={loading || !(sessionIdInput && nickName)}
             aria-label="Join game now"
             className={`sm:text-xl w-full px-8 py-2 rounded-md font-semibold transition-all duration-300 ease-in-out shadow-[0_4px_0_0_#c2410c]
-              ${ loading || !sessionId ? 'bg-orange-300 cursor-not-allowed text-white' : 'bg-orange-500 text-white hover:bg-orange-400 hover:-translate-y-1'}`}
+              ${ loading || !(sessionIdInput && nickName) ? 'bg-orange-300 cursor-not-allowed text-white' : 'bg-orange-500 text-white hover:bg-orange-400 hover:-translate-y-1'}`}
           >
             {loading ? 'Joining...' : 'Join'}
           </button>
         </div>
       </form>
+      {/^[0-9]+$/.test(sessionIdInput) && !nickName && !isNickFocused && (<div className="fixed bottom-0 left-0 right-0 z-50 bg-green-600 text-white text-lg font-Nunito-Medium flex justify-center items-center py-5 font-semibold">
+        <span>Great now we just need your name!</span>
+      </div>)}
 
-      {/* Footer */}
-      <div className="flex flex-col gap-1 sm:flex-row sm:justify-between items-center text-sm text-white text-center absolute bottom-1 w-full py-2 sm:px-8">
-        <p className="mb-0 hover:text-black">© Copyright 2025. All Rights Reserved.</p>
-        <p className="hidden sm:block mb-0 hover:text-black">🚀&nbsp; Powered by neurons & nonsense</p>
-      </div>
+      {/* Error Popup */}
+      {errorMessage && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-red-600 text-white text-lg font-Nunito-Medium flex justify-center items-center py-5 font-semibold">
+          <span>{errorMessage}</span>
+        </div>
+      )}
     </div>
   );
 }
