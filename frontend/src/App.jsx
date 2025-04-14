@@ -28,13 +28,14 @@ import Dashboard from './pages/Dashboard';
 
 import QuizCreate from './pages/QuizCreate';
 import QuizEdit from './pages/QuizEdit';
+
 import QuizJoin from './pages/QuizJoin';
+import QuizJoinViaURL from './pages/QuizJoinViaURL';
 
 import HostGameLobby from './pages/host/HostGameLobby';
 import HostGamePlay from './pages/host/HostGamePlay';
 import HostGameResults from './pages/host/HostGameResults';
 
-import PlayerGameEnterName from './pages/player/PlayerGameEnterName';
 import PlayerGameLobby from './pages/player/PlayerGameLobby';
 import PlayerGamePlay from './pages/player/PlayerGamePlay';
 import PlayerGameResults from './pages/player/PlayerGameResults';
@@ -60,7 +61,7 @@ function App() {
           {/* 3.1 Host + Player*/}
           <Route path='/quiz/join' element={ <QuizJoin/>} />
           {/* 3.2 Player choose name*/}
-          <Route path='/quiz/join/:sessionId' element={ <PlayerGameEnterName/>} />
+          <Route path='/quiz/join/:sessionId' element={ <QuizJoinViaURL/>} />
 
           {/* 4. Host Game Session */}
           <Route path='/host/lobby/:sessionId' element={ <HostGameLobby/>} />
