@@ -2,12 +2,30 @@ import { formatBase64Image } from "../util/imageUtils";
 import { LuPencil, LuPlay, LuTrash2 } from "react-icons/lu";
 import { orangeButtonClass } from "../component/tailwind";
 
-function GameDashboardTile({ game }) {
-  console.log("Individual game data is: ", game);
-  console.log("Title is", game.name);
-
+function GameDashboardTile({ game, onDelete, onEdit, onPlay }) {
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
+
+  // Handler for delete button click
+  const handleDeleteClick = () => {
+    if (onDelete) {
+      onDelete(game.id, game.name);
+    }
+  };
+
+  // Handler for edit button click
+  const handleEditClick = () => {
+    if (onEdit) {
+      onEdit(game.id);
+    }
+  };
+
+  // Handler for play/host button click
+  const handlePlayClick = () => {
+    if (onPlay) {
+      onPlay(game.id);
+    }
+  };
 
   return (
     <>
@@ -48,10 +66,16 @@ function GameDashboardTile({ game }) {
           {/* Action Buttons */}
           <div className="p-2 flex flex-col justify-end items-center gap-2">
             <div className="w-full border-t border-b border-gray-300 grid grid-cols-2">
-              <button className="p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-gray-100">
+              <button
+                className="p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-gray-100"
+                onClick={handleEditClick}
+              >
                 <LuPencil size={20} />
               </button>
-              <button className="p-2 flex justify-center items-center text-gray-600 hover:bg-gray-100">
+              <button
+                className="p-2 flex justify-center items-center text-gray-600 hover:bg-gray-100"
+                onClick={handleDeleteClick}
+              >
                 <LuTrash2 size={20} />
               </button>
             </div>
@@ -59,6 +83,7 @@ function GameDashboardTile({ game }) {
             {/* Game Mode Buttons */}
             <button
               className={`flex justify-center items-center ${orangeButtonClass}`}
+              onClick={handlePlayClick}
             >
               <LuPlay size={20} className="mr-2" />
               <span>Host</span>
