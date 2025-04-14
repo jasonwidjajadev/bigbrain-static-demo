@@ -1,10 +1,28 @@
-{/* <Route path='/quiz/join/:sessionId' element={ <PlayerGameEnterName/>} /> */}
+/**
+ import { useLocation } from 'react-router-dom';
 
-function PlayerGameEnterName () {
+function PlayerGameEnterName() {
+  const location = useLocation();
+  const nickname = location.state?.nickname || localStorage.getItem('nickname');
+
+  if (!nickname) {
+    // Redirect back or show error
+    navigate('/quiz/join');
+  }
+
+  // ...
+}
+
+
+ */
+
+function PlayerGameEnterName() {
+  //TODO green theme
   return (
     <>
-    PlayerGameEnterName
+    PlayerGamePlay
     </>
   )
 }
 export default PlayerGameEnterName;
+
