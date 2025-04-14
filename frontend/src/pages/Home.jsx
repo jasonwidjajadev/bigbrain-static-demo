@@ -5,6 +5,7 @@ import classroom from '../assets/classroom.mp4';
 import LogoNavBar from '../component/LogoNavBar';
 import LogoBigRotate from '../component/LogoBigRotate';
 import JoinGameButton from '../component/JoinGameButton';
+import Typewriter from 'typewriter-effect';
 
 function Home() {
   const navigate = useNavigate();
@@ -37,7 +38,19 @@ function Home() {
         <div className="w-full sm:w-1/2 flex flex-col items-center text-center">
           <div className="flex items-center mb-6 gap-4 sm:gap-7" >
             <LogoBigRotate />
-            <h1 className="text-5xl sm:text-7xl text-orange-500 whitespace-nowrap font-Nunito-ExtraBold">Big Brain</h1>
+            {/* <h1 className="text-5xl sm:text-7xl text-orange-500 whitespace-nowrap font-Nunito-ExtraBold">Big Brain</h1> */}
+            <div className="text-5xl sm:text-7xl text-orange-500 whitespace-nowrap font-Nunito-ExtraBold">
+              <Typewriter
+                options={{
+                  strings: ['Big Brain', 'Big Fun', 'Think Fast', 'Game On!'],
+                  autoStart: true,
+                  loop: true,
+                  pauseFor: 5000,
+                  delay: 100,
+                  deleteSpeed: 75,
+                }}
+              />
+            </div>
           </div>
           <div className="flex gap-6 items-center text-center">
             <Link
