@@ -25,7 +25,9 @@ import AuthLogin from './pages/auth/AuthLogin';
 import AuthRegister from './pages/auth/AuthRegister';
 import AuthLogout from './pages/auth/AuthLogout';
 import Dashboard from './pages/Dashboard';
+
 import QuizCreate from './pages/QuizCreate';
+import QuizEdit from './pages/QuizEdit';
 import QuizJoin from './pages/QuizJoin';
 
 import HostGameLobby from './pages/host/HostGameLobby';
@@ -52,7 +54,7 @@ function App() {
           {/* 2. Dashboard + Quizzes */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz/create" element={<QuizCreate />} />
-          {/* <Route path='/quiz/edit/:quizId' element={ <QuizEdit/>} /> */}
+          <Route path='/quiz/edit/:quizId' element={ <QuizEdit/>} />
           {/* <Route path='/quiz/edit/:quizId/:questionId' element={ <QuizEditQuestion/>} /> */}
 
           {/* 3.1 Host + Player*/}
