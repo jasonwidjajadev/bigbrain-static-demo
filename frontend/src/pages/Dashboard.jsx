@@ -91,6 +91,7 @@ function Dashboard() {
   const handleEditClick = (gameId) => {
     console.log("Edit game with ID:", gameId);
     // TODO: Navigate to edit page
+    navigate(`/quiz/edit/${gameId}`);
   };
 
   // Handler for play/host button click
