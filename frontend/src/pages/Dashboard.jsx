@@ -4,18 +4,24 @@ import { useAuthContext } from "../context/useAuthContext";
 import LogoNavBar from "../component/LogoNavBar";
 import { RiAddCircleLine } from "react-icons/ri";
 import { orangeButtonClass } from "../component/tailwind";
-import { fetchGames } from "../util/gamesApi";
+import { fetchGames, updateAllGames } from "../util/gamesApi";
 import GameDashboardTile from "../component/GameDashboardTile";
+
 import JoinGameButton from '../component/JoinGameButton';
 import { VscThreeBars } from "react-icons/vsc";
 import { TbLogout } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
+
+import DeleteConfirmationModal from "../component/DeleteConfirmationModal";
+
 
 function Dashboard() {
   const navigate = useNavigate();
   const { token, email } = useAuthContext();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [gameToDelete, setGameToDelete] = useState(null);
   const [error, setError] = useState(null);
 
   React.useEffect(() => {
@@ -29,9 +35,11 @@ function Dashboard() {
     }
   }, [token, navigate]);
 
-  //TODO to test if user enter url without token should be invalid
-  //TODO Get API Call
-  //TODO make grids, look at airbnb website
+  // Effect to log gameToDelete state changes
+  React.useEffect(() => {
+    console.log("Updated gameToDelete state:", gameToDelete);
+  }, [gameToDelete]);
+
   const getGamesToDisplay = async () => {
     try {
       setLoading(true);
@@ -47,6 +55,57 @@ function Dashboard() {
   };
 
   // Pass in function as a prop - and then the component calls the prob
+
+  // Handler for delete button click from a GameDashboardTile
+  const handleDeleteClick = (gameId, gameName) => {
+    const game = games.find((g) => g.id === gameId);
+    if (game) {
+      setGameToDelete({
+        id: gameId,
+        name: gameName || game.name,
+      });
+      setIsDeleteModalOpen(true);
+    }
+  };
+
+  // Handler for confirming deletion
+  const handleConfirmDelete = async () => {
+    if (gameToDelete) {
+      try {
+        // Delete logic
+        const updatedGames = games.filter((g) => g.id !== gameToDelete.id);
+        setGames(updatedGames);
+
+        // Close the modal
+        setIsDeleteModalOpen(false);
+        setGameToDelete(null);
+
+        // Update the backend
+        await updateAllGames({ games: updatedGames }, token);
+
+        // Optional: Show success notification
+        console.log(`Successfully deleted game: ${gameToDelete.name}`);
+      } catch (error) {
+        // Handle error case - you might want to show an error message
+        console.error("Failed to delete game:", error);
+        // Reload games to sync the backend
+        getGamesToDisplay();
+      }
+    }
+  };
+
+  // Handler for edit button click
+  const handleEditClick = (gameId) => {
+    console.log("Edit game with ID:", gameId);
+    // TODO: Navigate to edit page
+    navigate(`/quiz/edit/${gameId}`);
+  };
+
+  // Handler for play/host button click
+  const handlePlayClick = (gameId) => {
+    console.log("Play game with ID:", gameId);
+    // TODO: Implement play logic
+  };
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
@@ -91,7 +150,7 @@ function Dashboard() {
             {/* Play */}
             <JoinGameButton />
             {/* Logout */}
-            <Link to="/auth/logout" className={`${orangeButtonClass} px-5 flex items-center gap-2`}> 
+            <Link to="/auth/logout" className={`${orangeButtonClass} px-5 flex items-center gap-2`}>
               <TbLogout className="text-2xl"/> Logout
             </Link>
           </div>
@@ -126,12 +185,25 @@ function Dashboard() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {games.map((game, i) => (
-                <GameDashboardTile key={i} game={game} />
+                <GameDashboardTile
+                  key={i}
+                  game={game}
+                  onDelete={handleDeleteClick}
+                  onEdit={handleEditClick}
+                  onPlay={handlePlayClick}
+                />
               ))}
             </div>
           )}
         </div>
       </div>
+
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        gameTitle={gameToDelete?.name}
+      />
     </div>
   );
 }
