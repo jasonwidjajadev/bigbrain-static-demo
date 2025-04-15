@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import classroom from '../assets/classroom.mp4';
-import LogoNavBar from '../component/LogoNavBar';
+import LinkLogoNavBar from '../component/LinkLogoNavBar';
 import LogoBigRotate from '../component/LogoBigRotate';
 import JoinGameButton from '../component/JoinGameButton';
 import Typewriter from 'typewriter-effect';
@@ -21,9 +21,7 @@ function Home() {
 
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 text-center  bg-cyan-200 h-[65px]">
-        <Link to="/home"className="text-orange-500 font-bold no-underline">
-          <LogoNavBar />
-        </Link>
+        <LinkLogoNavBar targetPath="/home" />
         <JoinGameButton />
       </nav>
 

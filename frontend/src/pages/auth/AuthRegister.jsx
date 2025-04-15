@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import LogoNavBar from '../../component/LogoNavBar';
+import LinkLogoNavBar from '../../component/LinkLogoNavBar';
 import { orangeButtonClass, input } from '../../component/tailwind';
 import { useAuthContext } from '../../context/useAuthContext';
 import { apiCall } from '../../util/apiCall';
@@ -74,7 +74,7 @@ function AuthRegister() {
     <div className="min-h-screen flex flex-col font-sans overflow-y-auto">
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
-        <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline"><LogoNavBar /></Link>
+        <LinkLogoNavBar targetPath="/home" />
         <div className="flex gap-3 sm:gap-4 items-center">
           <JoinGameButton />
           <Link to="/auth/login" className={`${orangeButtonClass} px-6`}>Log in</Link>
