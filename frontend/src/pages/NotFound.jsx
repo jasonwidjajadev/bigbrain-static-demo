@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import LogoNavBar from '../component/LogoNavBar';
+import LinkLogoNavBar from '../component/LinkLogoNavBar';
 import { useAuthContext } from '../context/useAuthContext';
 import img_404 from '../assets/img_404.png';
 
@@ -10,7 +10,7 @@ function NotFound() {
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
-        <Link to={targetPath} className="text-orange-500 text-3xl font-bold no-underline"><LogoNavBar /></Link>
+        <LinkLogoNavBar targetPath={targetPath} />
       </nav>
 
       <div className="flex-1 flex flex-col justify-center items-center text-center pt-8 pb-20">
