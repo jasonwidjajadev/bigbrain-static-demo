@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import LogoNavBar from '../component/LogoNavBar';
+import LinkLogoNavBar from '../component/LinkLogoNavBar';
 import { orangeButtonClass } from '../component/tailwind';
 import { useAuthContext } from '../context/useAuthContext';
 import LogoBigRotate from '../component/LogoBigRotate';
@@ -61,9 +61,7 @@ function QuizJoin() {
     <div className="min-h-screen overflow-y-auto flex flex-col">
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
-        <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline">
-          <LogoNavBar />
-        </Link>
+        <LinkLogoNavBar targetPath="/home" />
         <Link to={authLink.path} className={`${orangeButtonClass} px-6`}>{authLink.label}</Link>
       </nav>
 
@@ -71,7 +69,7 @@ function QuizJoin() {
       <form
         onSubmit={handleSubmit}
         aria-label="Join Game form"
-        className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-[#fabf24] pb-25"
+        className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-cyan-700 pb-25"
       >
         <div className="flex items-center mb-6 gap-5" >
           <LogoBigRotate sizeClass="h-[50px] sm:h-[70px]"/>
