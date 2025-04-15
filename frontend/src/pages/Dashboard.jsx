@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "../context/useAuthContext";
-import LogoNavBar from "../component/LogoNavBar";
+import LinkLogoNavBar from '../component/LinkLogoNavBar';
 import { RiAddCircleLine } from "react-icons/ri";
 import { orangeButtonClass } from "../component/tailwind";
 import { fetchGames, updateAllGames } from "../util/gamesApi";
@@ -111,8 +111,7 @@ function Dashboard() {
     <div className="min-h-screen overflow-y-auto flex flex-col">
       {/* Navbar Left Side*/}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
-        <Link to="/home" className="text-orange-500 text-3xl font-bold no-underline"><LogoNavBar /></Link>
-
+        <LinkLogoNavBar targetPath="/home" />
         {/* //* NavBar Right side For Small Screen Dropdown */}
         <div className="dropdown dropdown-bottom dropdown-end sm:hidden">
           {/* Toggle Button */}
