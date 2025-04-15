@@ -6,11 +6,12 @@ import LinkLogoNavBar from '../component/LinkLogoNavBar';
 import LogoBigRotate from '../component/LogoBigRotate';
 import JoinGameButton from '../component/JoinGameButton';
 import Typewriter from 'typewriter-effect';
+import { useAuthContext } from '../context/useAuthContext';
 
 function Home() {
   const navigate = useNavigate();
+  const { token } = useAuthContext();
   React.useEffect(() => {
-    const token = localStorage.getItem('bigbrain_token');
     if (token) {
       navigate('/dashboard');
     }
