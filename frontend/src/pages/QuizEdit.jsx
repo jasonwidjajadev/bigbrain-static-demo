@@ -6,6 +6,7 @@ import { fetchGames } from "../util/gamesApi";
 import { orangeButtonClass } from "../component/tailwind";
 import { RiAddCircleLine } from "react-icons/ri";
 import { LuSquarePlus } from "react-icons/lu";
+import EditGameInfoTile from "../component/EditGameInfoTile";
 
 function AdminQuizEdit() {
   const [allGames, setAllGames] = useState([]);
@@ -74,6 +75,10 @@ function AdminQuizEdit() {
     }
   };
 
+  const handleEditClick = () => {
+    console.log();
+  };
+
   //TODO logic
   const handleAddQuestion = () => {
     console.log("Add question button clicked for game id: ", quizId);
@@ -109,14 +114,28 @@ function AdminQuizEdit() {
         </h1>
         {/* Quiz editing UI */}
         {/* Quiz information tile */}
-
+        {loading ? (
+          <div>Loading quiz information...</div>
+        ) : error ? (
+          <div>{error}</div>
+        ) : currentQuiz ? (
+          <EditGameInfoTile
+            thumbnail={currentQuiz.thumbnail}
+            name={currentQuiz.name}
+            description={currentQuiz.description}
+          />
+        ) : (
+          <div>No quiz data found</div>
+        )}
         {/* Add question button */}
-        <button
-          onClick={handleAddQuestion}
-          className={`${orangeButtonClass} flex items-center gap-1 px-5`}
-        >
-          <LuSquarePlus /> Add Question
-        </button>
+        <div className="flex w-full ">
+          <button
+            onClick={handleAddQuestion}
+            className={`${orangeButtonClass} flex items-center gap-1 px-5`}
+          >
+            <LuSquarePlus /> Add Question
+          </button>
+        </div>
       </div>
     </div>
   );
