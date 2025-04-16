@@ -17,17 +17,18 @@ PUT     /play/:playerid/answer
 GET     /play/:playerid/results
 */
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AuthProvider from './context/AuthContext';
-import Home from './pages/Home';
-import AuthLogin from './pages/AuthLogin';
-import AuthRegister from './pages/AuthRegister';
-import AuthLogout from './pages/AuthLogout';
-import Dashboard from './pages/Dashboard';
-import QuizCreate from './pages/QuizCreate';
-import QuizJoin from './pages/QuizJoin';
-import NotFound from './pages/NotFound';
-import QuizEdit from './pages/QuizEdit';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthProvider from "./context/AuthContext";
+import Home from "./pages/Home";
+import AuthLogin from "./pages/AuthLogin";
+import AuthRegister from "./pages/AuthRegister";
+import AuthLogout from "./pages/AuthLogout";
+import Dashboard from "./pages/Dashboard";
+import QuizCreate from "./pages/QuizCreate";
+import QuizJoin from "./pages/QuizJoin";
+import NotFound from "./pages/NotFound";
+import QuizEdit from "./pages/QuizEdit";
+import QuestionEditor from "./component/QuestionEditor";
 
 function App() {
   return (
@@ -44,12 +45,15 @@ function App() {
           {/* Dashboard + Quizzes */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz/create" element={<QuizCreate />} />
-          <Route path='/quiz/edit/:quizId' element={ <QuizEdit/>} />
-          {/* <Route path='/quiz/edit/:quizId/:questionId' element={ <QuizEditQuestion/>} /> */}
+          <Route path="/quiz/edit/:quizId" element={<QuizEdit />} />
+          <Route
+            path="/quiz/edit/:quizId/:questionId"
+            element={<QuestionEditor />}
+          />
 
           {/* Quiz Play */}
           {/* <Route path='/quiz/play/:sessionid' element={ <ActiveQuiz/>} /> */}
-          <Route path='/quiz/join' element={ <QuizJoin/>} />
+          <Route path="/quiz/join" element={<QuizJoin />} />
           {/* <Route path='/quiz/join/:sessionId' element={ <QuizPlay/>} /> */}
           {/* <Route path='/lobby' element={ <Lobby/>} /> */}
 
@@ -63,4 +67,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
