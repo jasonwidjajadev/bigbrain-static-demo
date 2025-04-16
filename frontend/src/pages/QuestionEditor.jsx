@@ -202,12 +202,76 @@ function QuestionEditor() {
     }
   };
 
-  const saveQuestion = async () => {
+  const saveQuestion = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
     // console.log("Save question clicked, with following data: ", question);
     try {
       setLoading(true);
 
       // Validate the question:
+      if (!question.text.trim()) {
+        setError("Question text cannot be empty");
+        setLoading(false);
+        return;
+      }
+
+      // Validate answers
+      const hasEmptyAnswers = question.answers
+        .slice(0, 2)
+        .some((answer) => !answer.text.trim());
+      if (hasEmptyAnswers) {
+        setError("The first two answers must have text");
+        setLoading(false);
+        return;
+      }
+
+      // Ensure at least one answer is correct
+      const hasCorrectAnswer = question.answers.some(
+        (answer) => answer.isCorrect
+      );
+      if (!hasCorrectAnswer) {
+        setError("At least one answer must be marked as correct");
+        setLoading(false);
+        return;
+      }
+
+      // Ensure correctAnswers array is properly set
+      const correctIds = question.answers
+        .filter((answer) => answer.isCorrect)
+        .map((answer) => answer.id);
+
+      const finalQuestion = {
+        ...question,
+        correctAnswers: correctIds,
+      };
+
+      const updatedGame = { ...game };
+
+      // Update or add the question
+      if (questionId === "new") {
+        updatedGame.questions = [
+          ...(updatedGame.questions || []),
+          finalQuestion,
+        ];
+      } else {
+        updatedGame.questions = updatedGame.questions.map((q) =>
+          q.id === questionIdInt ? finalQuestion : q
+        );
+      }
+
+      // Get all games to update
+      const gamesData = await fetchGames(token);
+      const updatedGames = gamesData.map((g) =>
+        g.id === quizIdInt ? updatedGame : g
+      );
+
+      // Update games in the backend
+      await updateAllGames({ games: updatedGames }, token);
+
+      // Redirect back to quiz edit page
+      navigate(`/quiz/edit/${quizId}`);
     } catch (err) {
       console.error("Error saving question:", err);
       setError("Failed to save question");
