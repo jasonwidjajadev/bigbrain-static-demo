@@ -35,6 +35,7 @@ function GameJoin() {
       localStorage.setItem('playerId', data.playerId);
       navigate(`/session/${sessionIdInput}`, {
         state: {
+          sessionId: sessionIdInput,
           nickname: nickName,
           isAdmin: false,
         }
