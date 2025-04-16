@@ -317,4 +317,69 @@ function QuestionEditor() {
             </div>
           </div>
 
-          
+          {/* Answers */}
+          <div>
+            <div className="mb-2 font-medium">
+              Answers{" "}
+              {question.type === "multiple"
+                ? "(Select multiple correct answers)"
+                : question.type === "judgement"
+                  ? "(Select one correct answer)"
+                  : "(Select one correct answer)"}
+            </div>
+
+            <div className="space-y-4">
+              {question.answers.map((answer, index) => (
+                <div
+                  key={answer.id}
+                  className={`flex items-center gap-3 p-3 rounded ${getAnswerColor(index)}`}
+                >
+                  <input
+                    type={question.type === "multiple" ? "checkbox" : "radio"}
+                    checked={answer.isCorrect}
+                    // onChange={(e) =>
+                    //   handleAnswerChange(index, "isCorrect", e.target.checked)
+                    // }
+                    name="correct-answer"
+                    className="h-5 w-5"
+                  />
+                  <input
+                    type="text"
+                    value={answer.text}
+                    // onChange={(e) =>
+                    //   handleAnswerChange(index, "text", e.target.value)
+                    // }
+                    placeholder={`Answer ${index + 1}`}
+                    className="flex-1 border border-gray-300 rounded px-3 py-2"
+                  />
+                  {question.answers.length > 2 && (
+                    <button
+                      // onClick={() => removeAnswer(index)}
+                      className="text-white hover:text-red-200 font-bold px-2"
+                    >
+                      X
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {question.answers.length < 6 && (
+              <button
+                // onClick={addAnswer}
+                className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                Add Answer{" "}
+                {question.answers.length < 6
+                  ? `(${6 - question.answers.length} remaining)`
+                  : ""}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default QuestionEditor;
