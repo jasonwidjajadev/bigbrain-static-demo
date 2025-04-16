@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { LuCopy, LuCheckCircle } from "react-icons/lu";
+import { useState, useEffect } from "react";
+import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import { orangeButtonClass } from "./tailwind";
 
 function SessionStartModal({ isOpen, onClose, sessionId, gameTitle }) {
   const [copied, setCopied] = useState(false);
-  const sessionUrl = `${window.location.origin}/play/${sessionId}`;
+  const sessionUrl = `${window.location.origin}/quiz/play/${sessionId}`;
 
   useEffect(() => {
     // Reset copied state when modal opens with new sessionId
@@ -23,7 +23,7 @@ function SessionStartModal({ isOpen, onClose, sessionId, gameTitle }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
         <div className="text-center">
           <h3 className="text-xl font-semibold mb-2 text-gray-800">
@@ -44,7 +44,7 @@ function SessionStartModal({ isOpen, onClose, sessionId, gameTitle }) {
               aria-label="Copy to clipboard"
             >
               {copied ? (
-                <LuCheckCircle className="text-green-600" size={20} />
+                <LuCopyCheck className="text-green-600" size={20} />
               ) : (
                 <LuCopy size={20} />
               )}
