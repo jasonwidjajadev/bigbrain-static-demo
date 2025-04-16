@@ -81,7 +81,6 @@ function EditQuizInfoModal({ quiz, isOpen, onClose, onSave }) {
           console.error("Failed to convert image:", imgError);
         }
       }
-
       // Save changes
       await onSave(updatedQuiz);
       onClose();
