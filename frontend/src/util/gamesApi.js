@@ -22,3 +22,21 @@ export const updateAllGames = async (allGames, adminToken) => {
     throw new Error(error || "Something went wrong");
   }
 };
+
+export const createGameSession = async (quizId, token) => {
+  try {
+    const response = await apiCall(
+      `/admin/game/${quizId}/mutate`,
+      "POST",
+      {
+        mutationType: "START",
+      },
+      token
+    );
+
+    console.log("Response is: ", response);
+    return response.data.sessionId;
+  } catch (error) {
+    throw new Error(error || "Something went wrong");
+  }
+};
