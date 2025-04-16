@@ -365,6 +365,7 @@ function QuestionEditor() {
               <div className="flex justify-end gap-4">
                 {/* Cancel button */}
                 <button
+                  type="button"
                   onClick={() => navigate(`/quiz/edit/${quizId}`)}
                   className={`${greyButtonClassSmall} px-2 py-2`}
                 >
