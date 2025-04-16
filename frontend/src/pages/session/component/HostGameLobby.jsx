@@ -5,6 +5,8 @@ import { FaStop } from "react-icons/fa6";
 import { IoPerson } from "react-icons/io5";
 import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { Link } from 'react-router-dom';
+
+
 function HostGameLobby({sessionId, players, showResults, advancePosition}) {
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
@@ -85,7 +87,6 @@ function HostGameLobby({sessionId, players, showResults, advancePosition}) {
           </div>
         </div>
       </main>
-
     </div>
   );
 }
