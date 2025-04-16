@@ -3,6 +3,9 @@ import { LuPencil, LuPlay, LuTrash2 } from "react-icons/lu";
 import { orangeButtonClass } from "../component/tailwind";
 
 function GameDashboardTile({ game, onDelete, onEdit, onPlay }) {
+  // TODO: Ensure that there cannot be too many words
+  // Figure out what to do to format this
+
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
 

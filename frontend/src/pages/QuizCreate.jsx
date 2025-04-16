@@ -56,7 +56,7 @@ function AdminQuizCreate() {
       console.log("Games data is", gamesData);
 
       // Turn the image into base64
-      // TODO: Image is not saving correctly, need to update this
+      // TODO: Image is not saving correctly, need to update
       let base64Img = null;
       if (formData.image) {
         try {
