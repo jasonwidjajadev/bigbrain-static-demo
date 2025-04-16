@@ -89,7 +89,7 @@ function GameDashboardTile({ game, onDelete, onEdit, onPlay }) {
               onClick={handlePlayClick}
             >
               <LuPlay size={20} className="mr-2" />
-              <span>Host</span>
+              <span>Play</span>
             </button>
           </div>
         </div>
