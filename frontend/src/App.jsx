@@ -212,9 +212,9 @@ import QuizEdit from './pages/QuizEdit';
 import QuestionEditor from './pages/QuestionEditor';
 import QuizResults from './pages/quiz/QuizResults'
 
-import GameJoin from './pages/session/GameJoin';
-import GameJoinViaURL from './pages/session/GameJoinViaURL';
-import ActiveGame from './pages/session/GameActive';
+import JoinGame from './pages/session/JoinGame';
+import JoinGameViaURL from './pages/session/JoinGameViaURL';
+import ActiveGame from './pages/session/ActiveGame';
 
 function App() {
   return (
@@ -260,8 +260,8 @@ function App() {
             -> Do we need to check position -1?
             -> TODO add a youtube video
           */}
-          <Route path='/join' element={ <GameJoin/>} />
-          <Route path='/join/:sessionId' element={ <GameJoinViaURL/>} />
+          <Route path='/join' element={ <JoinGame/>} />
+          <Route path='/join/:sessionId' element={ <JoinGameViaURL/>} />
 
           {/* //! 2.6.1. Lobby room - GET /play/:playerid/status */}
           {/* //* ADMIN 2.4.2. Play Game
