@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useAuthContext } from "../context/useAuthContext";
 import { fetchGames, updateAllGames } from "../util/gamesApi";
@@ -8,7 +8,6 @@ import {
   greyButtonClassSmall,
 } from "../component/tailwind";
 import LogoNavBar from "../component/LogoNavBar";
-import { LuTimer } from "react-icons/lu";
 import VideoButton from "../component/VideoButton";
 import ImageButton from "../component/ImageButton";
 
