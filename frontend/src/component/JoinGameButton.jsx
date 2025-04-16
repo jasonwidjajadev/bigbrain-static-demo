@@ -4,7 +4,7 @@ import { FaPlay } from "react-icons/fa";
 const JoinGameButton = () => {
   return (
     <Link
-      to="/quiz/join"
+      to="/join"
       className={`${orangeButtonClass} flex items-center gap-2 px-5`}
     >
       <FaPlay className="text-[16px]"/>Join a game
