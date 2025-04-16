@@ -28,7 +28,7 @@ import QuizCreate from './pages/QuizCreate';
 import QuizJoin from './pages/QuizJoin';
 import NotFound from './pages/NotFound';
 import QuizEdit from './pages/QuizEdit';
-import QuestionEditor from './component/QuestionEditor';
+import QuestionEditor from './pages/QuestionEditor';
 
 function App() {
   return (

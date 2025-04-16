@@ -4,18 +4,19 @@
 /* https://github.com/tailwindlabs/tailwindcss/blob/main/packages/tailwindcss/preflight.css */
 
 @font-face {
-  font-family: 'Nunito-Regular';
-  src: url('styles/fonts/Nunito/Nunito-Regular.ttf') format('truetype');
+  font-family: "Nunito-Regular";
+  src: url("styles/fonts/Nunito/Nunito-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Nunito-Black';
-  src: url('styles/fonts/Nunito/Nunito-Black.ttf') format('truetype');
+  font-family: "Nunito-Black";
+  src: url("styles/fonts/Nunito/Nunito-Black.ttf") format("truetype");
 }
 
 @import "tailwindcss";
+@plugin "daisyui";
 
 /* Custom Themes for color, fonts etc goes here */
 @theme {
@@ -23,7 +24,8 @@
   --font-Nunito-Black: Nunito-Black, "sans-serif";
 }
 
-html, body {
+html,
+body {
   -webkit-font-smoothing: antialiased;
   height: 100%;
   min-height: 100svh;
