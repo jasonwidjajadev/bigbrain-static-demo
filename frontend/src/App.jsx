@@ -195,3 +195,113 @@ GET     /play/:playerid/results
           }
         ]
 */
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AuthProvider from './context/AuthContext';
+
+import NotFound from './pages/NotFound';
+import Home from './pages/Home';
+
+import AuthLogin from './pages/auth/AuthLogin';
+import AuthRegister from './pages/auth/AuthRegister';
+import AuthLogout from './pages/auth/AuthLogout';
+
+import Dashboard from './pages/Dashboard';
+import QuizCreate from './pages/QuizCreate';
+import QuizEdit from './pages/QuizEdit';
+import QuestionEditor from './pages/QuestionEditor';
+import QuizResults from './pages/quiz/QuizResults'
+
+import GameJoin from './pages/session/GameJoin';
+import GameJoinViaURL from './pages/session/GameJoinViaURL';
+import ActiveGame from './pages/session/GameActive';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+
+          {/* ============================================================== */}
+          {/* //? ADMIN - 2.1.1. Login Screen - API CALL - POST/admin/auth/login */}
+          <Route path="/auth/login" element={<AuthLogin />} />
+          {/* //? ADMIN - 2.1.2. Register Screen  - API CALL - POST/admin/auth/register */}
+          <Route path="/auth/register" element={<AuthRegister />} />
+          {/* //? ADMIN - 2.1.3. Logout Button - API CALL - POST/admin/auth/logout */}
+          <Route path="/auth/logout" element={<AuthLogout />} />
+
+          {/* ============================================================== */}
+          {/* //^ ADMIN - 2.2.1. Dashboard - API CALL - GET/admin/games */}
+          {/* //& ADMIN - 2.3.1. Starting a game session - POST/admin/game/:gameid/START */}
+          {/* //& ADMIN - 2.3.2. Stopping a game session
+                -> POST/admin/game/:gameid/END
+                -> Would you like to view the results? PopUp - go to results -> 2.3.3
+          */}
+          {/* //! ADMIN 2.6.2. 🙉🙉🙉 (For pairs only) Game Upload, NO API CALL */}
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          {/* //^ ADMIN - 2.2.2. Edit BigBrain Game - API CALL - PUT/admin/games */}
+          <Route path="/quiz/create" element={<QuizCreate />} />
+          <Route path='/quiz/edit/:quizId' element={ <QuizEdit/>} />
+
+          {/* //^ADMIN - 2.2.3. Edit BigBrain Game Question  - API CALL - PUT/admin/games*/}
+          <Route path='/quiz/edit/:quizId/:questionId' element={ <QuestionEditor/>} />
+
+          {/* //~ ADMIN 2.5.2. 🙉🙉🙉 (For pairs only) Past game session results - Multiple API? , button from dashboard? */}
+          <Route path='/quiz/results/' element={ <QuizResults/>} />
+
+          {/* ============================================================== */}
+          {/* //* ADMIN 2.4.1. Play Join , API CALL - POST/play/join/:sessionid, 
+              -> Do we need to check position -1?
+          */}
+          {/* //* PLAYER 2.4.1. Play Join , API CALL - POST/play/join/:sessionid 
+            -> Do we need to check position -1?
+            -> TODO add a youtube video
+          */}
+          <Route path='/join' element={ <GameJoin/>} />
+          <Route path='/join/:sessionId' element={ <GameJoinViaURL/>} />
+
+          {/* //! 2.6.1. Lobby room - GET /play/:playerid/status */}
+          {/* //* ADMIN 2.4.2. Play Game
+                -> POST/admin/game/:gameid/ADVANCE
+          */}
+          {/* //* PLAYER 2.4.2. Play Game
+                -> GET     /play/:playerid/status
+                -> GET     /play/:playerid/question
+                -> GET     /play/:playerid/answer
+                -> PUT     /play/:playerid/answer
+          */}
+          {/* //! 2.6.3. 🙉🙉🙉 (For pairs only) Points system, NO API */}
+
+          {/* //& ADMIN - A unique route must exist for this screen 2.3.3 - Advancing & getting the results of a game
+
+              //&  - GET/admin/session/:sessionid/status - what is this for?
+
+              //& click-end during game go straight to results
+                  -> POST/admin/game/:gameid/END + GET/admin/session/:sessionid/results
+              //& gameover go straight to results
+                  -> GET/admin/session/:sessionid/results
+              //&  */}
+          {/* //~ PLAYER 2.5.1. Game Session Results, API CALL
+                  -> GET /play/:playerid/results
+                  ->  Results - NO API calculated throughout the GAME?
+                  ->https://edstem.org/au/courses/20458/discussion/2590973
+          */}
+          <Route path='/session/:sessionId' element={ <ActiveGame/>} />
+
+          {/* ============================================================== */}
+          {/* Not Found */}
+          <Route path="*" element={<NotFound />} />
+
+          {/* 2.7. Linting */}
+          {/* UI TESTING 2.8. Testing */}
+          {/* COMPONENT TESTING 2.8. Testing */}
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
+
+export default App
