@@ -1,0 +1,78 @@
+{
+  "quizId": "914256626",
+  "position": 2,
+  "isoTimeLastQuestionStarted": "2025-04-14T15:27:20.710Z",
+  "active": true,
+  "answerAvailable": true,
+  "questions": [
+    {
+      "id": 0,
+      "questionString": "Who is the president of America?",
+      "answers": [
+        { "id": 0, "value": "Donald Trump", "correct": true},
+        { "id": 1, "value": "Xi Jinping", "correct": false},
+        { "id": 2, "value": "Vladimir Putin", "correct": false},
+        { "id": 3, "value": "Elon Musk", "correct": false},
+        { "id": 4, "value": "Dracula", "correct": false},
+        { "id": 5, "value": "Kanye West", "correct": false}
+      ],
+      "time": 10,
+      "embed": "/static/media/default_quiz_thumbnail.8acd421a181f51f4d02f.png",
+      "point": 2,
+      "type": "single"
+    },
+    {
+      "id": 1,
+      "questionString": "Which of the following are primary colors?",
+      "answers": [
+        { "id": 0, "value": "blue", "correct": true},
+        { "id": 1, "value": "red", "correct": true},
+        { "id": 2, "value": "green", "correct": true},
+        { "id": 3, "value": "yellow", "correct": false},
+        { "id": 4, "value": "purple", "correct": false},
+        { "id": 5, "value": "cyan", "correct": false}
+      ],
+      "time": 40,
+      "embed": "/static/media/default_quiz_thumbnail.8acd421a181f51f4d02f.png",
+      "point": 99998,
+      "type": "single"
+    },
+    {
+      "id": 2,
+      "questionString": "who is rihanna",
+      "answers": [
+        { "id": 0, "value": "she is not beyonce", "correct": true },
+        { "id": 1, "value": "she is beyonce", "correct": false }
+      ],
+      "time": 30,
+      "embed": "/static/media/default_quiz_thumbnail.8acd421a181f51f4d02f.png",
+      "point": 9,
+      "type": "judgement"
+    }
+  ],
+  "players": {
+    "215142982": {
+      "name": "Mark",
+      "answers": [
+        {
+          "questionStartedAt": "2025-04-14T15:26:13.975Z",
+          "answeredAt": "2025-04-14T15:26:22.525Z",
+          "answerIds": [ 0 ],
+          "correct": false
+        },
+        {
+          "questionStartedAt": "2025-04-14T15:26:31.403Z",
+          "answeredAt": "2025-04-14T15:27:01.109Z",
+          "answerIds": [ 0, 1 ],
+          "correct": false
+        },
+        {
+          "questionStartedAt": "2025-04-14T15:27:20.710Z",
+          "answeredAt": "2025-04-14T15:27:31.946Z",
+          "answerIds": [ 0 ],
+          "correct": true
+        }
+      ]
+    }
+  }
+}
