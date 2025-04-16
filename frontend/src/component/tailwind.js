@@ -6,4 +6,4 @@ export const orangeButtonClass = `
 
 export const input = `w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 placeholder:text-sm font-Nunito-Medium`;
 
-export const lobbyName = `px-5 py-2 rounded-md bg-cyan-800 text-white text-2xl sm:text-3xl font-Nunito-ExtraBold`
+export const lobbyNameClass = `px-5 py-2 rounded-md bg-cyan-800 text-white text-2xl sm:text-3xl font-Nunito-ExtraBold`
