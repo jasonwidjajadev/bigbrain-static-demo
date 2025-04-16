@@ -1,6 +1,3 @@
-/* @plugin "daisyui"; */
-/* @plugin "flowbite/plugin"; */
-/* https://tailwindcss.com/docs/preflight */
 /* https://github.com/tailwindlabs/tailwindcss/blob/main/packages/tailwindcss/preflight.css */
 
 @font-face {
@@ -35,6 +32,19 @@
   src: url('styles/fonts/Nunito/Nunito-Black.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'PencilpeteFont';
+  src: url('styles/fonts/pencilpete-font/PencilpeteFont-2eE3.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DkCrayonCrumble';
+  src: url('styles/fonts/dk-crayon-crumble-font/DkCrayonCrumble-ddll.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'ChalkLineOutline';
+  src: url('styles/fonts/chalk-line-outline-font/ChalkLineOutline-2jpe.ttf') format('truetype');
+}
 @import "tailwindcss";
 @plugin "daisyui";
 
@@ -46,6 +56,9 @@
   --font-Nunito-Bold: Nunito-Bold, "sans-serif";
   --font-Nunito-ExtraBold: Nunito-ExtraBold, "sans-serif";
   --font-Nunito-Black: Nunito-Black, "sans-serif";
+  --font-PencilpeteFont: PencilpeteFont, "sans-serif";
+  --font-DkCrayonCrumble: DkCrayonCrumble, "sans-serif";
+  --font-ChalkLineOutline: ChalkLineOutline, "sans-serif";
 }
 
 html, body {
