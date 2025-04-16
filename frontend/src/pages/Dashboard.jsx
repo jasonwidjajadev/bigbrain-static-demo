@@ -4,11 +4,22 @@ import { useAuthContext } from "../context/useAuthContext";
 import LogoNavBar from "../component/LogoNavBar";
 import { RiAddCircleLine } from "react-icons/ri";
 import { orangeButtonClass } from "../component/tailwind";
-import { fetchGames, updateAllGames } from "../util/gamesApi";
+import {
+  fetchGames,
+  updateAllGames,
+  createGameSession,
+} from "../util/gamesApi";
 import GameDashboardTile from "../component/GameDashboardTile";
 import DeleteConfirmationModal from "../component/DeleteConfirmationModal";
+import SessionStartModal from "../component/SessionStartModal";
 
 function Dashboard() {
+  /*
+  TODO:
+  - Figure out how to display title and description if they
+    are very long
+  - Get the game thumbnail to display
+  */
   const navigate = useNavigate();
   const { token, email } = useAuthContext();
   const [games, setGames] = useState([]);
@@ -16,6 +27,10 @@ function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [gameToDelete, setGameToDelete] = useState(null);
   const [error, setError] = useState(null);
+
+  // State for session management
+  const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
+  const [activeSessionData, setActiveSessionData] = useState(null);
 
   React.useEffect(() => {
     console.log("Initial token:", token);
@@ -47,14 +62,12 @@ function Dashboard() {
     }
   };
 
-  // Pass in function as a prop - and then the component calls the prob
-
   // Handler for delete button click from a GameDashboardTile
-  const handleDeleteClick = (gameId, gameName) => {
-    const game = games.find((g) => g.id === gameId);
+  const handleDeleteClick = (quizId, gameName) => {
+    const game = games.find((g) => g.id === quizId);
     if (game) {
       setGameToDelete({
-        id: gameId,
+        id: quizId,
         name: gameName || game.name,
       });
       setIsDeleteModalOpen(true);
@@ -88,16 +101,53 @@ function Dashboard() {
   };
 
   // Handler for edit button click
-  const handleEditClick = (gameId) => {
-    console.log("Edit game with ID:", gameId);
-    // TODO: Navigate to edit page
-    navigate(`/quiz/edit/${gameId}`);
+  const handleEditClick = (quizId) => {
+    console.log("Edit game with ID:", quizId);
+    // Navigate to edit page
+    navigate(`/quiz/edit/${quizId}`);
   };
 
   // Handler for play/host button click
-  const handlePlayClick = (gameId) => {
-    console.log("Play game with ID:", gameId);
+  const handleStartSession = async (quizId) => {
+    console.log("Play game with ID:", quizId);
     // TODO: Implement play logic
+    try {
+      // Find the game to get its details
+      const game = games.find((g) => g.id === quizId);
+      if (!game) return;
+
+      // TODO: Replace with actual API call to create a session
+      const sessionId = await createGameSession(quizId, token);
+
+      // Update our current state
+      const updatedGames = games.map((g) => {
+        if (g.id === quizId) {
+          return {
+            ...g,
+            active: sessionId,
+          };
+        }
+        return g;
+      });
+
+      setGames(updatedGames);
+
+      // Set the active session data and open the modal
+      setActiveSessionData({
+        sessionId: sessionId,
+        quizId,
+        gameTitle: game.name,
+      });
+      setIsSessionModalOpen(true);
+    } catch (error) {
+      console.error("Failed to start game session:", error);
+      setError("Failed to start game session. Please try again.");
+    }
+  };
+
+  // Handler for closing the session modal
+  const handleCloseSessionModal = () => {
+    setIsSessionModalOpen(false);
   };
 
   return (
@@ -155,7 +205,7 @@ function Dashboard() {
                   game={game}
                   onDelete={handleDeleteClick}
                   onEdit={handleEditClick}
-                  onPlay={handlePlayClick}
+                  onPlay={handleStartSession}
                 />
               ))}
             </div>
@@ -163,11 +213,20 @@ function Dashboard() {
         </div>
       </div>
 
+      {/* Delete Confirmation Modal */}
       <DeleteConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         gameTitle={gameToDelete?.name}
+      />
+
+      {/* Session Start Modal */}
+      <SessionStartModal
+        isOpen={isSessionModalOpen}
+        onClose={handleCloseSessionModal}
+        sessionId={activeSessionData?.sessionId}
+        gameTitle={activeSessionData?.gameTitle}
       />
     </div>
   );
