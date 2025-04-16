@@ -50,7 +50,7 @@ function GameJoinViaURL() {
       navigate(`/session/${sessionIdInput}`, {
         state: {
           sessionId: sessionIdInput,
-          nickname: nickName,
+          nickName: nickName,
           isAdmin: false,
         }
       });
