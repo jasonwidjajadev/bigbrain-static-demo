@@ -33,7 +33,7 @@ function GameJoin() {
 
       //Success player goes to lobby -> PlayerGameLobby
       localStorage.setItem('playerId', data.playerId);
-      navigate(`/quiz/lobby/${sessionIdInput}`, {
+      navigate(`/session/${sessionIdInput}`, {
         state: {
           nickname: nickName,
           isAdmin: false,
