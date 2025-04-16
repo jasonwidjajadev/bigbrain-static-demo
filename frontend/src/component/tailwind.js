@@ -11,3 +11,21 @@ export const cyanButtonWFullClass = `
   shadow-[0_4px_0_0_#0e7490] transition-all duration-300 ease-in-out
   hover:bg-cyan-400 hover:-translate-y-1
 `;
+
+export const cyanButtonClassSmall = `
+  sm:text-md px-1 py-1 rounded-md bg-cyan-500 text-white font-bold no-underline
+  shadow-[0_4px_0_0_#0e7490] transition-all duration-300 ease-in-out
+  hover:bg-cyan-400 hover:-translate-y-1
+`;
+
+export const greyButtonClassSmall = `
+  sm:text-md px-1 py-1 rounded-md bg-gray-500 text-white font-bold no-underline
+  shadow-[0_4px_0_0_#1f2937] transition-all duration-300 ease-in-out
+  hover:bg-gray-400 hover:-translate-y-1
+`;
+
+export const blueButtonClassSmall = `
+  sm:text-md px-1 py-1 rounded-md bg-blue-500 text-white font-bold no-underline
+  shadow-[0_4px_0_0_#1e40af] transition-all duration-300 ease-in-out
+  hover:bg-blue-400 hover:-translate-y-1
+`;
