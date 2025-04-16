@@ -7,7 +7,8 @@ import { orangeButtonClass } from "../component/tailwind";
 import { RiAddCircleLine } from "react-icons/ri";
 import { LuSquarePlus } from "react-icons/lu";
 import EditGameInfoTile from "../component/EditGameInfoTile";
-import EditQuizInfoModal from "../component/EditQuizInfoModal";
+import EditQuizMetaDataModal from "../component/EditQuizMetaDataModal";
+import QuestionInfoTile from "../component/QuestionInfoTile";
 
 function AdminQuizEdit() {
   const [allGames, setAllGames] = useState([]);
@@ -41,6 +42,7 @@ function AdminQuizEdit() {
       // Find the specific quiz by ID
       const quiz = gamesData.find((game) => game.id === quizIdInt);
       if (quiz) {
+        console.log("Current quiz is:", quiz);
         setCurrentQuiz(quiz);
       } else {
         setError("Quiz not found");
@@ -83,13 +85,23 @@ function AdminQuizEdit() {
     setIsEditModalOpen(true);
   };
 
-  const handleSaveClick = () => {
+  const handleOverallQuizSave = async () => {
     console.log("Save information button clicked for game id: ", quizId);
+
+    await saveQuizChanges(currentQuiz);
+    navigate("/dashboard");
   };
 
   //TODO logic
   const handleAddQuestion = () => {
     console.log("Add question button clicked for game id: ", quizId);
+    // Navigate to the new question editor route with 'new' as the question ID
+    navigate(`/quiz/edit/${quizId}/new`);
+  };
+
+  const handleEditQuestion = (questionId) => {
+    // Navigate to the question editor with the specific question ID
+    navigate(`/quiz/edit/${quizId}/${questionId}`);
   };
 
   return (
@@ -116,7 +128,7 @@ function AdminQuizEdit() {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-start lg:flex-row lg:items-start lg:gap-10 text-center p-8">
+      <div className="flex flex-col items-center justify-start lg:flex-row lg:items-start lg:gap-10 text-center p-8">
         <div className="w-full md:w-[80%] flex flex-col lg:flex-2">
           <h1 className="text-4xl font-semibold text-orange-500 font-Nunito-Black mb-4">
             Quiz Edit
@@ -134,10 +146,11 @@ function AdminQuizEdit() {
                 name={currentQuiz.name}
                 description={currentQuiz.description}
                 onEditInfo={handleEditClick}
+                onSaveQuiz={handleOverallQuizSave}
               />
 
               {/* Edit Quiz Modal */}
-              <EditQuizInfoModal
+              <EditQuizMetaDataModal
                 quiz={currentQuiz}
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
@@ -149,15 +162,31 @@ function AdminQuizEdit() {
           )}
         </div>
         {/* Add question button */}
-        <div className="lg:flex lg:flex-3 ">
-          <div className="lg:flex lg:w-full ">
-            <button
-              onClick={handleAddQuestion}
-              className={`${orangeButtonClass} flex items-center gap-1 px-5`}
-            >
-              <LuSquarePlus /> Add Question
-            </button>
+        {/* TODO: Add number of questions heading here */}
+        <div className="flex flex-col w-full md:w-[80%] lg:w-[65%] gap-4">
+          <div className="lg:flex lg:flex-3 ">
+            <div className="lg:flex lg:w-full ">
+              <button
+                onClick={handleAddQuestion}
+                className={`${orangeButtonClass} flex items-center gap-1 px-5`}
+              >
+                <LuSquarePlus /> Add Question
+              </button>
+            </div>
           </div>
+
+          {/* Display questions for current quiz */}
+          {!loading &&
+            currentQuiz &&
+            currentQuiz.questions &&
+            currentQuiz.questions.map((question, index) => (
+              <QuestionInfoTile
+                key={question.id || index}
+                question={question}
+                index={index}
+                onEdit={() => handleEditQuestion(question.id)}
+              />
+            ))}
         </div>
       </div>
     </div>
