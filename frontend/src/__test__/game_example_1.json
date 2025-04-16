@@ -1,0 +1,53 @@
+{
+  "name": "monkeyfriday",
+  "owner": "kaws@gmail.com",
+  "questions": [
+    {
+      "id": 0,
+      "questionString": "Who is the president of America?",
+      "answers": [
+        { "id": 0, "value": "Donald Trump", "correct": true},
+        { "id": 1, "value": "Xi Jinping", "correct": false},
+        { "id": 2, "value": "Vladimir Putin", "correct": false},
+        { "id": 3, "value": "Elon Musk", "correct": false},
+        { "id": 4, "value": "Dracula", "correct": false},
+        { "id": 5, "value": "Kanye West", "correct": false}
+      ],
+      "time": 10,
+      "embed": "/static/media/default_quiz_thumbnail.8acd421a181f51f4d02f.png",
+      "point": 2,
+      "type": "single"
+    },
+    {
+      "id": 1,
+      "questionString": "Which of the following are primary colors?",
+      "answers": [
+        { "id": 0, "value": "blue", "correct": true},
+        { "id": 1, "value": "red", "correct": true},
+        { "id": 2, "value": "green", "correct": true},
+        { "id": 3, "value": "yellow", "correct": false},
+        { "id": 4, "value": "purple", "correct": false},
+        { "id": 5, "value": "cyan", "correct": false}
+      ],
+      "time": 40,
+      "embed": "/static/media/default_quiz_thumbnail.8acd421a181f51f4d02f.png",
+      "point": 99998,
+      "type": "single"
+    },
+    {
+      "id": 2,
+      "questionString": "who is rihanna",
+      "answers": [
+        { "id": 0, "value": "she is not beyonce", "correct": true },
+        { "id": 1, "value": "she is beyonce", "correct": false }
+      ],
+      "time": 30,
+      "embed": "/static/media/default_quiz_thumbnail.8acd421a181f51f4d02f.png",
+      "point": 9,
+      "type": "judgement"
+    }
+  ],
+  "thumbnail": null,
+  "active": null,
+  "createdAt": "2025-04-13T16:29:17.563Z"
+}
