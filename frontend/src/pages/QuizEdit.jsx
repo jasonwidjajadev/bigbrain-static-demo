@@ -2,17 +2,20 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../context/useAuthContext";
 import LogoNavBar from "../component/LogoNavBar";
-import { fetchGames } from "../util/gamesApi";
+import { fetchGames, updateAllGames } from "../util/gamesApi";
 import { orangeButtonClass } from "../component/tailwind";
 import { RiAddCircleLine } from "react-icons/ri";
 import { LuSquarePlus } from "react-icons/lu";
 import EditGameInfoTile from "../component/EditGameInfoTile";
+import EditQuizInfoModal from "../component/EditQuizInfoModal";
 
 function AdminQuizEdit() {
   const [allGames, setAllGames] = useState([]);
   const [currentQuiz, setCurrentQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const navigate = useNavigate();
   const { token } = useAuthContext();
   // Extract gameId from URL parameters
@@ -57,7 +60,7 @@ function AdminQuizEdit() {
       setLoading(true);
       // Update the quiz in the allGames array
       const updatedGames = allGames.map((game) =>
-        game.id === quizId ? updatedQuiz : game
+        game.id === quizIdInt ? updatedQuiz : game
       );
 
       // Send the entire updated games array back to the server
@@ -76,7 +79,12 @@ function AdminQuizEdit() {
   };
 
   const handleEditClick = () => {
-    console.log();
+    console.log("Edit information button clicked for game id: ", quizId);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveClick = () => {
+    console.log("Save information button clicked for game id: ", quizId);
   };
 
   //TODO logic
@@ -108,33 +116,48 @@ function AdminQuizEdit() {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
-        <h1 className="text-4xl font-semibold text-orange-500 font-Nunito-Black mb-4">
-          Quiz Edit
-        </h1>
-        {/* Quiz editing UI */}
-        {/* Quiz information tile */}
-        {loading ? (
-          <div>Loading quiz information...</div>
-        ) : error ? (
-          <div>{error}</div>
-        ) : currentQuiz ? (
-          <EditGameInfoTile
-            thumbnail={currentQuiz.thumbnail}
-            name={currentQuiz.name}
-            description={currentQuiz.description}
-          />
-        ) : (
-          <div>No quiz data found</div>
-        )}
+      <div className="flex-1 flex flex-col items-center justify-start lg:flex-row lg:items-start lg:gap-10 text-center p-8">
+        <div className="w-full md:w-[80%] flex flex-col lg:flex-2">
+          <h1 className="text-4xl font-semibold text-orange-500 font-Nunito-Black mb-4">
+            Quiz Edit
+          </h1>
+          {/* Quiz editing UI */}
+          {/* Quiz information tile */}
+          {loading ? (
+            <div>Loading quiz information...</div>
+          ) : error ? (
+            <div>{error}</div>
+          ) : currentQuiz ? (
+            <>
+              <EditGameInfoTile
+                thumbnail={currentQuiz.thumbnail}
+                name={currentQuiz.name}
+                description={currentQuiz.description}
+                onEditInfo={handleEditClick}
+              />
+
+              {/* Edit Quiz Modal */}
+              <EditQuizInfoModal
+                quiz={currentQuiz}
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                onSave={saveQuizChanges}
+              />
+            </>
+          ) : (
+            <div>No quiz data found</div>
+          )}
+        </div>
         {/* Add question button */}
-        <div className="flex w-full ">
-          <button
-            onClick={handleAddQuestion}
-            className={`${orangeButtonClass} flex items-center gap-1 px-5`}
-          >
-            <LuSquarePlus /> Add Question
-          </button>
+        <div className="lg:flex lg:flex-3 ">
+          <div className="lg:flex lg:w-full ">
+            <button
+              onClick={handleAddQuestion}
+              className={`${orangeButtonClass} flex items-center gap-1 px-5`}
+            >
+              <LuSquarePlus /> Add Question
+            </button>
+          </div>
         </div>
       </div>
     </div>
