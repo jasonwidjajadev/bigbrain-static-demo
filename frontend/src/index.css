@@ -1,8 +1,8 @@
 /* https://github.com/tailwindlabs/tailwindcss/blob/main/packages/tailwindcss/preflight.css */
 
 @font-face {
-  font-family: 'Nunito-Regular';
-  src: url('styles/fonts/Nunito/Nunito-Regular.ttf') format('truetype');
+  font-family: "Nunito-Regular";
+  src: url("styles/fonts/Nunito/Nunito-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
@@ -61,7 +61,8 @@
   --font-ChalkLineOutline: ChalkLineOutline, "sans-serif";
 }
 
-html, body {
+html,
+body {
   -webkit-font-smoothing: antialiased;
   height: 100%;
   min-height: 100svh;

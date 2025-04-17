@@ -19,7 +19,6 @@ import { FaPlay } from "react-icons/fa";
 import DeleteConfirmationModal from "../component/DeleteConfirmationModal";
 import SessionStartModal from "../component/SessionStartModal";
 
-
 function Dashboard() {
   /*
   TODO:

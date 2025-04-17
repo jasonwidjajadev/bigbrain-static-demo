@@ -210,8 +210,8 @@ import Dashboard from './pages/Dashboard';
 import QuizCreate from './pages/QuizCreate';
 import QuizEdit from './pages/QuizEdit';
 import QuestionEditor from './pages/QuestionEditor';
-import QuizResults from './pages/quiz/QuizResults'
 
+import QuizResults from './pages/quiz/QuizResults'
 import JoinGame from './pages/session/JoinGame';
 import JoinGameViaURL from './pages/session/JoinGameViaURL';
 import ActiveGame from './pages/session/ActiveGame';
