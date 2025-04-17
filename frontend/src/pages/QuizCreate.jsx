@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/useAuthContext";
-import LinkLogoNavBar from '../component/LinkLogoNavBar';
+import LogoNavBar from "../component/LogoNavBar";
 import { orangeButtonClass } from "../component/tailwind";
 import ImgSelection from "../component/ImgSelection";
 import { fetchGames, updateAllGames } from "../util/gamesApi";
@@ -56,7 +56,7 @@ function AdminQuizCreate() {
       console.log("Games data is", gamesData);
 
       // Turn the image into base64
-      // TODO: Image is not saving correctly, need to update this
+      // TODO: Image is not saving correctly, need to update
       let base64Img = null;
       if (formData.image) {
         try {
@@ -121,7 +121,12 @@ function AdminQuizCreate() {
       <div className="min-h-screen overflow-y-auto flex flex-col font-sans">
         {/* Navbar */}
         <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
-          <LinkLogoNavBar targetPath="/home" />
+          <Link
+            to="/home"
+            className="text-orange-500 text-3xl font-bold no-underline"
+          >
+            <LogoNavBar />
+          </Link>
           <Link to="/auth/logout" className={`${orangeButtonClass} px-5`}>
             Log out
           </Link>
