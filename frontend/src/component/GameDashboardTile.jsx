@@ -1,10 +1,16 @@
 import { formatBase64Image } from "../util/imageUtils";
 import { LuPencil, LuPlay, LuTrash2 } from "react-icons/lu";
-import { orangeButtonClass } from "../component/tailwind";
+import { orangeButtonClass, greenButtonClass } from "../component/tailwind";
 
 function GameDashboardTile({ game, onDelete, onEdit, onPlay }) {
+  // TODO: Ensure that there cannot be too many words
+  // Figure out what to do to format this
+
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
+
+  // Check if the game has an active session
+  const hasActiveSession = !!game.active;
 
   // Handler for delete button click
   const handleDeleteClick = () => {
@@ -82,11 +88,11 @@ function GameDashboardTile({ game, onDelete, onEdit, onPlay }) {
 
             {/* Game Mode Buttons */}
             <button
-              className={`flex justify-center items-center ${orangeButtonClass}`}
+              className={`flex justify-center items-center ${hasActiveSession ? greenButtonClass : orangeButtonClass}`}
               onClick={handlePlayClick}
             >
               <LuPlay size={20} className="mr-2" />
-              <span>Host</span>
+              <span>{hasActiveSession ? "Active Session" : "Play"}</span>
             </button>
           </div>
         </div>
