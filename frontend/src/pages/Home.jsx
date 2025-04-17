@@ -26,17 +26,17 @@ function Home() {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col sm:flex-row items-center justify-center w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-8 pb-30 gap-0 sm:gap-6">
+      <div className="flex-1 flex flex-col sm:flex-row items-center justify-center w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-0 sm:pt-8 pb-30 gap-0 sm:gap-6">
         {/* //* Left Side Animation */}
         <div className="w-full sm:w-1/2 flex justify-center items-center">
-          <video src={classroom} autoPlay loop muted playsInline className="w-[300px] md:w-[550px]"/>
+          <video src={classroom} autoPlay loop muted playsInline className="w-[400px] sm:w-[500px] md:w-[600px]"/>
         </div>
 
         {/* //* Right Side*/}
         <div className="w-full sm:w-1/2 flex flex-col items-center text-center">
           <div className="flex items-center mb-6 gap-4 sm:gap-7" >
             <LogoBigRotate />
-            <div className="text-5xl sm:text-7xl text-orange-500 whitespace-nowrap font-Nunito-ExtraBold">
+            <div className="text-5xl sm:text-6xl md:text-7xl text-orange-500 whitespace-nowrap font-Nunito-ExtraBold">
               <Typewriter
                 options={{
                   strings: ['Big Brain', 'Big Fun', 'Think Fast', 'Game On!'],
