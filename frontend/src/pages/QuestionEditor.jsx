@@ -326,3 +326,145 @@ function QuestionEditor() {
                     <option value="judgement">Judgement</option>
                   </select>
                 </div>
+
+                {/* Points */}
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">Points:</span>
+                  <div>
+                    <input
+                      type="number"
+                      value={question.points}
+                      onChange={handlePointsChange}
+                      className="input validator"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Time Limit */}
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">Time Limit (seconds):</span>
+
+                  <input
+                    type="number"
+                    value={question.duration}
+                    onChange={handleDurationChange}
+                    className="input validator"
+                    required
+                    min="5"
+                    max="60"
+                    title="Must be between be 5 to 60"
+                  />
+                  <p className="validator-hint hidden">
+                    Must be between be 5 to 60
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end gap-4">
+                {/* Cancel button */}
+                <button
+                  type="button"
+                  onClick={() => navigate(`/quiz/edit/${quizId}`)}
+                  className={`${greyButtonClassSmall} px-2 py-2`}
+                >
+                  Cancel
+                </button>
+                {/* Save button */}
+                <button
+                  type="submit"
+                  className={`${cyanButtonClassSmall} px-4 py-2`}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save"}
+                </button>
+              </div>
+            </div>
+
+            {/* Question content */}
+            <div className="flex flex-col sm:flex-row mb-6 p-4 gap-4">
+              <div className="flex flex-row sm:flex-col flex-2 justify-center items-center gap-4">
+                {/* TODO: Make these work */}
+                <ImageButton />
+                <VideoButton />
+              </div>
+              <div className="flex flex-col flex-4 lg:px-6">
+                <div className="mb-2 text-xl ">Question</div>
+                <textarea
+                  type="text"
+                  value={question.text}
+                  onChange={handleQuestionChange}
+                  placeholder="Enter your question here..."
+                  className="textarea textarea-ghost textarea-info w-full h-24 rounded p-3"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Answers */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 px-4">
+              {question.answers.map((answer, index) => {
+                let bgColor;
+                if (index === 0) bgColor = "bg-blue-500";
+                else if (index === 1) bgColor = "bg-pink-500";
+                else if (index === 2) bgColor = "bg-green-400";
+                else if (index === 3) bgColor = "bg-amber-500";
+                else if (index === 4) bgColor = "bg-purple-500";
+                else bgColor = "bg-zinc-400";
+
+                const isOptional = index > 1 ? "(Optional)" : "";
+
+                return (
+                  <div
+                    key={answer.id}
+                    className={`${bgColor} rounded-lg p-2 relative`}
+                  >
+                    <div className="flex items-center">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 border-2 border-white rounded-md flex items-center justify-center">
+                          <input
+                            type={
+                              question.type === "multiple"
+                                ? "checkbox"
+                                : "radio"
+                            }
+                            checked={answer.isCorrect}
+                            onChange={(e) =>
+                              handleAnswerChange(
+                                index,
+                                "isCorrect",
+                                e.target.checked
+                              )
+                            }
+                            name="correct-answer"
+                            className="h-6 w-6"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-center h-full w-full">
+                        <input
+                          type="text"
+                          value={answer.text}
+                          onChange={(e) =>
+                            handleAnswerChange(index, "text", e.target.value)
+                          }
+                          placeholder={`Answer ${index + 1} ${isOptional}`}
+                          className="bg-transparent border-b border-white w-9/10 py-2 text-white placeholder-white text-center text-xl"
+                          required={index < 2}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default QuestionEditor;
