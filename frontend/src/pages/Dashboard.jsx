@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "../context/useAuthContext";
-import LinkLogoNavBar from '../component/LinkLogoNavBar';
+import LogoNavBar from "../component/LogoNavBar";
 import { RiAddCircleLine } from "react-icons/ri";
 import { orangeButtonClass } from "../component/tailwind";
-import { fetchGames, updateAllGames } from "../util/gamesApi";
+import {
+  fetchGames,
+  updateAllGames,
+  createGameSession,
+} from "../util/gamesApi";
 import GameDashboardTile from "../component/GameDashboardTile";
-
-import JoinGameButton from '../component/JoinGameButton';
-import { VscThreeBars } from "react-icons/vsc";
-import { TbLogout } from "react-icons/tb";
-import { FaPlay } from "react-icons/fa";
-
 import DeleteConfirmationModal from "../component/DeleteConfirmationModal";
-
+import SessionStartModal from "../component/SessionStartModal";
 
 function Dashboard() {
+  /*
+  TODO:
+  - Figure out how to display title and description if they
+    are very long
+  - Get the game thumbnail to display
+  */
   const navigate = useNavigate();
   const { token, email } = useAuthContext();
   const [games, setGames] = useState([]);
@@ -23,6 +27,10 @@ function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [gameToDelete, setGameToDelete] = useState(null);
   const [error, setError] = useState(null);
+
+  // State for session management
+  const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
+  const [activeSessionData, setActiveSessionData] = useState(null);
 
   React.useEffect(() => {
     console.log("Initial token:", token);
@@ -54,14 +62,12 @@ function Dashboard() {
     }
   };
 
-  // Pass in function as a prop - and then the component calls the prob
-
   // Handler for delete button click from a GameDashboardTile
-  const handleDeleteClick = (gameId, gameName) => {
-    const game = games.find((g) => g.id === gameId);
+  const handleDeleteClick = (quizId, gameName) => {
+    const game = games.find((g) => g.id === quizId);
     if (game) {
       setGameToDelete({
-        id: gameId,
+        id: quizId,
         name: gameName || game.name,
       });
       setIsDeleteModalOpen(true);
@@ -95,72 +101,82 @@ function Dashboard() {
   };
 
   // Handler for edit button click
-  const handleEditClick = (gameId) => {
-    console.log("Edit game with ID:", gameId);
-    // TODO: Navigate to edit page
-    navigate(`/quiz/edit/${gameId}`);
+  const handleEditClick = (quizId) => {
+    console.log("Edit game with ID:", quizId);
+    // Navigate to edit page
+    navigate(`/quiz/edit/${quizId}`);
   };
 
   // Handler for play/host button click
-  const handlePlayClick = (gameId) => {
-    console.log("Play game with ID:", gameId);
+  const handleStartSession = async (quizId) => {
+    console.log("Play game with ID:", quizId);
     // TODO: Implement play logic
+    try {
+      // Find the game to get its details
+      const game = games.find((g) => g.id === quizId);
+      if (!game) return;
+
+      // TODO: Replace with actual API call to create a session
+      const sessionId = await createGameSession(quizId, token);
+
+      // Update our current state
+      const updatedGames = games.map((g) => {
+        if (g.id === quizId) {
+          return {
+            ...g,
+            active: sessionId,
+          };
+        }
+        return g;
+      });
+
+      setGames(updatedGames);
+
+      // Set the active session data and open the modal
+      setActiveSessionData({
+        sessionId: sessionId,
+        quizId,
+        gameTitle: game.name,
+      });
+      setIsSessionModalOpen(true);
+    } catch (error) {
+      console.error("Failed to start game session:", error);
+      setError("Failed to start game session. Please try again.");
+    }
+  };
+
+  // Handler for closing the session modal
+  const handleCloseSessionModal = () => {
+    setIsSessionModalOpen(false);
   };
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
-      {/* Navbar Left Side*/}
+      {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
-        <LinkLogoNavBar targetPath="/home" />
-        {/* //* NavBar Right side For Small Screen Dropdown */}
-        <div className="dropdown dropdown-bottom dropdown-end sm:hidden">
-          {/* Toggle Button */}
-          <div tabIndex={0} role="button" className={orangeButtonClass}>
-            <VscThreeBars className="text-3xl" />
-          </div>
-
-          {/* Dropdown Content */}
-          <ul tabIndex={0} className="dropdown-content menu p-2 shadow-lg bg-orange-500 rounded-box w-52 z-50 text-xl text-white">
-            <li>
-              <Link to="/quiz/create" className="flex items-center gap-[16px]">
-                <RiAddCircleLine /> Create
-              </Link>
-            </li>
-            <li>
-              <Link to="/quiz/join" className="font-semibold flex items-center gap-[20px]">
-                <FaPlay className="text-[16px]"/> Join a game
-              </Link>
-            </li>
-            <li>
-              <Link to="/auth/logout" className="flex items-center gap-3">
-                <TbLogout className="text-2xl"/> Logout
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* //*NavBar Right side For Big Screen Dropdown */}
-        <div className="hidden sm:block">
-          <div className="flex gap-3 items-center">
-            {/* Create */}
-            <Link to="/quiz/create" className={`${orangeButtonClass} flex items-center gap-2`}>
-              <RiAddCircleLine className="text-2xl" /> Create
-            </Link>
-            {/* Play */}
-            <JoinGameButton />
-            {/* Logout */}
-            <Link to="/auth/logout" className={`${orangeButtonClass} px-5 flex items-center gap-2`}>
-              <TbLogout className="text-2xl"/> Logout
-            </Link>
-          </div>
+        <Link
+          to="/home"
+          className="text-orange-500 text-3xl font-bold no-underline"
+        >
+          <LogoNavBar />
+        </Link>
+        <div className="flex gap-3 items-center">
+          <Link
+            to="/quiz/create"
+            className={`${orangeButtonClass} flex items-center gap-2`}
+          >
+            <RiAddCircleLine className="text-2xl" /> Create
+          </Link>
+          <Link to="/auth/logout" className={`${orangeButtonClass} px-5`}>
+            Log out
+          </Link>
         </div>
       </nav>
 
-
-      {/* //*Games Feed */}
+      {/* Games Feed */}
       <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
         <div className="w-full max-w-6xl">
-          <h1 className="text-5xl font-semibold text-left mb-6 text-orange-500 font-Nunito-ExtraBold">
+          <h1 className="text-5xl font-semibold text-left mb-6 text-orange-500 font-Nunito-Black">
             My Games
           </h1>
 
@@ -189,7 +205,7 @@ function Dashboard() {
                   game={game}
                   onDelete={handleDeleteClick}
                   onEdit={handleEditClick}
-                  onPlay={handlePlayClick}
+                  onPlay={handleStartSession}
                 />
               ))}
             </div>
@@ -197,11 +213,20 @@ function Dashboard() {
         </div>
       </div>
 
+      {/* Delete Confirmation Modal */}
       <DeleteConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         gameTitle={gameToDelete?.name}
+      />
+
+      {/* Session Start Modal */}
+      <SessionStartModal
+        isOpen={isSessionModalOpen}
+        onClose={handleCloseSessionModal}
+        sessionId={activeSessionData?.sessionId}
+        gameTitle={activeSessionData?.gameTitle}
       />
     </div>
   );
