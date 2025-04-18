@@ -7,7 +7,10 @@ import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { Link } from 'react-router-dom';
 
 
-function HostGameLobby({sessionId, players, showResults, advancePosition}) {
+function HostGameLobby({sessionId, showResults, advancePosition}) {
+  //TODO polling logic
+  const players = [];
+
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
 
