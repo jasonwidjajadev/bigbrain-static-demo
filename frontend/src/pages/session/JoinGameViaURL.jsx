@@ -46,12 +46,10 @@ function GameJoinViaURL() {
       })
 
       //Success player goes to lobby -> PlayerGameLobby
-      // localStorage.setItem('playerId', data.playerId);
       navigate(`/session/${sessionIdInput}`, {
         state: {
           sessionId: sessionIdInput,
           nickName: nickName,
-          // isAdmin: false,
           playerId: data.playerId,
           from:'/join'
         }
