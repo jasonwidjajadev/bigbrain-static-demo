@@ -40,8 +40,8 @@ function Dashboard() {
   const [selectedSessionIndex, setSelectedSessionIndex] = useState(null);
 
   React.useEffect(() => {
-    console.log("Initial token:", token);
-    console.log("Initial email:", email);
+    // console.log("Initial token:", token);
+    // console.log("Initial email:", email);
     if (!token) {
       navigate("/home");
     } else {
@@ -51,9 +51,9 @@ function Dashboard() {
   }, [token, navigate]);
 
   // Effect to log gameToDelete state changes
-  React.useEffect(() => {
-    console.log("Updated gameToDelete state:", gameToDelete);
-  }, [gameToDelete]);
+  // React.useEffect(() => {
+  //   console.log("Updated gameToDelete state:", gameToDelete);
+  // }, [gameToDelete]);
 
   const getGamesToDisplay = async () => {
     try {
@@ -125,6 +125,8 @@ function Dashboard() {
 
       // API cal to create a session
       const sessionId = await createGameSession(quizId, token);
+      /* Return response from createGameSession is actually: data: { sessionId: "556883", status "started"} */
+      // console.log(sessionId);
 
       // Update our current state
       const updatedGames = games.map((g) => {
