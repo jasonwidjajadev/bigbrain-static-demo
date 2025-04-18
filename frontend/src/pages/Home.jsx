@@ -15,7 +15,7 @@ function Home() {
     if (token) {
       navigate('/dashboard');
     }
-  }, []);
+  }, [token]);
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
