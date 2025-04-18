@@ -38,6 +38,7 @@ function JoinGame() {
           sessionId: sessionIdInput,
           nickName: nickName,
           isAdmin: false,
+          playerId: data.playerId,
         }
       });
 
