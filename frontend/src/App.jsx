@@ -214,8 +214,10 @@ import QuestionEditor from './pages/QuestionEditor';
 import QuizResults from './pages/quiz/QuizResults'
 import JoinGame from './pages/session/JoinGame';
 import JoinGameViaURL from './pages/session/JoinGameViaURL';
-import ActiveGame from './pages/session/ActiveGame';
+import HostGameView from './pages/session/HostGameView';
 import InactiveGame from './pages/session/InactiveGame';
+import PlayerGameView from './pages/session/PlayerGameView';
+
 
 function App() {
   return (
@@ -263,6 +265,7 @@ function App() {
           */}
           <Route path='/join' element={ <JoinGame/>} />
           <Route path='/join/:sessionId' element={ <JoinGameViaURL/>} />
+          <Route path='/play/:sessionId' element={ <PlayerGameView/>} />
 
           {/* //! 2.6.1. Lobby room - GET /play/:playerid/status */}
           {/* //* ADMIN 2.4.2. Play Game
@@ -290,7 +293,8 @@ function App() {
                   ->  Results - NO API calculated throughout the GAME?
                   ->https://edstem.org/au/courses/20458/discussion/2590973
           */}
-          <Route path='/session/:sessionId' element={ <ActiveGame/>} />
+          {/* <Route path='/session/:sessionId' element={ <ActiveGame/>} /> */}
+          <Route path="/host/:sessionId" element={<HostGameView />} />
           <Route path='/session/inactive' element={ <InactiveGame/>} />
 
           {/* ============================================================== */}
