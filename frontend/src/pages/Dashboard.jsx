@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "../context/useAuthContext";
-import LinkLogoNavBar from '../component/LinkLogoNavBar';
+import LinkLogoNavBar from "../component/LinkLogoNavBar";
 import { RiAddCircleLine } from "react-icons/ri";
 import { orangeButtonClass } from "../component/tailwind";
 import {
@@ -11,7 +11,7 @@ import {
 } from "../util/gamesApi";
 import GameDashboardTile from "../component/GameDashboardTile";
 
-import JoinGameButton from '../component/JoinGameButton';
+import JoinGameButton from "../component/JoinGameButton";
 import { VscThreeBars } from "react-icons/vsc";
 import { TbLogout } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
@@ -36,7 +36,8 @@ function Dashboard() {
 
   // State for session management
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
-  const [activeSessionData, setActiveSessionData] = useState(null);
+  const [activeSessionData, setActiveSessionData] = useState([]);
+  const [selectedSessionIndex, setSelectedSessionIndex] = useState(null);
 
   React.useEffect(() => {
     console.log("Initial token:", token);
@@ -122,7 +123,7 @@ function Dashboard() {
       const game = games.find((g) => g.id === quizId);
       if (!game) return;
 
-      // TODO: Replace with actual API call to create a session
+      // API cal to create a session
       const sessionId = await createGameSession(quizId, token);
 
       // Update our current state
@@ -135,15 +136,18 @@ function Dashboard() {
         }
         return g;
       });
-
       setGames(updatedGames);
 
-      // Set the active session data and open the modal
-      setActiveSessionData({
+      // Add to activeSessionData array
+      const newSession = {
         sessionId: sessionId,
-        quizId,
+        gameId: quizId,
+        game: game,
         gameTitle: game.name,
-      });
+      };
+
+      setActiveSessionData((prevSessions) => [...prevSessions, newSession]);
+      setSelectedSessionIndex(activeSessionData.length); // This will be the index of the new session
       setIsSessionModalOpen(true);
     } catch (error) {
       console.error("Failed to start game session:", error);
@@ -153,6 +157,22 @@ function Dashboard() {
 
   // Handler for closing the session modal
   const handleCloseSessionModal = () => {
+    if (
+      selectedSessionIndex !== null &&
+      selectedSessionIndex >= 0 &&
+      selectedSessionIndex < activeSessionData.length
+    ) {
+      const currentSession = activeSessionData[selectedSessionIndex];
+
+      navigate(`/session/${currentSession.sessionId}`, {
+        state: {
+          sessionId: currentSession.sessionId,
+          gameId: currentSession.gameId,
+          game: currentSession.game,
+          from: "/dashboard",
+        },
+      });
+    }
     setIsSessionModalOpen(false);
   };
 
@@ -169,20 +189,26 @@ function Dashboard() {
           </div>
 
           {/* Dropdown Content */}
-          <ul tabIndex={0} className="dropdown-content menu p-2 shadow-lg bg-orange-500 rounded-box w-52 z-50 text-xl text-white">
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu p-2 shadow-lg bg-orange-500 rounded-box w-52 z-50 text-xl text-white"
+          >
             <li>
               <Link to="/quiz/create" className="flex items-center gap-[16px]">
                 <RiAddCircleLine /> Create
               </Link>
             </li>
             <li>
-              <Link to="/quiz/join" className="font-semibold flex items-center gap-[20px]">
-                <FaPlay className="text-[16px]"/> Join a game
+              <Link
+                to="/quiz/join"
+                className="font-semibold flex items-center gap-[20px]"
+              >
+                <FaPlay className="text-[16px]" /> Join a game
               </Link>
             </li>
             <li>
               <Link to="/auth/logout" className="flex items-center gap-3">
-                <TbLogout className="text-2xl"/> Logout
+                <TbLogout className="text-2xl" /> Logout
               </Link>
             </li>
           </ul>
@@ -192,19 +218,24 @@ function Dashboard() {
         <div className="hidden sm:block">
           <div className="flex gap-3 items-center">
             {/* Create */}
-            <Link to="/quiz/create" className={`${orangeButtonClass} flex items-center gap-2`}>
+            <Link
+              to="/quiz/create"
+              className={`${orangeButtonClass} flex items-center gap-2`}
+            >
               <RiAddCircleLine className="text-2xl" /> Create
             </Link>
             {/* Play */}
             <JoinGameButton />
             {/* Logout */}
-            <Link to="/auth/logout" className={`${orangeButtonClass} px-5 flex items-center gap-2`}>
-              <TbLogout className="text-2xl"/> Logout
+            <Link
+              to="/auth/logout"
+              className={`${orangeButtonClass} px-5 flex items-center gap-2`}
+            >
+              <TbLogout className="text-2xl" /> Logout
             </Link>
           </div>
         </div>
       </nav>
-
 
       {/* //*Games Feed */}
       <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
@@ -258,8 +289,16 @@ function Dashboard() {
       <SessionStartModal
         isOpen={isSessionModalOpen}
         onClose={handleCloseSessionModal}
-        sessionId={activeSessionData?.sessionId}
-        gameTitle={activeSessionData?.gameTitle}
+        sessionId={
+          selectedSessionIndex !== null
+            ? activeSessionData[selectedSessionIndex]?.sessionId
+            : null
+        }
+        gameTitle={
+          selectedSessionIndex !== null
+            ? activeSessionData[selectedSessionIndex]?.gameTitle
+            : null
+        }
       />
     </div>
   );
