@@ -215,6 +215,7 @@ import QuizResults from './pages/quiz/QuizResults'
 import JoinGame from './pages/session/JoinGame';
 import JoinGameViaURL from './pages/session/JoinGameViaURL';
 import ActiveGame from './pages/session/ActiveGame';
+import InactiveGame from './pages/session/InactiveGame';
 
 function App() {
   return (
@@ -253,10 +254,10 @@ function App() {
           <Route path='/quiz/results/' element={ <QuizResults/>} />
 
           {/* ============================================================== */}
-          {/* //* ADMIN 2.4.1. Play Join , API CALL - POST/play/join/:sessionid, 
+          {/* //* ADMIN 2.4.1. Play Join , API CALL - POST/play/join/:sessionid,
               -> Do we need to check position -1?
           */}
-          {/* //* PLAYER 2.4.1. Play Join , API CALL - POST/play/join/:sessionid 
+          {/* //* PLAYER 2.4.1. Play Join , API CALL - POST/play/join/:sessionid
             -> Do we need to check position -1?
             -> TODO add a youtube video
           */}
@@ -290,6 +291,7 @@ function App() {
                   ->https://edstem.org/au/courses/20458/discussion/2590973
           */}
           <Route path='/session/:sessionId' element={ <ActiveGame/>} />
+          <Route path='/session/inactive' element={ <InactiveGame/>} />
 
           {/* ============================================================== */}
           {/* Not Found */}
