@@ -4,7 +4,7 @@ import { orangeButtonClass } from "./tailwind";
 
 function SessionStartModal({ isOpen, onClose, sessionId, gameTitle }) {
   const [copied, setCopied] = useState(false);
-  const sessionUrl = `${window.location.origin}/quiz/play/${sessionId}`;
+  const sessionUrl = `${window.location.origin}/join/${sessionId}`;
 
   useEffect(() => {
     // Reset copied state when modal opens with new sessionId
