@@ -37,8 +37,10 @@ function JoinGame() {
         state: {
           sessionId: sessionIdInput,
           nickName: nickName,
-          isAdmin: false,
+          // isAdmin: false,
           playerId: data.playerId,
+          from:'/join'
+
         }
       });
 
