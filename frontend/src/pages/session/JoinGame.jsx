@@ -32,7 +32,7 @@ function JoinGame() {
       })
 
       //Success player goes to lobby -> PlayerGameLobby
-      localStorage.setItem('playerId', data.playerId);
+      // localStorage.setItem('playerId', data.playerId);
       navigate(`/session/${sessionIdInput}`, {
         state: {
           sessionId: sessionIdInput,
