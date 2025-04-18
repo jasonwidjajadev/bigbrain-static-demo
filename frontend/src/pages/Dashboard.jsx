@@ -166,7 +166,7 @@ function Dashboard() {
     ) {
       const currentSession = activeSessionData[selectedSessionIndex];
 
-      navigate(`/session/${currentSession.sessionId}`, {
+      navigate(`/host/${currentSession.sessionId}`, {
         state: {
           sessionId: currentSession.sessionId,
           gameId: currentSession.gameId,
