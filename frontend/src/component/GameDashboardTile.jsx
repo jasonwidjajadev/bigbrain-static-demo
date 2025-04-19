@@ -1,8 +1,14 @@
 import { formatBase64Image } from "../util/imageUtils";
-import { LuPencil, LuPlay, LuTrash2 } from "react-icons/lu";
+import { LuPencil, LuPlay, LuTrash2, LuClipboardPaste } from "react-icons/lu";
 import { orangeButtonClass, greenButtonClass } from "../component/tailwind";
 
-function GameDashboardTile({ game, onDelete, onEdit, onPlay }) {
+function GameDashboardTile({
+  game,
+  onDelete,
+  onEdit,
+  onPlay,
+  onPreviousSessionResults,
+}) {
   // TODO: Ensure that there cannot be too many words
   // Figure out what to do to format this
 
@@ -33,6 +39,13 @@ function GameDashboardTile({ game, onDelete, onEdit, onPlay }) {
     }
   };
 
+  // Handler for play/host button click
+  const handlePreviousSessionResults = () => {
+    if (onPreviousSessionResults) {
+      onPreviousSessionResults(game.id);
+    }
+  };
+
   return (
     <>
       <div className="w-full h-[400px] bg-white rounded-md border border-gray-300 overflow-hidden drop-shadow-md">
@@ -57,33 +70,43 @@ function GameDashboardTile({ game, onDelete, onEdit, onPlay }) {
 
         {/* Game Info Section */}
         <div className="p-4">
-          <h2 className="text-xl font-semibold text-gray-800">{game.name}</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">
+            {game.name}
+          </h2>
 
-          {game.description && (
-            <p className="text-sm text-gray-600 mt-1">{game.description}</p>
-          )}
-
-          <div className="flex items-center mt-2 text-gray-600">
-            <LuPlay size={16} className="mr-1" />
+          <div className="flex items-center mt-2 text-gray-600 text-lg font-semibold">
+            <LuPlay size={20} className="mr-1" />
             <span className="mr-1">{playCount}</span>
             <span>{playCount === 1 ? "Play" : "Plays"}</span>
           </div>
 
           {/* Action Buttons */}
-          <div className="p-2 flex flex-col justify-end items-center gap-2">
-            <div className="w-full border-t border-b border-gray-300 grid grid-cols-2">
-              <button
-                className="p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-gray-100"
-                onClick={handleEditClick}
+          <div className="p-2 flex flex-col justify-end items-center gap-4">
+            <div className="w-full border-t border-b border-gray-300 grid grid-cols-3">
+              <div
+                className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-cyan-100"
+                data-tip="Edit"
               >
-                <LuPencil size={20} />
-              </button>
-              <button
-                className="p-2 flex justify-center items-center text-gray-600 hover:bg-gray-100"
-                onClick={handleDeleteClick}
+                <button onClick={handleEditClick}>
+                  <LuPencil size={20} />
+                </button>
+              </div>
+              <div
+                className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-red-100"
+                data-tip="Delete"
               >
-                <LuTrash2 size={20} />
-              </button>
+                <button onClick={handleDeleteClick}>
+                  <LuTrash2 size={20} />
+                </button>
+              </div>
+              <div
+                className="tooltip p-2 border-gray-300 flex justify-center items-center text-gray-600 hover:bg-gray-100"
+                data-tip="Previous Sessions"
+              >
+                <button onClick={handlePreviousSessionResults}>
+                  <LuClipboardPaste size={20} />
+                </button>
+              </div>
             </div>
 
             {/* Game Mode Buttons */}
