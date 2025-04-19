@@ -1,12 +1,12 @@
 import { FaPlay } from "react-icons/fa";
 import { orangeButtonClass, lobbyNameClass } from '../../../component/tailwind';
-
 import { FaStop } from "react-icons/fa6";
 import { IoPerson } from "react-icons/io5";
 import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { Link } from 'react-router-dom';
 import classroom from '../../../assets/classroom_overlay.png';
 import { LuCopy } from "react-icons/lu";
+import Music from './PositiveMusic';
 
 function HostGameLobby({sessionId, showResults, players, onStart}) {
   const handleCopyToClipboard = () => {
@@ -16,7 +16,6 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
-
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <LinkLogoNavBar targetPath="/home" />
@@ -25,12 +24,12 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
         <div className="flex gap-3 sm:gap-4 items-center">
           <div className='block sm:hidden pl-2'>
             <div className='flex items-center gap-4 text-cyan-800'>
-              <div className='flex gap-2 mt-1'>
+              {/* <div className='flex gap-2 mt-1'>
                 <IoPerson className='text-3xl'/>
                 <span className='text-3xl sm:text-4xl font-Nunito-ExtraBold'>
                   {players.length}
                 </span>
-              </div>
+              </div> */}
               <button
                 className={`${orangeButtonClass} flex items-center gap-2 px-5`}
                 onClick={onStart}
@@ -39,6 +38,8 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
               </button>
             </div>
           </div>
+
+          <Music className="mb-5"/>
 
           {/* End Game while in -1 position */}
           <button
