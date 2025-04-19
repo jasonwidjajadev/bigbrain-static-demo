@@ -178,16 +178,34 @@ function HostGameView() {
   //* ==========================================================================
   //* Start Game
   //* ==========================================================================
+
   const handleStartGame = async () => {
     try {
+      // No questions, end game immediately
+      if (questions.length === 0) {
+        console.warn("No questions available — ending game immediately.");
+
+        // End the game
+        await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', {
+          mutationType: 'END'
+        }, token);
+
+        // Get results
+        const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
+        setHostFinalResults(resultRes);
+        setStage('final');
+        return;
+      }
+
+      // Otherwise, advance to first question
       const response = await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', {
         mutationType: 'ADVANCE'
       }, token);
+
       console.log("Game started!");
       console.log("Advancing to first question response is: ", response);
     } catch (err) {
       console.error("Failed to start game:", err.message);
-      // throw new Error(err || "Network error something went wrong");
     }
   };
 
@@ -279,15 +297,18 @@ function HostGameView() {
 
   return (
     <>
-      { stage === 'lobby' &&
-        currSession.position === -1 &&
+      {stage === 'final' && hostFinalResults && (
+        <HostGameFinalResults results={hostFinalResults}/>
+      )}
+
+      { stage === 'lobby' && currSession.position === -1 && (
         <HostGameLobby
           sessionId={sessionId}
           players={currSession.players || {}}
           showResults={handleEndGame}
           onStart={handleStartGame}
         />
-      }
+      )}
 
       {stage === 'countdown' && (
         <Countdown
@@ -310,10 +331,6 @@ function HostGameView() {
         <HostGameQuestionResult
           question={questions[position]}
           onNext={handleNext}/>
-      )}
-
-      {stage === 'final' && hostFinalResults && (
-        <HostGameFinalResults results={hostFinalResults}/>
       )}
     </>
   )
