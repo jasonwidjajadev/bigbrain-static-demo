@@ -2,7 +2,9 @@ import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { orangeButtonClass } from '../../../component/tailwind';
 import { Link } from 'react-router-dom';
 
-function PlayerGameResults() {
+function PlayerGameResults({ history = [] }) {
+
+  //TODO on refesh history will be lost?
   const data = [
     {
       question: 'Who is the President of the US?',
