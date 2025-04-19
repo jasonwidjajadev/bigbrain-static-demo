@@ -13,15 +13,10 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
       if (onComplete) onComplete();
       return;
     }
-
-    const timer = setTimeout(() => {
-      setCount(prev => prev - 1);
-    }, 1000);
+    const timer = setTimeout(() => { setCount(prev => prev - 1); }, 1000);
 
     return () => clearTimeout(timer);
   }, [count, onComplete]);
-
-
 
   const filteredAnswers = question.answers.filter(answer => answer.text.trim() !== '');
   return (
@@ -32,14 +27,6 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
       <nav className=" flex justify-between items-center px-3 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <LinkLogoNavBar targetPath="/dashboard" />
         <div className='flex gap-2 sm:gap-4'>
-
-          {/* <button
-            onClick={() => setIsMuted(!isMuted)}
-            className={`${orangeButtonClass} flex items-center gap-3 px-5`}
-          >
-            {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
-          </button> */}
-
           <Music className="mb-5"/>
           <button
             onClick={onEnd}
