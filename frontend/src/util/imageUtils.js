@@ -1,20 +1,42 @@
-import imageToBase64 from "image-to-base64/browser";
+// import imageToBase64 from "image-to-base64/browser";
 
 // TODO: This does not work as expected, i need to figure out
-// how to save and upload photos
-export async function convertImageToBase64(imagePath) {
-  // Just a note for code style:
-  // This package is a little old and their docs used a promise creation,
-  // rather than async await, so I decided to follow to be safe.
+
+// Converts a File object to base64 string
+export async function convertFileToBase64(file, stripPrefix = false) {
+  if (!file) {
+    throw new Error("No file provided");
+  }
+
+  try {
+    const result = await readFileAsDataURL(file);
+
+    // If stripPrefix is true, remove the data URL prefix
+    if (stripPrefix && result.includes(",")) {
+      return result.split(",")[1];
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error converting file to base64:", error);
+    throw error;
+  }
+}
+
+// Helper function that wraps FileReader in a promise
+function readFileAsDataURL(file) {
   return new Promise((resolve, reject) => {
-    imageToBase64(imagePath) // Path to the image
-      .then((response) => {
-        resolve(response); // "cGF0aC90by9maWxlLmpwZw=="
-      })
-      .catch((error) => {
-        // TODO: Handle error nicely
-        reject(error); // Passes along any errors
-      });
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsDataURL(file);
   });
 }
 
