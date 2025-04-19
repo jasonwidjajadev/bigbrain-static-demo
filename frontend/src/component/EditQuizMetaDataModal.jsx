@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { convertImageToBase64 } from "../util/imageUtils";
+import { convertFileToBase64 } from "../util/imageUtils";
 import ImgSelection from "../component/ImgSelection";
 
 function EditQuizMetaDataModal({ quiz, isOpen, onClose, onSave }) {
@@ -75,7 +75,7 @@ function EditQuizMetaDataModal({ quiz, isOpen, onClose, onSave }) {
       // Only process image if a new one was uploaded
       if (formData.image) {
         try {
-          const base64Img = await convertImageToBase64(formData.image);
+          const base64Img = await convertFileToBase64(formData.image);
           updatedQuiz.thumbnail = base64Img;
         } catch (imgError) {
           console.error("Failed to convert image:", imgError);
