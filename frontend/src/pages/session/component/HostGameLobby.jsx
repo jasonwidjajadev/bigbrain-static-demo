@@ -1,13 +1,19 @@
 import { FaPlay } from "react-icons/fa";
 import { orangeButtonClass, lobbyNameClass } from '../../../component/tailwind';
-import classroom from '../../../assets/classroom_overlay.png';
+
 import { FaStop } from "react-icons/fa6";
 import { IoPerson } from "react-icons/io5";
 import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { Link } from 'react-router-dom';
+import classroom from '../../../assets/classroom_overlay.png';
+import { LuCopy } from "react-icons/lu";
 
+function HostGameLobby({sessionId, showResults, players, onStart}) {
+  const handleCopyToClipboard = () => {
+    const sessionUrl = `${window.location.origin}/join/${sessionId}`;
+    navigator.clipboard.writeText(sessionUrl);
+  };
 
-function HostGameLobby({sessionId, players, showResults, advancePosition}) {
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
 
@@ -27,7 +33,7 @@ function HostGameLobby({sessionId, players, showResults, advancePosition}) {
               </div>
               <button
                 className={`${orangeButtonClass} flex items-center gap-2 px-5`}
-                onClick={advancePosition}
+                onClick={onStart}
               >
                 <FaPlay className="text-[16px]"/>Start
               </button>
@@ -51,11 +57,17 @@ function HostGameLobby({sessionId, players, showResults, advancePosition}) {
 
         {/* //*Quiz ID + Start Game */}
         <div className='mb-8 flex gap-5 mx-auto justify-between items-center'>
-          <div className='py-4 px-6 rounded-md bg-cyan-800 text-white'>
+          <div className='py-4 px-6 rounded-md bg-cyan-800 text-white flex flex-col items-center'>
             <p className="text-md sm:text-xl font-Nunito-Medium mb-3"><span className='text-xl'>Join at&nbsp;&nbsp;</span>
               <Link to={`/quiz/join/${sessionId}`} className='font-bold underline'>www.bigbrain.com/join</Link>
             </p>
-            <p className="text-5xl sm:text-6xl font-Nunito-Black ">{sessionId}</p>
+            <button
+              onClick={handleCopyToClipboard}
+              title="Click to copy game PIN"
+              aria-label="Copy to clipboard"
+              className="text-5xl sm:text-6xl font-Nunito-Black hover:cursor-pointer flex gap-1">
+              {sessionId} <LuCopy size={20} />
+            </button>
           </div>
           <div className='hidden sm:block'>
             <div className='flex flex-col gap-5 items-center'>
@@ -66,7 +78,7 @@ function HostGameLobby({sessionId, players, showResults, advancePosition}) {
                 </span>
               </div>
               <button
-                onClick={advancePosition}
+                onClick={onStart}
                 className={`${orangeButtonClass} flex items-center gap-2 px-5`}>
                 <FaPlay className="text-[16px]"/>Start
               </button>

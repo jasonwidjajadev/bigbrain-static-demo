@@ -5,14 +5,15 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
+  const [tokenReady, setTokenReady] = useState(false);
   const [email, setEmail] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const savedToken = localStorage.getItem('bigbrain_token');
-    if (savedToken) {
-      setToken(savedToken);
-    }
+    if (savedToken) setToken(savedToken);
+    setTokenReady(true);
+
     const savedEmail = localStorage.getItem('bigbrain_email');
     if (savedEmail) {
       setEmail(savedEmail);
@@ -37,7 +38,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, setToken: setAndPersistToken, email, setEmail:setAndPersistEmail, logout }}>
+    <AuthContext.Provider value={{ token, tokenReady, setToken: setAndPersistToken, email, setEmail:setAndPersistEmail, logout }}>
       {children}
     </AuthContext.Provider>
   );

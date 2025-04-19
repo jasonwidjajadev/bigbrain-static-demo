@@ -10,7 +10,7 @@ function SessionStartModal({
   gameTitle,
 }) {
   const [copied, setCopied] = useState(false);
-  const sessionUrl = `${window.location.origin}/quiz/play/${sessionId}`;
+  const sessionUrl = `${window.location.origin}/join/${sessionId}`;
 
   useEffect(() => {
     // Reset copied state when modal opens with new sessionId

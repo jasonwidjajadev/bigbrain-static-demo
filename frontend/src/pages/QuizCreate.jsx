@@ -19,8 +19,8 @@ function AdminQuizCreate() {
   const navigate = useNavigate();
   const { token, email } = useAuthContext();
   React.useEffect(() => {
-    console.log("Initial token:", token);
-    console.log("Initial email:", email);
+    // console.log("Initial token:", token);
+    // console.log("Initial email:", email);
     if (!token) navigate("/home");
   }, [token, navigate]);
 

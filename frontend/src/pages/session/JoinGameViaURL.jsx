@@ -17,6 +17,11 @@ function GameJoinViaURL() {
   const [sessionIdInput, setSessionIdInput] = React.useState('');
   const { sessionId } = useParams();
 
+  const [nickName, setNickName] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [isNickFocused, setIsNickFocused] = React.useState(false);
+
   React.useEffect(() => {
     const value = sessionId?.trimStart() || '';
     setSessionIdInput(value);
@@ -29,11 +34,6 @@ function GameJoinViaURL() {
     }
   }, [sessionId]);
 
-  const [nickName, setNickName] = React.useState('');
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const [isNickFocused, setIsNickFocused] = React.useState(false);
-
   // Api Call
   const navigate = useNavigate();
   async function goToLobby() {
@@ -45,13 +45,18 @@ function GameJoinViaURL() {
         name: nickName.trim(),
       })
 
+      //Store in local storage
+      const playerMap = JSON.parse(localStorage.getItem('playerMap') || '{}');
+      playerMap[sessionIdInput] = data.playerId;
+      localStorage.setItem('playerMap', JSON.stringify(playerMap));
+
       //Success player goes to lobby -> PlayerGameLobby
-      localStorage.setItem('playerId', data.playerId);
-      navigate(`/session/${sessionIdInput}`, {
+      navigate(`/play/${sessionIdInput}`, {
         state: {
           sessionId: sessionIdInput,
           nickName: nickName,
-          isAdmin: false,
+          playerId: data.playerId,
+          from:'/join'
         }
       });
 
