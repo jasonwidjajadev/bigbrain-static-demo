@@ -10,6 +10,9 @@ import {
 import LogoNavBar from "../component/LogoNavBar";
 import VideoButton from "../component/VideoButton";
 import ImageButton from "../component/ImageButton";
+import ImgSelection from "../component/ImgSelection";
+import { convertFileToBase64, formatBase64Image } from "../util/imageUtils";
+import ImageUploaderModal from "../component/ImageUploaderModal";
 
 function QuestionEditor() {
   // STATE VARIABLES //////////////////////////
@@ -42,6 +45,10 @@ function QuestionEditor() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Image and video selection state
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [showVideoSelection, setShowVideoSelection] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     if (!token) {
@@ -60,6 +67,11 @@ function QuestionEditor() {
       );
       if (existingQuestion) {
         setQuestion(existingQuestion);
+
+        // Set preview image if available
+        if (existingQuestion.image) {
+          setPreviewImage(formatBase64Image(existingQuestion.image));
+        }
 
         // If the existing question doesn't have correctAnswers field, derive it from answers
         if (!existingQuestion.correctAnswers) {
@@ -124,11 +136,6 @@ function QuestionEditor() {
   };
 
   const handleTypeChange = (type) => {
-    setQuestion({
-      ...question,
-      type,
-    });
-
     // For judgement questions, limit to 2 answers and ensure only one is correct
     if (type === "judgement") {
       const updatedAnswers = question.answers
@@ -142,6 +149,36 @@ function QuestionEditor() {
         ...prev,
         type,
         answers: updatedAnswers,
+      }));
+    }
+    // When switching back to multiple or single choice, restore all 6 answers
+    else if (
+      question.type === "judgement" &&
+      (type === "multiple" || type === "single")
+    ) {
+      // Get the existing 2 answers from judgement
+      const existingAnswers = question.answers;
+
+      // Create a full set of 6 answers, preserving the first 2
+      const fullAnswers = [
+        ...existingAnswers,
+        { id: 3, text: "", isCorrect: false },
+        { id: 4, text: "", isCorrect: false },
+        { id: 5, text: "", isCorrect: false },
+        { id: 6, text: "", isCorrect: false },
+      ];
+
+      setQuestion((prev) => ({
+        ...prev,
+        type,
+        answers: fullAnswers,
+      }));
+    }
+    // For other type changes that don't involve judgement
+    else {
+      setQuestion((prev) => ({
+        ...prev,
+        type,
       }));
     }
   };
@@ -165,6 +202,35 @@ function QuestionEditor() {
       ...question,
       text: e.target.value,
     });
+  };
+
+  const handleImgChange = async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      try {
+        const file = e.target.files[0];
+        const base64 = await convertFileToBase64(file, true);
+
+        // Update question with base64 image data
+        setQuestion({
+          ...question,
+          image: base64,
+        });
+
+        // Set preview image
+        setPreviewImage(formatBase64Image(base64));
+
+        // Close the image selection panel
+        setShowImageModal(false);
+      } catch (err) {
+        console.error("Error converting image:", err);
+        setError("Failed to process image");
+      }
+    }
+  };
+
+  const handleImageButtonClick = () => {
+    setShowImageModal(!showImageModal);
+    setShowVideoSelection(false); // Close video selection if open
   };
 
   const handleAnswerChange = (index, field, value) => {
@@ -383,14 +449,35 @@ function QuestionEditor() {
             </div>
 
             {/* Question content */}
-            <div className="flex flex-col sm:flex-row mb-6 p-4 gap-4">
-              <div className="flex flex-row sm:flex-col flex-2 justify-center items-center gap-4">
+            <div className="flex flex-col sm:flex-row p-4 gap-4">
+              <div className="flex flex-row sm:flex-col sm:w-full flex-2 justify-center items-center gap-4">
                 {/* TODO: Make these work */}
-                <ImageButton />
+                <ImageButton onClick={handleImageButtonClick} />
                 <VideoButton />
+                {/* Show preview image if available */}
+                {previewImage && (
+                  <div className="mt-2 border rounded p-2">
+                    <img
+                      src={previewImage}
+                      alt="Question image"
+                      className="max-w-full h-auto max-h-32"
+                    />
+                    <button
+                      type="button"
+                      className="text-xs text-red-600 mt-1"
+                      onClick={() => {
+                        setPreviewImage(null);
+                        setQuestion({ ...question, image: "" });
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
               </div>
+
               <div className="flex flex-col flex-4 lg:px-6">
-                <div className="mb-2 text-xl ">Question</div>
+                <div className="mb-2 text-2xl font-bold">Question</div>
                 <textarea
                   type="text"
                   value={question.text}
@@ -402,8 +489,15 @@ function QuestionEditor() {
               </div>
             </div>
 
+            {/* Image Uploader Modal */}
+            <ImageUploaderModal
+              isOpen={showImageModal}
+              onClose={() => setShowImageModal(false)}
+              onImageSelect={handleImgChange}
+            />
+
             {/* Answers */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
               {question.answers.map((answer, index) => {
                 let bgColor;
                 if (index === 0) bgColor = "bg-blue-500";
@@ -451,7 +545,7 @@ function QuestionEditor() {
                             handleAnswerChange(index, "text", e.target.value)
                           }
                           placeholder={`Answer ${index + 1} ${isOptional}`}
-                          className="bg-transparent border-b border-white w-9/10 py-2 text-white placeholder-white text-center text-xl"
+                          className="bg-transparent border-b border-white w-9/10 py-2 text-white placeholder-white text-center text-l"
                           required={index < 2}
                         />
                       </div>
