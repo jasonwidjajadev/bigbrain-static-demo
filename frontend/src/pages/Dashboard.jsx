@@ -114,10 +114,17 @@ function Dashboard() {
     navigate(`/quiz/edit/${quizId}`);
   };
 
+  // Hander for previous session button click
+  const handlePreviousSessionResults = (quizId) => {
+    console.log("See previous sessions for game with ID:", quizId);
+    // TODO: Implement previous session logic
+    navigate(`/quiz/results/${quizId}`);
+  };
+
   // Handler for play/host button click
   const handleStartSession = async (quizId) => {
     console.log("Play game with ID:", quizId);
-    // TODO: Implement play logic
+
     try {
       // Find the game to get its details
       const game = games.find((g) => g.id === quizId);
@@ -269,6 +276,7 @@ function Dashboard() {
                   game={game}
                   onDelete={handleDeleteClick}
                   onEdit={handleEditClick}
+                  onPreviousSessionResults={handlePreviousSessionResults}
                   onPlay={handleStartSession}
                 />
               ))}
