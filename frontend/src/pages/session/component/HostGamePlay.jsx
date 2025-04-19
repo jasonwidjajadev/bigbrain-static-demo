@@ -5,15 +5,9 @@ import { FaStop } from "react-icons/fa6";
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
 import classroom from '../../../assets/classroom_overlay.png';
 import chalkboard from '../../../assets/chalkboard.jpg';
-import music_multiple from '../../../assets/multiple_puzzle-game-bright-casual-video-game-music-249202.mp3';
-import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
-
+import Music from './Music';
 function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
-  const [isMuted, setIsMuted] = React.useState(false);
-  const audioRef = React.useRef(null);
   const [count, setCount] = React.useState(Number(question.duration));
-  const [volume, setVolume] = React.useState(0.5);
-
   React.useEffect(() => {
     if (count <= 0) {
       if (onComplete) onComplete();
@@ -26,37 +20,13 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
 
     return () => clearTimeout(timer);
   }, [count, onComplete]);
-  React.useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
 
-  React.useEffect(() => {
-    const audio = audioRef.current;
-    if (audio && !isMuted) {
-      audio.play().catch(err => console.warn('Audio blocked:', err));
-    }
-    return () => {
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-    };
-  }, []);
-  React.useEffect(() => {
-    if (isMuted && audioRef.current) {
-      audioRef.current.pause();
-    } else if (!isMuted && audioRef.current) {
-      audioRef.current.play().catch(() => {});
-    }
-  }, [isMuted]);
+
 
   const filteredAnswers = question.answers.filter(answer => answer.text.trim() !== '');
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col
      bg-cover bg-center w-full overflow-hidden" style={{ backgroundImage: `url(${classroom})` }}>
-      <audio ref={audioRef} src={music_multiple} loop />
 
       {/* //*NavBar */}
       <nav className=" flex justify-between items-center px-3 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
@@ -70,20 +40,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
             {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
           </button> */}
 
-          <div className={`${orangeButtonClass} flex items-center gap-3 px-5`} >
-            <button onClick={() => setIsMuted(!isMuted)}>
-              {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
-            </button>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={(e) => setVolume(parseFloat(e.target.value))}
-              className="w-7 sm:w-20"
-            />
-          </div>
+          <Music className="mb-5"/>
           <button
             onClick={onEnd}
             className={`${orangeButtonClass} flex items-center gap-3`}>
