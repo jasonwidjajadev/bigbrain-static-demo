@@ -55,6 +55,11 @@ function Dashboard() {
     console.log("Updated gameToDelete state:", gameToDelete);
   }, [gameToDelete]);
 
+  // UseEffect hook to update the active session data on Dashboard
+  React.useEffect(() => {
+    console.log("Updated activeSessionData state:", activeSessionData);
+  }, [activeSessionData]);
+
   const getGamesToDisplay = async () => {
     try {
       setLoading(true);
