@@ -1,7 +1,7 @@
 import classroom from '../../../assets/classroom_overlay.png';
 import React from 'react';
 
-function Countdown({question, onComplete}) {
+function Countdown({position, length, question, onComplete}) {
   const [count, setCount] = React.useState(3);
   React.useEffect(() => {
     if (count <= 0) {
@@ -33,7 +33,8 @@ function Countdown({question, onComplete}) {
       className="flex-1 flex flex-col items-center text-center p-6 bg-cover bg-center h-screen"
       style={{ backgroundImage: `url(${classroom})` }}
     >
-      <div className='flex-1 flex flex-col justify-center items-center'>
+      <div className='flex-1 flex flex-col justify-center items-center pb-20'>
+        <h1 className="text-5xl sm:text-7xl font-Nunito-ExtraBold mb-15 text-black">Question {position}/{length}</h1>
         <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0 mb-10">
           {count}
         </div>
