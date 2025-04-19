@@ -39,6 +39,7 @@ function PlayerGameView() {
   const [hasStarted, setHasStarted] = React.useState(false);
 
   // Question
+  const [countdownDone, setCountdownDone] = React.useState(false);
   const [question, setQuestion] = React.useState(null);
 
   // Answer
@@ -50,6 +51,8 @@ function PlayerGameView() {
   const [gameOver, setGameOver] = React.useState(false);
   const [results, setResults] = React.useState(null);
   const [error, setError] = React.useState(null);
+
+  const [answerHistory, setAnswerHistory] = React.useState([]);
 
   //* ==========================================================================
   //* Retrieve/ Validate playerId
@@ -99,6 +102,12 @@ function PlayerGameView() {
   //* ==========================================================================
   //* Poll question or detect game over
   //* ==========================================================================
+  React.useEffect(() => {
+    if (question) {
+      setCountdownDone(false);
+    }
+  }, [question]);
+
   // GET, /play/:playerid/question
 
   React.useEffect(() => {
@@ -115,7 +124,13 @@ function PlayerGameView() {
           setAnswered(false);
         }
       } catch (err) {
-        console.warn('⚠️ No question available yet:', err.message);
+        const msg = err?.message || '';
+        if (msg.includes('Session ID is not an active session')) {
+          console.warn('🛑 Session ended, showing final results...');
+          setGameOver(true);
+        } else {
+          console.warn('⚠️ No question available yet:', msg);
+        }
       }
     };
 
@@ -163,13 +178,30 @@ function PlayerGameView() {
     try {
       await apiCall(`/play/${playerId}/answer`, 'PUT', { answers: selectedAnswers });
       setAnswered(true);
+  
+      const res = await apiCall(`/play/${playerId}/answer`, 'GET');
+      setSubmittedAnswer(res);
+  
+      setAnswerHistory(prev => [
+        ...prev,
+        {
+          question: question.text,
+          yourAnswer: selectedAnswers.map(id => question.answers.find(a => a.id === id)?.text).join(', '),
+          correctAnswer: question.answers
+            .filter(a => a.isCorrect)
+            .map(a => a.text)
+            .join(', '),
+          points: res.score || 0,
+          time: res.timeTaken || 0,
+          isCorrect: res.correct,
+        }
+      ]);
     } catch (err) {
       console.error('❌ Error submitting answer:', err.message);
       setError('Could not submit your answer.');
     }
   };
-
-
+  
   //* ==========================================================================
   //* Show Individual Question results
   //* ==========================================================================
@@ -204,24 +236,29 @@ function PlayerGameView() {
 
   return (
     <>
+      {/* Player just joined now they are in lobby room waiting for host to start */}
       { !hasStarted && <PlayerGameLobby />}
 
-      { gameOver && results && <PlayerGameFinalResults results={results} />}
+      {/* The game is over, show final result of game */}
+      { gameOver && <PlayerGameFinalResults history={answerHistory}/>}
 
       {/* Countdown before each question */}
-      { hasStarted && !gameOver && question?.countdown && (
-        <Countdown question={question} />
+      {hasStarted && !gameOver && question && !countdownDone && (
+        <Countdown
+          question={question}
+          onComplete={() => setCountdownDone(true)}
+        />
       )}
 
       {/* Show question screen */}
-      {hasStarted && !gameOver && question && !answered && (
+      {hasStarted && !gameOver && question && countdownDone && !answered && (
         <PlayerGamePlay
           question={question}
           onSubmit={submitAnswer}
         />
       )}
 
-      {/* Answer has been submitted */}
+      {/* If user has submitted an aswer, it shows answer has been submitted screen*/}
       {hasStarted && !gameOver && answered && (
         <PlayerAnswerSubmitted />
       )}
