@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
-import { LuCopy, LuCopyCheck } from "react-icons/lu";
+import { LuCopy, LuCopyCheck, LuX } from "react-icons/lu";
 import { orangeButtonClass } from "./tailwind";
 
-function SessionStartModal({ isOpen, onClose, sessionId, gameTitle }) {
+function SessionStartModal({
+  isOpen,
+  onClose,
+  onContinue,
+  sessionId,
+  gameTitle,
+}) {
   const [copied, setCopied] = useState(false);
   const sessionUrl = `${window.location.origin}/quiz/play/${sessionId}`;
 
@@ -24,7 +30,15 @@ function SessionStartModal({ isOpen, onClose, sessionId, gameTitle }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
+      <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 p-1 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+          aria-label="Close modal"
+        >
+          <LuX size={20} />
+        </button>
         <div className="text-center">
           <h3 className="text-xl font-semibold mb-2 text-gray-800">
             Game Session Started!
@@ -60,7 +74,10 @@ function SessionStartModal({ isOpen, onClose, sessionId, gameTitle }) {
           </div>
 
           <div className="flex justify-center">
-            <button onClick={onClose} className={`${orangeButtonClass} w-full`}>
+            <button
+              onClick={onContinue}
+              className={`${orangeButtonClass} w-full`}
+            >
               Continue
             </button>
           </div>
