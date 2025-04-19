@@ -44,12 +44,11 @@ function HostGameView() {
   const [hostFinalResults, setHostFinalResults] = React.useState(null); // only when final stage
   // const isGameOver = position >= questions.length;
 
-  const [playerAnswerHistory, setPlayerAnswerHistory] = React.useState([]);
+  // const [playerAnswerHistory, setPlayerAnswerHistory] = React.useState([]);
 
   //* ==========================================================================
   //* Session loading & game ownership
   //* ==========================================================================
-
 
   React.useEffect(() => {
     if (!tokenReady || !token) return;
@@ -75,14 +74,10 @@ function HostGameView() {
 
         // Step 2: If session is over, get results
         if (!sessionStatus.active || sessionStatus.position >= sessionQuestions.length) {
-          // try {
           const results = await apiCall(`/admin/session/${trimmedSessionId}/results`, 'GET', null, token);
           setHostFinalResults(results);
           setStage('final');
           return;
-          // } catch (err) {
-          //   console.error('Failed to fetch results:', err.message);
-          // }
         }
 
         // Step 3: Verify user is the quiz owner
@@ -158,24 +153,19 @@ function HostGameView() {
   //* ==========================================================================
   //* Countdown
   //* ==========================================================================
-  const questionTimerRef = React.useRef(null);
+  // const questionTimerRef = React.useRef(null);
 
-  React.useEffect(() => {
-    if (stage === 'lobby') return;
+  // React.useEffect(() => {
+  //   if (stage === 'lobby') return;
 
-    // if (stage === 'countdown') {
-    //   const timer = setTimeout(() => setStage('question'), 3000);
-    //   return () => clearTimeout(timer);
-    // }
-
-    if (stage === 'question') {
-      const duration = questions[position]?.duration || 10;
-      questionTimerRef.current = setTimeout(() => {
-        setStage('answer');
-      }, duration * 1000);
-      return () => clearTimeout(questionTimerRef.current);
-    }
-  }, [stage, position, questions]);
+  //   if (stage === 'question') {
+  //     const duration = questions[position]?.duration || 10;
+  //     questionTimerRef.current = setTimeout(() => {
+  //       setStage('answer');
+  //     }, duration * 1000);
+  //     return () => clearTimeout(questionTimerRef.current);
+  //   }
+  // }, [stage, position, questions]);
 
   //* ==========================================================================
   //* Start Game
@@ -252,39 +242,36 @@ function HostGameView() {
   // if the admin advances to the next question while the timer is still going, then you do not have to show the correct answers for that question.
   // Skip the current question and go straight to next countdown or final
 
+  /*
+  At the last question, from stage question/answer handle Next is called making the (position = question.length)
+  */
   const handleNext = async () => {
     try {
+      // Advance to next stage/question
       await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', {
         mutationType: 'ADVANCE'
       }, token);
 
-      if (stage === 'question') {
-        console.log('Handling skip question ...');
-        clearTimeout(questionTimerRef.current);
+      const isLastQuestion = position + 1 >= questions.length;
 
-        if (position + 1 < questions.length) {
-          setPosition(pos => pos + 1);
-          setStage('countdown');
-        } else {
-          setStage('final');
-        }
-        return;
-      }
+      if (stage === 'question' || stage === 'answer') {
+        if (isLastQuestion) {
+          console.log('🎯 Last question reached — game will auto-end by backend');
 
-      //TODO Do we calculate results by ourself for host and player
-      if (stage === 'answer') {
-        console.log('Going onto the next question , coutdown now...');
-        if (position + 1 < questions.length) {
-          setPosition(pos => pos + 1);
-          setStage('countdown');
-        } else {
+          // No need to call END again, just fetch final results
+          const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
+          setHostFinalResults(resultRes);
           setStage('final');
+        } else {
+          setPosition((pos) => pos + 1);
+          setStage('countdown');
         }
       }
     } catch (err) {
-      console.error('❌ Failed to advance question:', err.message);
+      console.error('❌ Failed to advance or fetch results:', err.message);
     }
   };
+
   //* ==========================================================================
   //* Game UI
   //* ==========================================================================
@@ -300,7 +287,11 @@ function HostGameView() {
   return (
     <>
       {stage === 'final' && hostFinalResults && (
-        <HostGameFinalResults results={hostFinalResults}/>
+        <HostGameFinalResults
+          hostFinalResults={hostFinalResults}
+          sessionId={sessionId}
+          token={token}
+        />
       )}
 
       { stage === 'lobby' && currSession.position === -1 && (
@@ -314,6 +305,8 @@ function HostGameView() {
 
       {stage === 'countdown' && (
         <Countdown
+          position={Number(position) + 1}
+          length={questions.length}
           question={questions[position]}
           onComplete={() => setStage('question')}
         />
@@ -325,14 +318,26 @@ function HostGameView() {
 
       {stage === 'question' && questions[position] && (
         <HostGamePlay
+          key={position}
           question={questions[position]}
-          onNext={handleNext}/>
+          position={Number(position) + 1}
+          length={questions.length}
+          onNext={handleNext}
+          onEnd={handleEndGame}
+          onComplete={() => setStage('answer')}
+        />
       )}
 
       {stage === 'answer' && questions[position] && (
         <HostGameQuestionResult
+          sessionId={sessionId}
+          token={token}
           question={questions[position]}
-          onNext={handleNext}/>
+          position={Number(position) + 1}
+          length={questions.length}
+          onNext={handleNext}
+          onEnd={handleEndGame}
+        />
       )}
     </>
   )
@@ -360,8 +365,8 @@ export default HostGameView;
   "players": {},
   "position": -1,
   "questions": [
-    {
-      "id": 1744972867568,
+
+    { "id": 1744972867568,
       "type": "multiple",
       "text": "1+1",
       "duration": 20,
@@ -369,36 +374,12 @@ export default HostGameView;
       "video": "",
       "image": "",
       "answers": [
-        {
-          "id": 1,
-          "text": "2",
-          "isCorrect": true
-        },
-        {
-          "id": 2,
-          "text": "3",
-          "isCorrect": false
-        },
-        {
-          "id": 3,
-          "text": "",
-          "isCorrect": false
-        },
-        {
-          "id": 4,
-          "text": "",
-          "isCorrect": false
-        },
-        {
-          "id": 5,
-          "text": "",
-          "isCorrect": false
-        },
-        {
-          "id": 6,
-          "text": "",
-          "isCorrect": false
-        }
+        {"id": 1, "text": "2","isCorrect": true},
+        {"id": 2,"text": "3","isCorrect": false},
+        {"id": 3,"text": "","isCorrect": false},
+        {"id": 4,"text": "","isCorrect": false},
+        {"id": 5,"text": "","isCorrect": false},
+        {"id": 6,"text": "","isCorrect": false}
       ],
       "correctAnswers": [
         1
