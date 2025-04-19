@@ -12,9 +12,9 @@ function GameDashboardTile({
   game,
   onDelete,
   onEdit,
+  onPreviousSessionResults,
   onPlay,
   onStop,
-  onPreviousSessionResults,
 }) {
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
