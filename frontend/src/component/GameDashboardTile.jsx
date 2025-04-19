@@ -1,17 +1,21 @@
 import { formatBase64Image } from "../util/imageUtils";
-import { LuPencil, LuPlay, LuTrash2, LuClipboardPaste } from "react-icons/lu";
-import { orangeButtonClass, greenButtonClass } from "../component/tailwind";
+import {
+  LuPencil,
+  LuPlay,
+  LuTrash2,
+  LuClipboardPaste,
+  LuCircleStop,
+} from "react-icons/lu";
+import { cyanButtonClass, redButtonClass } from "../component/tailwind";
 
 function GameDashboardTile({
   game,
   onDelete,
   onEdit,
-  onPlay,
   onPreviousSessionResults,
+  onPlay,
+  onStop,
 }) {
-  // TODO: Ensure that there cannot be too many words
-  // Figure out what to do to format this
-
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
 
@@ -33,16 +37,23 @@ function GameDashboardTile({
   };
 
   // Handler for play/host button click
+  const handlePreviousSessionResults = () => {
+    if (onPreviousSessionResults) {
+      onPreviousSessionResults(game.id);
+    }
+  };
+
+  // Handler for play/host button click
   const handlePlayClick = () => {
     if (onPlay) {
       onPlay(game.id);
     }
   };
 
-  // Handler for play/host button click
-  const handlePreviousSessionResults = () => {
-    if (onPreviousSessionResults) {
-      onPreviousSessionResults(game.id);
+  // Handler for stop button click
+  const handleStopClick = () => {
+    if (onStop) {
+      onStop(game.id);
     }
   };
 
@@ -110,13 +121,23 @@ function GameDashboardTile({
             </div>
 
             {/* Game Mode Buttons */}
-            <button
-              className={`flex justify-center items-center ${hasActiveSession ? greenButtonClass : orangeButtonClass}`}
-              onClick={handlePlayClick}
-            >
-              <LuPlay size={20} className="mr-2" />
-              <span>{hasActiveSession ? "Active Session" : "Play"}</span>
-            </button>
+            {hasActiveSession ? (
+              <button
+                className={`flex justify-center items-center ${redButtonClass}`}
+                onClick={handleStopClick}
+              >
+                <LuCircleStop size={20} className="mr-2" />
+                <span>Stop</span>
+              </button>
+            ) : (
+              <button
+                className={`flex justify-center items-center ${cyanButtonClass}`}
+                onClick={handlePlayClick}
+              >
+                <LuPlay size={20} className="mr-2" />
+                <span>Play</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

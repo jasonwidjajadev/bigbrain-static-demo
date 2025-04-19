@@ -8,6 +8,7 @@ import {
   fetchGames,
   updateAllGames,
   createGameSession,
+  stopGameSession,
 } from "../util/gamesApi";
 import GameDashboardTile from "../component/GameDashboardTile";
 
@@ -55,12 +56,25 @@ function Dashboard() {
   //   console.log("Updated gameToDelete state:", gameToDelete);
   // }, [gameToDelete]);
 
+  // UseEffect hook to update the active session data on Dashboard
+  // React.useEffect(async () => {
+  //   // Do something
+  //   const gamesData = await fetchGames(token);
+
+  // }, [games]);
+
+  // UseEffect hook to update the active session data on Dashboard
+  React.useEffect(() => {
+    console.log("Updated activeSessionData state:", activeSessionData);
+  }, [activeSessionData]);
+
   const getGamesToDisplay = async () => {
     try {
       setLoading(true);
       setError(null);
       const gamesData = await fetchGames(token);
       setGames(gamesData || []);
+      // TODO: Go through games and set which ones are active
     } catch (error) {
       console.error("Error fetching games:", error);
       setError("Failed to load games. Please try again later.");
@@ -130,7 +144,7 @@ function Dashboard() {
       const game = games.find((g) => g.id === quizId);
       if (!game) return;
 
-      // API cal to create a session
+      // API call to create a session
       const sessionId = await createGameSession(quizId, token);
       /* Return response from createGameSession is actually: data: { sessionId: "556883", status "started"} */
       // console.log(sessionId);
@@ -138,9 +152,12 @@ function Dashboard() {
       // Update our current state
       const updatedGames = games.map((g) => {
         if (g.id === quizId) {
+          const sessUpdate = g.oldSessions;
+          sessUpdate.push(sessionId);
           return {
             ...g,
             active: sessionId,
+            oldSessions: sessUpdate,
           };
         }
         return g;
@@ -164,8 +181,14 @@ function Dashboard() {
     }
   };
 
-  // Handler for closing the session modal
+  // Handler for closing the session model
+  // TODO: Think about how this should operate....
   const handleCloseSessionModal = () => {
+    setIsSessionModalOpen(false);
+  };
+
+  // Handler for pressing continue in the session modal
+  const handleContinueSessionModal = () => {
     if (
       selectedSessionIndex !== null &&
       selectedSessionIndex >= 0 &&
@@ -183,6 +206,53 @@ function Dashboard() {
       });
     }
     setIsSessionModalOpen(false);
+  };
+
+  // TODO: When pressing back -> it clears the activeSessionData state (when it should persist)
+  // Need to figure out why and how to fix.
+  const handleStopSession = async (quizId) => {
+    console.log("Stopping game with ID:", quizId);
+    try {
+      // Find the game to get its details
+      const game = games.find((g) => g.id === quizId);
+      if (!game) return;
+
+      // API call to stop a session
+      await stopGameSession(quizId, token);
+
+      // Update our current state
+      const updatedGames = games.map((g) => {
+        if (g.id === quizId) {
+          return {
+            ...g,
+            active: false,
+          };
+        }
+        return g;
+      });
+      setGames(updatedGames);
+
+      // Remove from activeSessionData array
+      // TODO: Finish this
+      // Remove from activeSessionData array
+      const updatedSessionData = activeSessionData.filter(
+        (session) => session.gameId !== quizId
+      );
+      setActiveSessionData(updatedSessionData);
+
+      // If the currently selected session was removed, reset the selection
+      if (selectedSessionIndex !== null) {
+        const selectedSession = activeSessionData[selectedSessionIndex];
+        if (selectedSession && selectedSession.gameId === quizId) {
+          setSelectedSessionIndex(null);
+        }
+      }
+
+      console.log("Session stopped successfully for game:", game.name);
+    } catch (error) {
+      console.error("Failed to start game session:", error);
+      setError("Failed to start game session. Please try again.");
+    }
   };
 
   return (
@@ -253,7 +323,7 @@ function Dashboard() {
             My Games
           </h1>
 
-          {/* TODO placeholder */}
+          {/* TODO placeholder
           {loading ? (
             <div className="text-center text-gray-600 py-10">
               Loading your games...
@@ -271,6 +341,9 @@ function Dashboard() {
               </Link>
             </div>
           ) : (
+            // Have a variable here; that picks out the game that has been updated
+            // For each game 
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {games.map((game, i) => (
                 <GameDashboardTile
@@ -280,9 +353,28 @@ function Dashboard() {
                   onEdit={handleEditClick}
                   onPreviousSessionResults={handlePreviousSessionResults}
                   onPlay={handleStartSession}
+                  onStop={handleStopSession}
                 />
               ))}
             </div>
+          )} */}
+          {games ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {console.log("Triggering games", games)}
+              {games.map((game, i) => (
+                <GameDashboardTile
+                  key={i}
+                  game={game}
+                  onDelete={handleDeleteClick}
+                  onEdit={handleEditClick}
+                  onPreviousSessionResults={handlePreviousSessionResults}
+                  onPlay={handleStartSession}
+                  onStop={handleStopSession}
+                />
+              ))}
+            </div>
+          ) : (
+            <></>
           )}
         </div>
       </div>
@@ -298,6 +390,7 @@ function Dashboard() {
       {/* Session Start Modal */}
       <SessionStartModal
         isOpen={isSessionModalOpen}
+        onContinue={handleContinueSessionModal}
         onClose={handleCloseSessionModal}
         sessionId={
           selectedSessionIndex !== null

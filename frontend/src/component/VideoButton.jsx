@@ -1,13 +1,14 @@
 import { LuVideo } from "react-icons/lu";
 import { blueButtonClassSmall } from "./tailwind";
-const VideoButton = ({ onClick, className }) => {
+
+const VideoButton = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`w-[60%] md:w-[30%] lg:w-[30%] place-items-center ${blueButtonClassSmall}`}
+      className={`flex justify-center items-center w-[60%] md:w-[30%] lg:w-[30%] gap-2 ${blueButtonClassSmall}`}
     >
-      <LuVideo size={16} />
-      <span className="text-xs font-small">Video</span>
+      <LuVideo size={24} />
+      <span className="text-sm font-small">Video</span>
     </button>
   );
 };
