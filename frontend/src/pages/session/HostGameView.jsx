@@ -44,6 +44,8 @@ function HostGameView() {
   const [hostFinalResults, setHostFinalResults] = React.useState(null); // only when final stage
   // const isGameOver = position >= questions.length;
 
+  const [playerAnswerHistory, setPlayerAnswerHistory] = React.useState([]);
+
   //* ==========================================================================
   //* Session loading & game ownership
   //* ==========================================================================
