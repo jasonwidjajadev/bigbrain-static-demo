@@ -196,3 +196,195 @@ function HostGameView() {
   //* ==========================================================================
   // how do we determine if a game is over? what is the condition? position = length -1 ?  and state 'ANSWER'
   // API call for stage answer
+
+  const handleEndGame = async () => {
+    try {
+
+      // Step 1: End the game
+      const response = await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', {
+        mutationType: 'END'
+      }, token);
+      console.log("Just ended the game the response is: ", response);
+
+      // Step 2: Fetch final results
+      const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
+      setHostFinalResults(resultRes);
+      setStage('final');
+    } catch (err) {
+      console.error('❌ Failed to end game or fetch results:', err.message);
+      throw new Error(err || "Network error something went wrong");
+    }
+  };
+
+  //* ==========================================================================
+  //* [COUNTDOWN → QUESTION → ANSWER] * N
+  //* ==========================================================================
+
+  /**
+  Scenario Example: 3 questions, question.length = 3
+  Start quiz -> Stage: lobby, position: - 1
+  Press Next -> (stage countdown automatic 3 seconds, position: 0, question 1), (stage question, position: 0, question 1, automatic ends when timer end unless press next), (stage answer, position: 0, question 1, not automatic, host need to press next to get to the next question countdown)
+  Press Next -> (stage countdown, position: 1, question 2), (stage question, position: 1, question 2), (stage answer, position: 1, question 2)
+  Press Next/skip -> (stage countdown, position: 2, question 3), (stage question, position: 2, question 3)
+  but Press Next during (stage question, position: 2, question 3) timer not finished -> got straight to show (final result)
+   */
+
+  // if the admin advances to the next question while the timer is still going, then you do not have to show the correct answers for that question.
+  // Skip the current question and go straight to next countdown or final
+
+  const handleNext = async () => {
+    try {
+      await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', {
+        mutationType: 'ADVANCE'
+      }, token);
+
+      if (stage === 'question') {
+        console.log('Handling skip question ...');
+        clearTimeout(questionTimerRef.current);
+
+        if (position + 1 < questions.length) {
+          setPosition(pos => pos + 1);
+          setStage('countdown');
+        } else {
+          setStage('final');
+        }
+        return;
+      }
+
+      //TODO Do we calculate results by ourself for host and player
+      if (stage === 'answer') {
+        console.log('Going onto the next question , coutdown now...');
+        if (position + 1 < questions.length) {
+          setPosition(pos => pos + 1);
+          setStage('countdown');
+        } else {
+          setStage('final');
+        }
+      }
+    } catch (err) {
+      console.error('❌ Failed to advance question:', err.message);
+    }
+  };
+  //* ==========================================================================
+  //* Game UI
+  //* ==========================================================================
+
+  if (!tokenReady) {
+    return <div className="text-center p-8">🔐 Loading authentication...</div>;
+  }
+
+  if (!currSession) {
+    return <div className="text-center p-8">📡 Loading session info...</div>;
+  }
+
+  return (
+    <>
+      { stage === 'lobby' &&
+        currSession.position === -1 &&
+        <HostGameLobby
+          sessionId={sessionId}
+          players={currSession.players || {}}
+          showResults={handleEndGame}
+          onStart={handleStartGame}
+        />
+      }
+
+      {stage === 'countdown' && (
+        <Countdown
+          question={questions[position]}
+          onComplete={() => setStage('question')}
+        />
+      )}
+
+      {questions.length === 0 && (stage === 'question' || stage === 'answer') && (
+        <div className="text-center p-6 text-gray-500">Loading question...</div>
+      )}
+
+      {stage === 'question' && questions[position] && (
+        <HostGamePlay
+          question={questions[position]}
+          onNext={handleNext}/>
+      )}
+
+      {stage === 'answer' && questions[position] && (
+        <HostGameQuestionResult
+          question={questions[position]}
+          onNext={handleNext}/>
+      )}
+
+      {stage === 'final' && hostFinalResults && (
+        <HostGameFinalResults results={hostFinalResults}/>
+      )}
+    </>
+  )
+}
+
+export default HostGameView;
+
+
+
+/* Scenario to find quiz owner?
+  Enter URL
+    - can be quiz owner
+    - can be a not quiz owner
+  Coming from dashboard as admin
+  Coming from /join as admin, but he/she is coincidentally the owner, owner needs to log
+  out first to play their own quiz otherwise they are host
+  Coming from /join as player
+*/
+/**
+ session: id: 259637
+  results: {
+  "active": true,
+  "answerAvailable": false,
+  "isoTimeLastQuestionStarted": null,
+  "players": {},
+  "position": -1,
+  "questions": [
+    {
+      "id": 1744972867568,
+      "type": "multiple",
+      "text": "1+1",
+      "duration": 20,
+      "points": 10,
+      "video": "",
+      "image": "",
+      "answers": [
+        {
+          "id": 1,
+          "text": "2",
+          "isCorrect": true
+        },
+        {
+          "id": 2,
+          "text": "3",
+          "isCorrect": false
+        },
+        {
+          "id": 3,
+          "text": "",
+          "isCorrect": false
+        },
+        {
+          "id": 4,
+          "text": "",
+          "isCorrect": false
+        },
+        {
+          "id": 5,
+          "text": "",
+          "isCorrect": false
+        },
+        {
+          "id": 6,
+          "text": "",
+          "isCorrect": false
+        }
+      ],
+      "correctAnswers": [
+        1
+      ]
+    }
+  ]
+},
+  */
