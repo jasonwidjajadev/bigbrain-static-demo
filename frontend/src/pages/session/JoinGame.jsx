@@ -30,9 +30,13 @@ function JoinGame() {
       const data = await apiCall(`/play/join/${sessionIdInput}`, 'POST', {
         name: nickName.trim(),
       })
+      //Store in local storage
+      const playerMap = JSON.parse(localStorage.getItem('playerMap') || '{}');
+      playerMap[sessionIdInput] = data.playerId;
+      localStorage.setItem('playerMap', JSON.stringify(playerMap));
 
       //Success player goes to lobby -> PlayerGameLobby
-      navigate(`/session/${sessionIdInput}`, {
+      navigate(`/play/${sessionIdInput}`, {
         state: {
           sessionId: sessionIdInput,
           nickName: nickName,
