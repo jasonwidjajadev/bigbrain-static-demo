@@ -191,3 +191,50 @@ function PlayerGameView() {
   }, [playerId, answered]);
 
 
+
+  //* ==========================================================================
+  //* UI rendering
+  //* ==========================================================================
+
+  if (!playerId) return <div className="text-center p-6">🔐 Missing player ID. Redirecting...</div>;
+
+  if (error) return <div className="text-red-500 p-6 text-center">{error}</div>;
+
+  if (!question) return <div className="text-center p-6">⏳ Waiting for next question...</div>;
+
+  return (
+    <>
+      { !hasStarted && <PlayerGameLobby />}
+
+      { gameOver && results && <PlayerGameFinalResults results={results} />}
+
+      {/* Countdown before each question */}
+      { hasStarted && !gameOver && question?.countdown && (
+        <Countdown question={question} />
+      )}
+
+      {/* Show question screen */}
+      {hasStarted && !gameOver && question && !answered && (
+        <PlayerGamePlay
+          question={question}
+          onSubmit={submitAnswer}
+        />
+      )}
+
+      {/* Answer has been submitted */}
+      {hasStarted && !gameOver && answered && (
+        <PlayerAnswerSubmitted />
+      )}
+
+      {/* Show if player got an answer right or wrong after each question */}
+      {hasStarted && !gameOver && answered && (
+        <PlayerGameQuestionResult
+          answer={submittedAnswer}
+          question={question}
+        />
+      )}
+    </>
+  );
+}
+
+export default PlayerGameView;
