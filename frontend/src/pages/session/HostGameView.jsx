@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate,  useParams } from 'react-router-dom';
 import { useAuthContext } from "../../context/useAuthContext";
 import { apiCall } from '../../util/apiCall';
-import Countdown from './component/Countdown'
+// import Countdown from './component/Countdown'
 import HostGameLobby from './component/HostGameLobby'
 import HostGamePlay from './component/HostGamePlay'
 import HostGameQuestionResult from './component/HostGameQuestionResult'
@@ -37,8 +37,8 @@ function HostGameView() {
   // const [isQuizOwner, setIsQuizOwner] = React.useState(false);
 
 
-  // LOBBY → [COUNTDOWN → QUESTION → RESULT] * N → FINAL RESULT
-  const [stage, setStage] = React.useState('lobby');     // 'lobby' | 'countdown' | 'question' | 'answer' | 'final'
+  // LOBBY → [(COUNTDOWN + QUESTION) → RESULT] * N → FINAL RESULT
+  const [stage, setStage] = React.useState('lobby');     // 'lobby' | 'countdown' + 'question' | 'answer' | 'final'
   const [position, setPosition] = React.useState(-1);     // -1 = not started
   const [questions, setQuestions] = React.useState([]);   // full list from backend
   const [hostFinalResults, setHostFinalResults] = React.useState(null); // only when final stage
@@ -75,7 +75,7 @@ function HostGameView() {
         // Step 2: If session is over, get results
         if (!sessionStatus.active || sessionStatus.position >= sessionQuestions.length) {
           const results = await apiCall(`/admin/session/${trimmedSessionId}/results`, 'GET', null, token);
-          setHostFinalResults(results);
+          setHostFinalResults(results.results);
           setStage('final');
           return;
         }
@@ -98,20 +98,20 @@ function HostGameView() {
         // Step 4: Set initial stage and position
         const pos = sessionStatus.position;
         setPosition(pos);
-        setStage(pos === -1 ? 'lobby' : 'countdown');
+        setStage(pos === -1 ? 'lobby' : 'question');
 
-        console.log('✅ Game initialized:', {
-          token,
-          sessionStatus,
-          position: pos,
-          questions: sessionQuestions.length,
-        });
+        // console.log('✅ Game initialized:', {
+        //   token,
+        //   sessionStatus,
+        //   position: pos,
+        //   questions: sessionQuestions.length,
+        // });
 
-        console.log('token:', token);
-        console.log('sessionId:', sessionId);
-        console.log('sessionStatus:', sessionStatus);
-        console.log('allGameData:', allGameData);
-        console.log('matchingGame:', matchingGame);
+        // console.log('token:', token);
+        // console.log('sessionId:', sessionId);
+        // console.log('sessionStatus:', sessionStatus);
+        // console.log('allGameData:', allGameData);
+        // console.log('matchingGame:', matchingGame);
       } catch (err) {
         console.error('Error loading host game view:', err.message);
         navigate('/session/inactive');
@@ -121,9 +121,9 @@ function HostGameView() {
     fetchSessionAndVerifyOwnership();
   }, [tokenReady, token, sessionId, navigate]);
 
-  React.useEffect(() => {
-    console.log('Updated hostFinalResults:', hostFinalResults);
-  }, [hostFinalResults]);
+  // React.useEffect(() => {
+  //   console.log('Updated hostFinalResults:', hostFinalResults[0].name);
+  // }, [hostFinalResults]);
 
   //* ==========================================================================
   //* Lobby + Verify that game has started
@@ -139,7 +139,8 @@ function HostGameView() {
         setCurrSession(updatedSession);
         if (updatedSession.position > -1) {
           setPosition(updatedSession.position);
-          setStage('countdown');
+          // setStage('countdown');
+          setStage('question');
           clearInterval(interval);
         }
       } catch (err) {
@@ -184,18 +185,18 @@ function HostGameView() {
 
         // Get results
         const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
-        setHostFinalResults(resultRes);
+        setHostFinalResults(resultRes.results);
         setStage('final');
         return;
       }
 
       // Otherwise, advance to first question
-      const response = await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', {
-        mutationType: 'ADVANCE'
-      }, token);
-
-      console.log("Game started!");
-      console.log("Advancing to first question response is: ", response);
+      // const response = await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', {
+      //   mutationType: 'ADVANCE'
+      // }, token);
+      await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', { mutationType: 'ADVANCE'}, token);
+      // console.log("Game started!");
+      // console.log("Advancing to first question response is: ", response);
     } catch (err) {
       console.error("Failed to start game:", err.message);
     }
@@ -218,7 +219,7 @@ function HostGameView() {
 
       // Step 2: Fetch final results
       const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
-      setHostFinalResults(resultRes);
+      setHostFinalResults(resultRes.results);
       setStage('final');
     } catch (err) {
       console.error('❌ Failed to end game or fetch results:', err.message);
@@ -260,11 +261,12 @@ function HostGameView() {
 
           // No need to call END again, just fetch final results
           const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
-          setHostFinalResults(resultRes);
+          setHostFinalResults(resultRes.results);
           setStage('final');
         } else {
           setPosition((pos) => pos + 1);
-          setStage('countdown');
+          // setStage('countdown');
+          setStage('question');
         }
       }
     } catch (err) {
@@ -303,14 +305,14 @@ function HostGameView() {
         />
       )}
 
-      {stage === 'countdown' && (
+      {/* {stage === 'countdown' && (
         <Countdown
           position={Number(position) + 1}
           length={questions.length}
           question={questions[position]}
           onComplete={() => setStage('question')}
         />
-      )}
+      )} */}
 
       {questions.length === 0 && (stage === 'question' || stage === 'answer') && (
         <div className="text-center p-6 text-gray-500">Loading question...</div>
