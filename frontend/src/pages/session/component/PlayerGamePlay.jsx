@@ -171,3 +171,53 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
                       })}
                     </>
                   }
+
+                  {question.type === 'multiple' &&
+                    <>
+                      {filteredAnswers.map((choice, index) => {
+                        const colorClasses = [
+                          { base: 'bg-cyan-900', hover: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
+                          { base: 'bg-cyan-900', hover: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
+                          { base: 'bg-cyan-900', hover: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
+                          { base: 'bg-cyan-900', hover: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
+                          { base: 'bg-cyan-900', hover: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
+                          { base: 'bg-cyan-900', hover: 'bg-cyan-400', shadow: 'shadow-[0_4px_0_0_#066b7c]' },
+                        ];
+                        const color = colorClasses[index % colorClasses.length];
+                        const isSelected = selected.includes(index);
+                        const baseStyle = `min-h-20 sm:min-h-25 w-full flex justify-center items-center rounded-md
+                        transition-all duration-300 ease-in-out text-white hover:-translate-y-1`;
+                        const stateStyle = isSelected
+                          ? `${color.hover} ${color.shadow}`
+                          : `${color.base} ${color.shadow} hover:${color.hover}`;
+
+                        return (
+                          <button
+                            key={index}
+                            className={`${baseStyle} ${stateStyle}`}
+                            onClick={() => { isSelected
+                              ? (setSelected(selected.filter(i => i !== index)))  // remove
+                              : (setSelected([...selected, index]))               // add
+                            }}
+                          >
+                            {choice.text}
+                          </button>
+                        );
+                      })}
+                    </>
+                  }
+                </div>
+              </div>
+            </main>
+          </div>
+        </>
+      )}
+    </>
+  )
+}
+export default PlayerGamePlay;
+
+
+// React.useEffect(() => {
+//   console.log('Hello from page ------> PlayerGamePlay');
+// }, []);
