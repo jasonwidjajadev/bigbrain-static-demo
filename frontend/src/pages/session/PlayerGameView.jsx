@@ -193,3 +193,189 @@ function PlayerGameView() {
     const interval = setInterval(fetchQuestion, 1000);
     return () => clearInterval(interval);
   }, [playerId, hasStarted, gameOver]);
+
+
+
+
+
+
+
+
+
+
+
+
+  /**
+  question : {
+    "answers": [
+      0:{ "id": 1, "text": "4", "isCorrect": true },
+      1:{ "id": 2, "text": "5", "isCorrect": false },
+      2:{ "id": 3, "text": "6", "isCorrect": false },
+      3:{ "id": 4, "text": "7", "isCorrect": false },
+      4:{ "id": 5, "text": "8", "isCorrect": false },
+      5:{ "id": 6, "text": "9", "isCorrect": false },
+    duration:20,
+    id:1745055052585,
+    image:''
+    "isoTimeLastQuestionStarted": "2025-04-19T13:00:00.000Z"
+    points:10
+    text: "2+2"
+    type:multiple
+    video:""
+  }
+   */
+
+
+  // If the host skips during countdown, your PlayerGameView will poll a new question.
+  // React.useEffect(() => {
+  //   if (!question) return;
+  //   if (answered) return;
+  //   console.warn(" Host skipped — question changed mid-play. Resetting UI.");
+  //   setAnswered(false);
+  // }, [question.id]);
+
+
+
+  //* ==========================================================================
+  //* Submit Answers, PUT, /play/:playerid/answer
+  //* ==========================================================================
+
+  const submitAnswer = async (selectedAnswers) => {
+    if (answered) return;
+    if (!Array.isArray(selectedAnswers) || selectedAnswers[0] === -1) {
+      setAnswered(true);
+      setIndividualQuestionAnswerTime(new Date().toISOString());
+      setIndividualQuestionAnswer(selectedAnswers || []);
+      return;
+    }
+    try {
+      // console.log("Player is going to submit:", selectedAnswers);
+      // const res = await apiCall(`/play/${playerId}/answer`, 'PUT', { answers: selectedAnswers });
+      await apiCall(`/play/${playerId}/answer`, 'PUT', { answers: selectedAnswers });
+      setAnswered(true);
+      setIndividualQuestionAnswerTime(new Date().toISOString());
+      setIndividualQuestionAnswer(selectedAnswers);
+      // console.log("Player just submitted his/her answer, response:", res);
+
+
+    } catch (err) {
+      console.error('❌ Error submitting answer:', err.message);
+    }
+  };
+
+
+  //* ==========================================================================
+  //* Show Individual Question results, GET, /play/:playerid/answer
+  //* ==========================================================================
+
+
+  React.useEffect(() => {
+    if (!playerId || !answered || gameOver) return;
+    let interval = null;
+
+    const fetchSubmittedAnswer = async () => {
+      try {
+        const res = await apiCall(`/play/${playerId}/answer`, 'GET');
+        // setIndividualQuestionResult(res.answers);
+        setTimeout(() => {
+          setIndividualQuestionResult(res.answers);
+        }, 2000);
+        // console.log("The correct answer for the current question is:", res);
+        clearInterval(interval);
+
+      } catch (err) {
+
+        if (err.message.includes('Answers are not available yet')) {
+          // console.log("⏳ Waiting for host to reveal answers...");
+          console.log("⏳");
+        } else {
+          console.error('❌ Failed to fetch answer:', err.message);
+          // setError('Could not load correct answer.');
+          clearInterval(interval);
+        }
+      }
+    };
+
+    fetchSubmittedAnswer();
+    interval = setInterval(fetchSubmittedAnswer, 1000);
+
+    return () => clearInterval(interval);
+  }, [playerId, answered, gameOver]);
+
+
+
+  // React.useEffect(() => {
+  //   if (!playerId || !answered || gameOver || !question?.isoTimeLastQuestionStarted || !question?.duration) return;
+
+  //   let interval = null;
+  //   let timeout = null;
+
+  //   const fetchSubmittedAnswer = async () => {
+  //     try {
+  //       const res = await apiCall(`/play/${playerId}/answer`, 'GET');
+  //       setIndividualQuestionResult(res.answers);
+  //       console.log("✅ Correct answer is now revealed:", res);
+  //       clearInterval(interval);
+  //     } catch (err) {
+  //       if (err.message.includes('Answers are not available yet')) {
+  //         console.log("⏳ Waiting for host to reveal answers...");
+  //       } else {
+  //         console.error('❌ Failed to fetch answer:', err.message);
+  //         setError('Could not load correct answer.');
+  //         clearInterval(interval);
+  //       }
+  //     }
+  //   };
+
+  //   const hostStartTime = new Date(question.isoTimeLastQuestionStarted).getTime();
+  //   const now = Date.now();
+  //   const revealTime = hostStartTime + question.duration * 1000 + 2000;
+  //   const msUntilReveal = Math.max(0, Math.ceil(revealTime - now));
+
+  //   timeout = setTimeout(() => {
+  //     interval = setInterval(fetchSubmittedAnswer, 1000);
+  //   }, msUntilReveal);
+
+  //   return () => {
+  //     clearTimeout(timeout);
+  //     clearInterval(interval);
+  //   };
+  // }, [playerId, answered, gameOver, question]);
+
+
+
+  //* ==========================================================================
+  //* UI rendering
+  //* ==========================================================================
+
+  if (!playerId) return <div className="text-center p-6">🔐 Missing player ID. Redirecting...</div>;
+
+  if (error) return <div className="text-red-500 p-6 text-center">{error}</div>;
+
+  // if (!question) return <div className="text-center p-6">⏳ Waiting for next question...</div>;
+
+  return (
+    <>
+      {/* The game is over, show final result of game */}
+      { gameOver && results && <PlayerGameFinalResults results={results} history={answerHistory}/>}
+
+      {/* Player just joined now they are in lobby room waiting for host to start */}
+      { !hasStarted && !gameOver && <PlayerGameLobby />}
+
+      {/* ================================================================== */}
+
+      {/* Show question screen */}
+      {hasStarted && !gameOver && question && !answered && (
+        <PlayerGamePlay
+          question={question}
+          onSubmit={submitAnswer}
+          onComplete={submitAnswer}
+          answered={answered}
+        />
+      )}
+
+      {/* Intermidary before showing result of answer, showing player has submitted answer*/}
+      {/* If user has submitted an aswer, it shows answer has been submitted screen*/}
+      {hasStarted && !gameOver && answered && !individualQuestionResult  && (
+        <PlayerAnswerSubmitted />
+      )}
