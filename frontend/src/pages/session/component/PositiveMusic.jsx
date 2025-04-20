@@ -7,7 +7,7 @@ import lobby_music from '../../../assets/positive-orchestral-loop-287417.mp3';
 
 function PositiveMusic() {
   const audioRef = React.useRef(null);
-  const [volume, setVolume] = React.useState(0.5);
+  const [volume, setVolume] = React.useState(0.1);
   const [isMuted, setIsMuted] = React.useState(false);
   const [showDropdown, setShowDropdown] = React.useState(false);
   React.useEffect(() => {
