@@ -1,36 +1,71 @@
 import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { orangeButtonClass } from '../../../component/tailwind';
 import { Link } from 'react-router-dom';
+// import React from 'react';
 
-function PlayerGameResults({ history = [] }) {
+function PlayerGameResults({ results, history }) {
+  // React.useEffect(() => {
+  //   console.log('Hello from page ------> PlayerGameResults');
+  //   console.log('results', results);
+  //   console.log('history', history);
+  // }, []);
 
-  //TODO on refesh history will be lost?
-  const data = [
-    {
-      question: 'Who is the President of the US?',
-      yourAnswer: 'Joe Biden',
-      correctAnswer: 'Joe Biden',
-      points: 1000,
-      time: 5,
-      isCorrect: true,
-    },
-    {
-      question: 'Capital of France?',
-      yourAnswer: 'Lyon',
-      correctAnswer: 'Paris',
-      points: 0,
-      time: 7,
-      isCorrect: false,
-    },
-    {
-      question: '2 + 2 = ?',
-      yourAnswer: '4',
-      correctAnswer: '4',
-      points: 50,
-      time: 7,
-      isCorrect: true,
-    },
-  ];
+  const mergedData = results.map((resItem) => {
+    const matchedHistory = history.find(
+      (histItem) => histItem.isoTimeLastQuestionStarted === resItem.questionStartedAt
+    );
+    return {
+      result: resItem,
+      history: matchedHistory || {}
+    };
+  });
+
+  const calculateTimeTaken = (answered, started) => {
+    const timeAnswered = new Date(answered);
+    const timeStarted = new Date(started);
+    return Math.round((timeAnswered - timeStarted) / 1000);
+  };
+
+  const calculateScore = (isCorrect, timeTaken, maxTime, basePoints ) => {
+    if (!isCorrect) return 0;
+    const timeFactor = 1 - (timeTaken / maxTime);
+    const score = Math.max(0, Math.round(basePoints * timeFactor));
+    return score;
+  }
+
+  const data = mergedData.map((item) => {
+    const { history, result } = item;
+    const answers = history.answers || [];
+    const selectedIds = result.answers || [];
+
+    const playerAnswerTexts = answers
+      .filter(ans => selectedIds.includes(ans.id))
+      .map(ans => ans.text)
+      .join(', ');
+    // const playerAnswerTexts = selectedIds
+    //   .map(index => answers[index]?.text)
+    //   .filter(Boolean)
+    //   .join(', ');
+
+    const correctAnswerTexts = answers
+      .filter(ans => ans.isCorrect)
+      .map(ans => ans.text)
+      .join(', ');
+
+    const timeTaken = calculateTimeTaken(result.answeredAt, result.questionStartedAt);
+
+    return {
+      question: history.text || '',
+      yourAnswer: playerAnswerTexts || 'none',
+      correctAnswer: correctAnswerTexts || '',
+      points: history.duration && history.points != null
+        ? calculateScore(result.correct, timeTaken, history.duration, history.points)
+        : 'N/A',
+      time: timeTaken,
+      isCorrect: result.correct,
+    };
+  });
+
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
       <nav className="flex items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] gap-2 sm:gap-0">
@@ -43,7 +78,8 @@ function PlayerGameResults({ history = [] }) {
       <main className="flex-1 flex justify-center items-center text-center p-6 bg-cyan-800 pb-25 text-white">
         <div className="flex flex-col gap-8 sm:gap-10 w-full sm:w-auto">
           <h1 className="font-Nunito-ExtraBold text-3xl sm:text-5xl">🏆 Total Score:&nbsp;
-            {data.reduce((accumulator, data) => accumulator + data.points,0)}</h1>
+            {data.reduce((acc, q) => acc + (typeof q.points === 'number' ? q.points : 0), 0)}
+          </h1>
           <table className="min-w-full bg-white shadow-md rounded-md overflow-hidden font-bold">
             <thead className="bg-orange-500 text-white text-lg">
               <tr>
@@ -77,3 +113,79 @@ function PlayerGameResults({ history = [] }) {
 }
 
 export default PlayerGameResults;
+
+/*
+setAnswerHistory(prev => [
+  ...prev,
+  {
+    question: question.text,
+    yourAnswer: selectedAnswers.map(id => question.answers.find(a => a.id === id)?.text).join(', '),
+    correctAnswer: question.answers
+      .filter(a => a.isCorrect)
+      .map(a => a.text)
+      .join(', '),
+    points: res.score || 0,
+    time: res.timeTaken || 0,
+    isCorrect: res.correct,
+  }
+]);
+*/
+
+
+/*
+const data = [
+  {
+    question: 'Who is the President of the US?',
+    yourAnswer: 'Joe Biden',
+    correctAnswer: 'Joe Biden',
+    points: 1000,
+    time: 5,
+    isCorrect: true,
+  },
+  {
+    question: 'Capital of France?',
+    yourAnswer: 'Lyon',
+    correctAnswer: 'Paris',
+    points: 0,
+    time: 7,
+    isCorrect: false,
+  },
+  {
+    question: '2 + 2 = ?',
+    yourAnswer: '4',
+    correctAnswer: '4',
+    points: 50,
+    time: 7,
+    isCorrect: true,
+  },
+];
+*/
+
+/**
+questionStartedAt	      ISO string of when the question started for this player
+answeredAt	            ISO string of when the player submitted their answer
+answers	                List of submitted answer IDs (empty if timed out or skipped)
+correct	                Whether the answer matched the correct ones
+
+[
+  {
+    "questionStartedAt": "2024-04-19T12:00:00.000Z",
+    "answeredAt": "2024-04-19T12:00:07.000Z",
+    "answers": [2],
+    "correct": true
+  },
+  {
+    "questionStartedAt": "2024-04-19T12:01:00.000Z",
+    "answeredAt": "2024-04-19T12:01:08.000Z",
+    "answers": [3],
+    "correct": false
+  },
+  {
+    "questionStartedAt": null,
+    "answeredAt": null,
+    "answers": [],
+    "correct": false
+  }
+]
+
+*/
