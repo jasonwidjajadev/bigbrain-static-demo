@@ -7,7 +7,7 @@ import music_multiple from '../../../assets/multiple_puzzle-game-bright-casual-v
 
 function Music() {
   const audioRef = React.useRef(null);
-  const [volume, setVolume] = React.useState(0.5);
+  const [volume, setVolume] = React.useState(0.1);
   const [isMuted, setIsMuted] = React.useState(false);
   const [showDropdown, setShowDropdown] = React.useState(false);
   React.useEffect(() => {
