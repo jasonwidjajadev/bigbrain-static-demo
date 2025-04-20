@@ -1,20 +1,12 @@
 import React from 'react';
-// import { useLocation } from 'react-router-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { apiCall } from '../../util/apiCall';
-import Countdown from './component/Countdown'
 import PlayerGameLobby from './component/PlayerGameLobby'
 import PlayerGamePlay  from './component/PlayerGamePlay'
 import PlayerAnswerSubmitted from './component/PlayerAnswerSubmitted'
 import PlayerGameQuestionResult from './component/PlayerGameQuestionResult'
 import PlayerGameFinalResults from './component/PlayerGameFinalResults'
-
-// 1. POST    /play/join/:sessionid - join an active session as a new player
-// 2. GET     /play/:playerid/status
-// 4. GET     /play/:playerid/question
-// 5. GET     /play/:playerid/answer
-// 6. PUT     /play/:playerid/answer
-// 7. GET     /play/:playerid/results
+// import { useLocation } from 'react-router-dom';
 
 /**
  *
@@ -39,13 +31,15 @@ function PlayerGameView() {
   const [hasStarted, setHasStarted] = React.useState(false);
 
   // Question
-  const [countdownDone, setCountdownDone] = React.useState(false);
+  // const [countdownDone, setCountdownDone] = React.useState(false);
   const [question, setQuestion] = React.useState(null);
 
   // Answer
   // const [selectedAnswers, setSelectedAnswers] = React.useState([]);
   const [answered, setAnswered] = React.useState(false);
-  const [submittedAnswer, setSubmittedAnswer] = React.useState(null);
+  const [individualQuestionAnswer, setIndividualQuestionAnswer] = React.useState(null);
+  const [individualQuestionAnswerTime, setIndividualQuestionAnswerTime] = React.useState(null);
+  const [individualQuestionResult, setIndividualQuestionResult] = React.useState(null);
 
   // Result
   const [gameOver, setGameOver] = React.useState(false);
@@ -54,8 +48,9 @@ function PlayerGameView() {
 
   const [answerHistory, setAnswerHistory] = React.useState([]);
 
+
   //* ==========================================================================
-  //* Retrieve/ Validate playerId
+  //* 1. Retrieve/ Validate playerId
   //* ==========================================================================
 
   // origin = protocol + domain + port
@@ -79,55 +74,115 @@ function PlayerGameView() {
   // }, [location.state]);
 
   //* ==========================================================================
-  //* Lobby, check if game has started
+  //* 2. Check if Game is over + fetch results after game over
   //* ==========================================================================
-  // GET, /play/:playerid/status
+  // GET, /play/:playerid/results
 
   React.useEffect(() => {
-    if (!playerId || (hasStarted === true)) return;
-    const checkStatus = async () => {
+    if (!sessionId) return;
+    if (gameOver && playerId) {
+      const playerMap = JSON.parse(localStorage.getItem('playerMap') || '{}');
+      delete playerMap[sessionId];
+      localStorage.setItem('playerMap', JSON.stringify(playerMap));
+      console.log('✅ Cleaned up playerId from localStorage');
+    }
+  }, [gameOver, playerId, sessionId]);
+
+  //* ==========================================================================
+  //* 3. Lobby, check if game has started, GET, /play/:playerid/status
+  //* ==========================================================================
+
+  /* Initially
+  playerId = null -> set playerId
+  gameOver = false
+  hasStarted = false
+  */
+  React.useEffect(() => {
+    if (!playerId || gameOver) return;
+
+    const interval = setInterval(async () => {
       try {
         const res = await apiCall(`/play/${playerId}/status`, 'GET');
-        setHasStarted(res.started);
+        // console.log(res);
+        if (res.started === true) {
+          setHasStarted(true);
+          clearInterval(interval);
+          console.log('🚀 Game has started!');
+        }
       } catch (err) {
         console.error('❌ Failed to check game status:', err.message);
       }
-    };
+    }, 1000);
 
-    checkStatus();
-    const interval = setInterval(checkStatus, 1000);
     return () => clearInterval(interval);
-  }, [playerId, hasStarted]);
+  }, [playerId, gameOver]);
+
 
   //* ==========================================================================
-  //* Poll question or detect game over
+  //* Poll question, GET, /play/:playerid/question
   //* ==========================================================================
-  React.useEffect(() => {
-    if (question) {
-      setCountdownDone(false);
-    }
-  }, [question]);
 
-  // GET, /play/:playerid/question
+  const prevQuestionId = React.useRef(null);
+
+  // React.useEffect(() => {
+  //   if (!question) return;
+
+  //   setAnswered(false);
+  //   setIndividualQuestionAnswer(null);
+  //   setIndividualQuestionResult(null);
+  // }, [question?.id]);
 
   React.useEffect(() => {
-    if (!playerId || !hasStarted) return;
+    if (!playerId || !hasStarted || gameOver) return;
 
     const fetchQuestion = async () => {
       try {
         const res = await apiCall(`/play/${playerId}/question`, 'GET');
-        console.log(res);
-        if (res?.gameOver) {
-          setGameOver(true);
-        } else {
-          setQuestion(res);
+        // console.log("Fetching question from host: response", res);
+
+        // if (prevQuestionId.current && prevQuestionId.current !== res.id) {
+        //   console.warn('⚠️ Host skipped mid-question. Question was changed!');
+        //   // TODO toast, animation, cancel timer, etc
+        // }
+        // prevQuestionId.current = res.id;
+
+        // setQuestion(res.question);
+        // setAnswered(false);
+        const newQuestion = res.question;
+        if (prevQuestionId.current !== newQuestion.id) {
+          console.warn('⚠️ New question detected!');
+          console.warn(newQuestion);
+          prevQuestionId.current = newQuestion.id;
+          setQuestion(newQuestion);
+          setAnswerHistory((prev) => [...prev, newQuestion]);
           setAnswered(false);
+          setIndividualQuestionAnswer(null);
+          setIndividualQuestionResult(null);
+        } else {
+          // console.log('⏳ Same question, no state change.');
+          // console.log('.');
         }
+
+
       } catch (err) {
         const msg = err?.message || '';
         if (msg.includes('Session ID is not an active session')) {
-          console.warn('🛑 Session ended, showing final results...');
-          setGameOver(true);
+          console.warn('Session ended, showing final results...');
+          try {
+            const res2FinalResult = await apiCall(`/play/${playerId}/results`, 'GET');
+            console.log("The current is now over the result is:", res2FinalResult);
+
+            setResults(res2FinalResult);
+            setGameOver(true);
+          } catch (resErr) {
+            const resultErrMsg = resErr?.message || '';
+            if (resultErrMsg.includes('Session is ongoing')) {
+              console.log('⏳ Game still in progress — ignore premature session close.');
+            } else {
+              console.error('❌ Failed to fetch results after session ended:', resultErrMsg);
+              setError('Could not load final results.');
+            }
+          }
         } else {
           console.warn('⚠️ No question available yet:', msg);
         }
@@ -137,141 +192,4 @@ function PlayerGameView() {
     fetchQuestion();
     const interval = setInterval(fetchQuestion, 1000);
     return () => clearInterval(interval);
-  }, [playerId, hasStarted]);
-
-  //* ==========================================================================
-  //* Fetch results after game over
-  //* ==========================================================================
-  // GET, /play/:playerid/results
-  //TODO Do we calculate results by ourself for host and player
-
-  // fetch results and clear playerId when game ends
-  React.useEffect(() => {
-    if (!playerId || !gameOver) return;
-
-    const cleanup = async () => {
-      try {
-        const res = await apiCall(`/play/${playerId}/results`, 'GET');
-        setResults(res);
-      } catch (err) {
-        console.warn('⚠️ Could not fetch results:', err.message);
-      }
-
-      // Remove playerId from local storage
-      const playerMap = JSON.parse(localStorage.getItem('playerMap') || '{}');
-      delete playerMap[sessionId];
-      localStorage.setItem('playerMap', JSON.stringify(playerMap));
-    };
-    // if (gameOver && playerId) {
-    //   cleanup();
-    // }
-    cleanup();
-  }, [gameOver, playerId, sessionId]);
-
-
-  //* ==========================================================================
-  //* Submit Answers
-  //* ==========================================================================
-  // PUT, /play/:playerid/answer
-
-  const submitAnswer = async (selectedAnswers) => {
-    try {
-      await apiCall(`/play/${playerId}/answer`, 'PUT', { answers: selectedAnswers });
-      setAnswered(true);
-  
-      const res = await apiCall(`/play/${playerId}/answer`, 'GET');
-      setSubmittedAnswer(res);
-  
-      setAnswerHistory(prev => [
-        ...prev,
-        {
-          question: question.text,
-          yourAnswer: selectedAnswers.map(id => question.answers.find(a => a.id === id)?.text).join(', '),
-          correctAnswer: question.answers
-            .filter(a => a.isCorrect)
-            .map(a => a.text)
-            .join(', '),
-          points: res.score || 0,
-          time: res.timeTaken || 0,
-          isCorrect: res.correct,
-        }
-      ]);
-    } catch (err) {
-      console.error('❌ Error submitting answer:', err.message);
-      setError('Could not submit your answer.');
-    }
-  };
-  
-  //* ==========================================================================
-  //* Show Individual Question results
-  //* ==========================================================================
-
-  // GET, /play/:playerid/answer
-  React.useEffect(() => {
-    if (!playerId || !answered) return;
-
-    const fetchSubmittedAnswer = async () => {
-      try {
-        const res = await apiCall(`/play/${playerId}/answer`, 'GET');
-        setSubmittedAnswer(res);
-      } catch (err) {
-        console.error('❌ Failed to fetch submitted answer:', err.message);
-      }
-    };
-
-    fetchSubmittedAnswer();
-  }, [playerId, answered]);
-
-
-
-  //* ==========================================================================
-  //* UI rendering
-  //* ==========================================================================
-
-  if (!playerId) return <div className="text-center p-6">🔐 Missing player ID. Redirecting...</div>;
-
-  if (error) return <div className="text-red-500 p-6 text-center">{error}</div>;
-
-  if (!question) return <div className="text-center p-6">⏳ Waiting for next question...</div>;
-
-  return (
-    <>
-      {/* Player just joined now they are in lobby room waiting for host to start */}
-      { !hasStarted && <PlayerGameLobby />}
-
-      {/* The game is over, show final result of game */}
-      { gameOver && <PlayerGameFinalResults history={answerHistory}/>}
-
-      {/* Countdown before each question */}
-      {hasStarted && !gameOver && question && !countdownDone && (
-        <Countdown
-          question={question}
-          onComplete={() => setCountdownDone(true)}
-        />
-      )}
-
-      {/* Show question screen */}
-      {hasStarted && !gameOver && question && countdownDone && !answered && (
-        <PlayerGamePlay
-          question={question}
-          onSubmit={submitAnswer}
-        />
-      )}
-
-      {/* If user has submitted an aswer, it shows answer has been submitted screen*/}
-      {hasStarted && !gameOver && answered && (
-        <PlayerAnswerSubmitted />
-      )}
-
-      {/* Show if player got an answer right or wrong after each question */}
-      {hasStarted && !gameOver && answered && (
-        <PlayerGameQuestionResult
-          answer={submittedAnswer}
-          question={question}
-        />
-      )}
-    </>
-  );
-}
-
-export default PlayerGameView;
+  }, [playerId, hasStarted, gameOver]);
