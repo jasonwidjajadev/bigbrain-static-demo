@@ -58,7 +58,7 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
 
         {/* //*Quiz ID + Start Game */}
         <div className='mb-8 flex gap-5 mx-auto justify-between items-center'>
-          <div className='py-4 px-6 rounded-md bg-cyan-800 text-white flex flex-col items-center'>
+          <div className='py-4 px-4 rounded-md bg-cyan-800 text-white flex flex-col items-center'>
             <p className="text-md sm:text-xl font-Nunito-Medium mb-3"><span className='text-xl'>Join at&nbsp;&nbsp;</span>
               <Link to={`/quiz/join/${sessionId}`} className='font-bold underline'>www.bigbrain.com/join</Link>
             </p>
@@ -66,8 +66,8 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
               onClick={handleCopyToClipboard}
               title="Click to copy game PIN"
               aria-label="Copy to clipboard"
-              className="text-5xl sm:text-6xl font-Nunito-Black hover:cursor-pointer flex gap-1">
-              {sessionId} <LuCopy size={20} />
+              className="text-5xl sm:text-6xl font-Nunito-Black hover:cursor-pointer flex gap-2">
+              {sessionId} <LuCopy size={25} />
             </button>
           </div>
           <div className='hidden sm:block'>
