@@ -379,3 +379,106 @@ function PlayerGameView() {
       {hasStarted && !gameOver && answered && !individualQuestionResult  && (
         <PlayerAnswerSubmitted />
       )}
+
+      {/* ================================================================== */}
+      {/* Show if player got an answer right or wrong after each question */}
+      {hasStarted && !gameOver && answered && individualQuestionResult && (
+        <PlayerGameQuestionResult
+          playerAnswer={individualQuestionAnswer}
+          correctAnswer={individualQuestionResult}
+          currQuestion={question}
+          individualQuestionAnswerTime={individualQuestionAnswerTime}
+        />
+      )}
+    </>
+  );
+}
+
+export default PlayerGameView;
+
+
+
+
+
+
+
+/*
+  React.useEffect(() => {
+    if (!playerId || gameOver) return;
+    const checkIfGameOver = async () => {
+      try {
+        const res = await apiCall(`/play/${playerId}/results`, 'GET');
+        setResults(res);
+        setGameOver(true);
+      } catch (err) {
+        if (err.message?.includes('Session is ongoing')) {
+          console.log('⏳ Game is still in progress, continue to next step.');
+        } else {
+          console.error('❌ Failed to check results:', err.message);
+          setError('Something went wrong.');
+        }
+      }
+    };
+    checkIfGameOver();
+  }, [playerId, gameOver]);
+  */
+
+/**
+How does player know if a session has started, which API?
+    - GET /play/:playerid/status
+How does a player know if a session is inactive/game is over, which API?
+    - GET /play/:playerid/question or GET /play/:playerid/results(active = false)
+How does a player know if a question has b  een revealed?
+    - GET /play/:playerid/question
+How does a player know if question has timedout?
+    - isoTimeLastQuestionStarted, client coutdown, question.duration
+    - poll  GET /play/:playerid/answer, InputError: Answers are not available yet, then question hasn't ended.
+How does a player know that after question timeout it's in the answer reveal phase? and not yet the next question?
+    - GET /play/:playerid/answer: will succeeds, when it fails Answers are not available yet, it means you're still in the question phase.
+
+
+Explain what each API is useful for, there could be more than 1 use for each of them
+  1. POST    /play/join/:sessionid
+      - Registers a player
+      - Fails if session already started
+      - join an active session as a new player
+  2. GET     /play/:playerid/status
+      - Check if the host has started the game, Used to poll lobby → game transition
+      - { "started": true | false }
+
+  4. GET     /play/:playerid/question
+      - Get current question info, Player sees question, start countdown, Fails if game over or question not available
+      - The question window expired, question timeout: Session ID is not an active session
+      - or InputError: Question not found
+      - The host has skipped past the question.
+      - question.isoTimeLastQuestionStarted, time last started so can create your own countdown
+      - If the session is over, it throws: InputError: Session ID is not an active session
+  5. GET     /play/:playerid/answer
+      - Get correct answers for current question,
+          -  Used in answer reveal screen
+          - Also helps detect question timeout
+  6. PUT     /play/:playerid/answer
+          - Submit selected answer(s)
+          - Handles multiple/single answers
+          - Prevents submission after answer is revealed
+  7. GET     /play/:playerid/results
+      - Returns results only if session has ended (active = false). If the game is still
+          - InputError: Session is ongoing, cannot get results yet
+      - Fetch final results
+      - Used after game ends, Rejects if session is still active
+
+1. Player joins lobby → uses /status to check if game started
+2. Game starts → /question starts returning data
+3. Player sees question → uses isoTime + duration to countdown
+4. After time or submit → /answer becomes available
+5. Player enters answer reveal phase → calls /answer
+6. New question → repeat from step 3
+7. Session ends → /question fails → /results returns final scores
+
+
+
+1.Validate Player ID (localStorage)
+2.Check if Game Is Over
+3. Check if Game Has Started
+
+ */
