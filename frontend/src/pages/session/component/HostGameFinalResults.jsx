@@ -45,7 +45,7 @@ import { Link } from 'react-router-dom';
 import { apiCall } from '../../../util/apiCall';
 import { ConfettiSideCannons } from "./ConfettiSideCannons";
 import { TiggerSideCannon } from "./TiggerSideCannon";
-
+import Music from './ResultMusic';
 
 // import { Confetti } from "../../../components/magicui/confetti";
 // import confetti from "canvas-confetti";
@@ -57,23 +57,23 @@ function HostGameResults({sessionId, token, hostFinalResults}) {
   //   confettiRef.current?.fire({});
   // }, []);
 
-  React.useEffect(() => {
-    const toSee = async () => {
-      try {
-        const response = await apiCall(`/admin/session/${sessionId}/status`, 'GET', null, token);
-        const sessionStatus = response.results;
-        console.log(sessionStatus);
+  // React.useEffect(() => {
+  //   const toSee = async () => {
+  //     try {
+  //       const response = await apiCall(`/admin/session/${sessionId}/status`, 'GET', null, token);
+  //       const sessionStatus = response.results;
+  //       console.log(sessionStatus);
 
-        // const res2 = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
-        // console.log(res2);
+  //       // const res2 = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
+  //       // console.log(res2);
 
-        console.log(hostFinalResults);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    toSee();
-  }, [sessionId, token]);
+  //       console.log(hostFinalResults);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  //   toSee();
+  // }, [sessionId, token]);
 
 
   const data = [
@@ -85,14 +85,19 @@ function HostGameResults({sessionId, token, hostFinalResults}) {
   ];
   return (
     <div className="relative">
-      {hostFinalResults.results.length !== 0 && <ConfettiSideCannons />}
+      {/* {hostFinalResults.results.length !== 0 && <ConfettiSideCannons />} */}
+      {<ConfettiSideCannons />}
+
       <div className="min-h-screen overflow-y-auto flex flex-col
       bg-cover bg-center w-full overflow-hidden" style={{ backgroundImage: `url(${classroom})` }}>
 
         {/* //*NavBar */}
         <nav className=" flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
           <LinkLogoNavBar targetPath="/dashboard" />
-          <Link to="/dashboard"  className={`${orangeButtonClass} flex items-center gap-3 px-5`}><GoHomeFill />Dashboard</Link>
+          <div className='flex gap-3 items-center'>
+            <Music />
+            <Link to="/dashboard"  className={`${orangeButtonClass} flex items-center gap-3 px-5`}><GoHomeFill />Dashboard</Link>
+          </div>
         </nav>
 
         {/* //*Main */}
@@ -115,7 +120,7 @@ function HostGameResults({sessionId, token, hostFinalResults}) {
 
 
           <h1
-            onMouseEnter={hostFinalResults.results.length !== 0 && (() => TiggerSideCannon())}
+            // onMouseEnter={hostFinalResults.results.length !== 0 && (() => TiggerSideCannon())}
             className="text-5xl sm:text-7xl font-Nunito-ExtraBold mb-8 text-orange-500">🎉 Scoreboard</h1>
           {/* <div className="relative">
             <ConfettiButton>🏆 Scoreboard</ConfettiButton>
