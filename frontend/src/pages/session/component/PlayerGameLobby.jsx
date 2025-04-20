@@ -46,7 +46,7 @@ function PlayerGameLobby() {
           </div>
 
           {/* Dummy whitespace */}
-          <div className='w-[0px] sm:w-[50px] md:w-[100px] hidden sm:block'></div>
+          <div className='w-[0px] 2xl:w-[100px] hidden sm:block'></div>
         </div>
       </main>
     </div>
