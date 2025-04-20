@@ -64,9 +64,9 @@ function Dashboard() {
   // }, [games]);
 
   // UseEffect hook to update the active session data on Dashboard
-  React.useEffect(() => {
-    console.log("Updated activeSessionData state:", activeSessionData);
-  }, [activeSessionData]);
+  // React.useEffect(() => {
+  //   console.log("Updated activeSessionData state:", activeSessionData);
+  // }, [activeSessionData]);
 
   const getGamesToDisplay = async () => {
     try {
@@ -137,7 +137,7 @@ function Dashboard() {
 
   // Handler for play/host button click
   const handleStartSession = async (quizId) => {
-    console.log("Play game with ID:", quizId);
+    // console.log("Play game with ID:", quizId);
 
     try {
       // Find the game to get its details
@@ -360,7 +360,7 @@ function Dashboard() {
           )} */}
           {games ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {console.log("Triggering games", games)}
+              {/* {console.log("Triggering games", games)} */}
               {games.map((game, i) => (
                 <GameDashboardTile
                   key={i}
