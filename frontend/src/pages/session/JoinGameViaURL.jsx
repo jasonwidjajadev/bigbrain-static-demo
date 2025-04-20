@@ -39,8 +39,6 @@ function GameJoinViaURL() {
   async function goToLobby() {
     setLoading(true);
     try {
-      console.log('Attempting to join game with ID:', sessionIdInput);
-      console.log('Attempting to join game with nickName:', nickName);
       const data = await apiCall(`/play/join/${sessionIdInput}`, 'POST', {
         name: nickName.trim(),
       })
