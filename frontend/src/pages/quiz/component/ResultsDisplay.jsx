@@ -14,7 +14,9 @@ import ScoreboardComponent from "./ScoreboardComponent";
 import PercentageChartComponent from "./PercentageChartComponent";
 import ResponseTimeComponent from "./ResponseTimeComponent";
 
-function ResultsDisplay({ index, gameData, sessionId, sessionResults }) {
+function ResultsDisplay({ gameData, sessionResults }) {
+  console.log("Game Data is", gameData);
+  console.log("Sessions results", sessionResults);
   const [processedData, setProcessedData] = useState({
     players: [],
     questions: [],
@@ -23,8 +25,6 @@ function ResultsDisplay({ index, gameData, sessionId, sessionResults }) {
       scoreBoard: [],
     },
   });
-
-  const index_normalised = index + 1;
 
   const calculateTimeTaken = (answered, started) => {
     const timeAnswered = new Date(answered);

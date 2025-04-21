@@ -221,9 +221,7 @@ function QuizResults() {
                   className="tab-content"
                 >
                   <TabContent
-                    index={index}
                     gameData={specificGameData}
-                    sessionId={session.sessionId}
                     sessionResults={session.results}
                   />
                 </div>

@@ -1,14 +1,7 @@
 import ResultsDisplay from "./ResultsDisplay";
 
-function TabContent({ index, gameData, sessionId, sessionResults }) {
-  return (
-    <ResultsDisplay
-      index={index}
-      gameData={gameData}
-      sessionId={sessionId}
-      sessionResults={sessionResults}
-    />
-  );
+function TabContent({ gameData, sessionResults }) {
+  return <ResultsDisplay gameData={gameData} sessionResults={sessionResults} />;
 }
 
 export default TabContent;
