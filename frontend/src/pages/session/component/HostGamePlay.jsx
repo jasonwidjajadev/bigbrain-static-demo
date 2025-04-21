@@ -5,31 +5,36 @@ import { FaStop } from "react-icons/fa6";
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
 import classroom from '../../../assets/classroom_overlay.png';
 import chalkboard from '../../../assets/chalkboard.jpg';
-import Music from './Music';
 import Countdown from './Countdown'
+import Music from '../../../components/music/Music';
 
-
+/**
+ * HostGamePlay component handles the in-game quiz view from the host's perspective.
+ *
+ * - Displays countdown before showing the question.
+ * - Starts a timer once the question is shown.
+ * - Shows image, video, or fallback chalkboard background for the question.
+ * - Renders multiple-choice answers with styled buttons.
+ * - Allows the host to skip the question or end the game.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.question - The current question object
+ * @param {number} props.position - The index of the current question in the quiz
+ * @param {number} props.length - The total number of questions in the quiz
+ * @param {Function} props.onEnd - Callback to end the game session
+ * @param {Function} props.onNext - Callback to skip to the next question
+ * @param {Function} props.onComplete - Callback triggered when the question timer reaches zero
+ * @returns {JSX.Element} The rendered host question view
+ */
 function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
   const [count, setCount] = React.useState(Number(question.duration));
   const [showQuestion, setShowQuestion] = React.useState(false);
-  // React.useEffect(() => {
-  //   const countdown = setTimeout(() => {
-  //     setShowQuestion(true);
-  //   }, 3000);
-  //   return () => clearTimeout(countdown);
-  // }, []);
 
-  /*
-  React.useEffect(() => {
-    if (count <= 0) {
-      if (onComplete) onComplete();
-      return;
-    }
-    const timer = setTimeout(() => { setCount(prev => prev - 1); }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [count, onComplete]);
-  */
+  /**
+   * Starts the question countdown when it becomes visible.
+   * If the timer hits zero, triggers the `onComplete` callback.
+   */
   React.useEffect(() => {
     if (!showQuestion) return;
     if (count <= 0) {
@@ -45,6 +50,10 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
   }, [showQuestion, count, onComplete]);
 
   const filteredAnswers = question.answers.filter(answer => answer.text.trim() !== '');
+
+  /**
+   * Conditional UI rendering
+   */
   return (
     <>
       {!showQuestion ? (
@@ -62,7 +71,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
             {/* //*NavBar */}
             <nav className=" flex justify-between items-center px-3 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
               <LinkLogoNavBar targetPath="/dashboard" />
-              <div className='flex gap-2 sm:gap-4'>
+              <div className='flex gap-3 sm:gap-4'>
                 <Music className="mb-5"/>
                 <button
                   onClick={onEnd}
@@ -75,7 +84,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
                   <button
                     onClick={onNext}
                     disabled={count === 0}
-                    className={`${orangeButtonClass} flex items-center gap-3`}>
+                    className={`${orangeButtonClass} flex items-center gap-3 py-2.5`}>
                     <TbPlayerTrackNextFilled className="text-[22px]"/>Skip
                   </button>
                 </div>
@@ -84,8 +93,11 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
 
             {/* //*Main */}
             <main className="flex-1 flex flex-col justify-center items-center text-center p-4 sm:p-8">
-              <div className="w-full max-w-7xl mx-auto space-y-4 sm:space-y-8">
+              <div className="flex sm:hidden  flex-col items-center w-[150px] mb-4">
+                <div className="text-4xl font-Nunito-Bold h-20 w-20 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0">{count}</div>
+              </div>
 
+              <div className="w-full max-w-7xl mx-auto space-y-4 sm:space-y-8">
                 {/* //^ 1. Question */}
                 <div className="text-3xl sm:text-4xl md:text-5xl font-Nunito-ExtraBold break-words">
                   {question.text}
@@ -173,29 +185,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
         </>
       )}
     </>
-
   )
 }
-export default HostGamePlay;
 
-/*
-  "questions": [
-    {
-      "id": 1744972867568,
-      "type": "multiple",
-      "text": "1+1",
-      "duration": 20,
-      "points": 10,
-      "video": "",
-      "image": "",
-      "answers": [
-        {"id": 1, "text": "2","isCorrect": true},
-        {"id": 2,"text": "3","isCorrect": false},
-        {"id": 3,"text": "","isCorrect": false},
-        {"id": 4,"text": "","isCorrect": false},
-        {"id": 5,"text": "","isCorrect": false},
-        {"id": 6,"text": "","isCorrect": false}
-      ]
-    }
-  ]
-  */
+export default HostGamePlay;

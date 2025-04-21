@@ -1,11 +1,11 @@
 
+import React from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
-import React from 'react';
-import lobby_music from '../../../assets/positive-orchestral-loop-287417.mp3';
+import music_multiple from '../../assets/multiple_puzzle-game-bright-casual-video-game-music-249202.mp3';
 
-function PositiveMusic() {
+function Music() {
   const audioRef = React.useRef(null);
   const [volume, setVolume] = React.useState(0.1);
   const [isMuted, setIsMuted] = React.useState(false);
@@ -37,23 +37,7 @@ function PositiveMusic() {
   }, [isMuted]);
   return (
     <div className='-mt-1'>
-      <audio ref={audioRef} src={lobby_music} loop />
-      {/*
-        <div className={`${orangeButtonClass} flex items-center gap-3 px-5`} >
-        <button onClick={() => setIsMuted(!isMuted)}>
-          {isMuted ? <FaVolumeMute className='text-2xl' /> : <FaVolumeUp className='text-2xl'/>}
-        </button>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={(e) => setVolume(parseFloat(e.target.value))}
-          className="w-7 sm:w-20"
-        />
-        </div>
-      */}
+      <audio ref={audioRef} src={music_multiple} loop />
       <div
         className="relative inline-block"
         onMouseEnter={() => setShowDropdown(true)}
@@ -90,4 +74,4 @@ function PositiveMusic() {
   );
 }
 
-export default PositiveMusic;
+export default Music;
