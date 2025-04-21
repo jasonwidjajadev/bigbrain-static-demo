@@ -1,11 +1,21 @@
 import { Link } from 'react-router-dom';
-import LinkLogoNavBar from '../../component/LinkLogoNavBar';
 import { useAuthContext } from '../../context/useAuthContext';
 import Lottie from 'lottie-react';
 import BrainInactiveQuiz from '../../assets/BrainInactiveQuiz.json';
+import LinkLogoNavBar from '../../component/LinkLogoNavBar';
 
+/**
+ * InactiveGame component is shown when the player tries to join a quiz
+ * with an invalid or expired Game PIN.
+ *
+ * - Displays a Lottie animation indicating the game is inactive.
+ * - Provides feedback and a redirect link to the Join Game page.
+ * - If authenticated, the logo in the navbar routes to `/home`; otherwise, it routes to `/join`.
+ *
+ * @component
+ * @returns {JSX.Element} The inactive game error screen
+ */
 function InactiveGame() {
-
   const { token } = useAuthContext();
   const targetPath = token ? '/home' : '/join';
 
