@@ -2,14 +2,14 @@ import React from 'react';
 import { FaStop } from "react-icons/fa6";
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
 
-import classroom from '../../../assets/classroom_overlay.png';
-import chalkboard from '../../../assets/chalkboard.jpg';
+import classroom from '@/assets/classroom_overlay.png';
+import chalkboard from '@/assets/chalkboard.jpg';
 
 import Countdown from './Countdown'
-import Music from '../../../components/music/Music';
 
-import { orangeButtonClass } from '../../../component/tailwind';
-import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
+import Music from '@/components/music/Music';
+import { orangeButtonClass } from '@/components/tailwind';
+import LinkLogoNavBar from '@/components/LinkLogoNavBar';
 
 /**
  * HostGamePlay component handles the in-game quiz view from the host's perspective.

@@ -1,14 +1,5 @@
-/*
- const scoreboard data = [
-    { nickName: 'Tom', score: 3555 },
-    { nickName: 'Mark1', score: 2555 },
-    { nickName: 'Mark2', score: 1555 },
-    { nickName: 'Mark b', score: 555 },
-    { nickName: 'Mountain Panda', score: 5 },
-  ];
-*/
-import { Chart as ChartJS } from "chart.js/auto";
-import { Bar, Radar, Line } from "react-chartjs-2";
+// import { Chart as ChartJS } from "chart.js/auto";
+// import { Bar, Radar, Line } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import ScoreboardComponent from "./ScoreboardComponent";
 import PercentageChartComponent from "./PercentageChartComponent";

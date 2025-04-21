@@ -1,5 +1,5 @@
-import logonoborder from '../assets/logonoborder.png';
 import { Link } from 'react-router-dom';
+import logonoborder from '@/assets/logonoborder.png';
 
 const LinkLogoNavBar= ({targetPath}) => {
   return (

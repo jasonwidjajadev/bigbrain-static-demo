@@ -1,8 +1,8 @@
 import React from 'react';
-import { orangeButtonClass } from '../../../component/tailwind';
-import classroom from '../../../assets/classroom_overlay.png';
-import chalkboard from '../../../assets/chalkboard.jpg';
 import Countdown from './Countdown'
+import classroom from '@/assets/classroom_overlay.png';
+import chalkboard from '@/assets/chalkboard.jpg';
+import { orangeButtonClass } from '@/components/tailwind';
 
 /**
  * Renders the gameplay screen for a quiz question.

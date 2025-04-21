@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate,  useParams } from 'react-router-dom';
-import { useAuthContext } from "../../context/useAuthContext";
-import { apiCall } from '../../util/apiCall';
+
+import { useAuthContext } from "@/context/useAuthContext";
+import { apiCall } from '@/util/apiCall';
 
 import HostGameLobby from './component/HostGameLobby'
 import HostGamePlay from './component/HostGamePlay'

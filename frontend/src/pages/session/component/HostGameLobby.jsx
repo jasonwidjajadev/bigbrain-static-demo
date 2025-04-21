@@ -3,11 +3,12 @@ import { FaPlay } from "react-icons/fa";
 import { FaStop } from "react-icons/fa6";
 import { LuCopy } from "react-icons/lu";
 import { IoPerson } from "react-icons/io5";
-import classroom from '../../../assets/classroom_overlay.png';
-import Music from '../../../components/music/PositiveMusic';
 
-import { orangeButtonClass, lobbyNameClass } from '../../../component/tailwind';
-import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
+import classroom from '@/assets/classroom_overlay.png';
+import Music from '@/components/music/PositiveMusic';
+
+import { orangeButtonClass, lobbyNameClass } from '@/components/tailwind';
+import LinkLogoNavBar from '@/components/LinkLogoNavBar';
 
 /**
  * HostGameLobby component displays the waiting lobby before a quiz starts.

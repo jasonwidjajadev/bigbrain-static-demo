@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useAuthContext } from '../context/useAuthContext';
+import { useAuthContext } from '@/context/useAuthContext';
 
-import img_404 from '../assets/img_404.png';
-import LinkLogoNavBar from '../component/LinkLogoNavBar';
+import img_404 from '@/assets/img_404.png';
+import LinkLogoNavBar from '@/components/LinkLogoNavBar';
 
 /**
  * NotFound component displays a 404-style error page when a user navigates to a route that doesn't exist.

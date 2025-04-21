@@ -1,25 +1,25 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AuthProvider from './context/AuthContext';
+import AuthProvider from '@/context/AuthContext';
 
-import NotFound from './pages/NotFound';
-import Home from './pages/Home';
+import NotFound from '@/pages/NotFound';
+import Home from '@/pages/Home';
 
-import AuthLogin from './pages/auth/AuthLogin';
-import AuthRegister from './pages/auth/AuthRegister';
-import AuthLogout from './pages/auth/AuthLogout';
+import AuthLogin from '@/pages/auth/AuthLogin';
+import AuthRegister from '@/pages/auth/AuthRegister';
+import AuthLogout from '@/pages/auth/AuthLogout';
 
-import Dashboard from './pages/Dashboard';
-import QuizCreate from './pages/QuizCreate';
-import QuizEdit from './pages/QuizEdit';
-import QuestionEditor from './pages/QuestionEditor';
-import QuizResults from './pages/quiz/QuizResults'
+import Dashboard from '@/pages/Dashboard';
+import QuizCreate from '@/pages/quiz/QuizCreate';
+import QuizEdit from '@/pages/quiz/QuizEdit';
+import QuestionEditor from '@/pages/quiz/QuestionEditor';
+import QuizResults from '@/pages/quiz/QuizResults'
 
-import JoinGame from './pages/session/JoinGame';
-import JoinGameViaURL from './pages/session/JoinGameViaURL';
+import JoinGame from '@/pages/session/JoinGame';
+import JoinGameViaURL from '@/pages/session/JoinGameViaURL';
 
-import HostGameView from './pages/session/HostGameView';
-import PlayerGameView from './pages/session/PlayerGameView';
-import InactiveGame from './pages/session/InactiveGame';
+import HostGameView from '@/pages/session/HostGameView';
+import PlayerGameView from '@/pages/session/PlayerGameView';
+import InactiveGame from '@/pages/session/InactiveGame';
 
 /**
  * App is the root component that sets up routing and global auth context.

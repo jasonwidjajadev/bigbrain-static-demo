@@ -1,24 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuthContext } from "../context/useAuthContext";
-import LinkLogoNavBar from "../component/LinkLogoNavBar";
 import { RiAddCircleLine } from "react-icons/ri";
-import { orangeButtonClass } from "../component/tailwind";
-import {
-  fetchGames,
-  updateAllGames,
-  createGameSession,
-  stopGameSession,
-} from "../util/gamesApi";
-import GameDashboardTile from "../component/GameDashboardTile";
-
-import JoinGameButton from "../component/JoinGameButton";
 import { VscThreeBars } from "react-icons/vsc";
 import { TbLogout } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
 
-import DeleteConfirmationModal from "../component/DeleteConfirmationModal";
-import SessionStartModal from "../component/SessionStartModal";
+import { useAuthContext } from "@/context/useAuthContext";
+import { fetchGames, updateAllGames, createGameSession, stopGameSession } from "@/util/gamesApi";
+
+import GameDashboardTile from "@/components/GameDashboardTile";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import SessionStartModal from "@/components/SessionStartModal";
+
+import LinkLogoNavBar from "@/components/LinkLogoNavBar";
+import { orangeButtonClass } from "@/components/tailwind";
+import JoinGameButton from "@/components/JoinGameButton";
 
 function Dashboard() {
   /*
@@ -28,7 +24,7 @@ function Dashboard() {
   - Get the game thumbnail to display
   */
   const navigate = useNavigate();
-  const { token, email } = useAuthContext();
+  const { token } = useAuthContext();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -41,8 +37,6 @@ function Dashboard() {
   const [selectedSessionIndex, setSelectedSessionIndex] = useState(null);
 
   React.useEffect(() => {
-    // console.log("Initial token:", token);
-    // console.log("Initial email:", email);
     if (!token) {
       navigate("/home");
     } else {

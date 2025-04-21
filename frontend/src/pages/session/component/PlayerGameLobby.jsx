@@ -1,6 +1,6 @@
-import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import Typewriter from 'typewriter-effect';
-import tiger from '../../../assets/Tiger-unscreen.gif';
+import LinkLogoNavBar from '@/components/LinkLogoNavBar';
+import tiger from '@/assets/Tiger-unscreen.gif';
 
 /**
  * Displays the waiting lobby screen for players after they join a quiz.

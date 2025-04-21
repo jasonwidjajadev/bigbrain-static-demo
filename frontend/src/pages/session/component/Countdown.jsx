@@ -1,5 +1,5 @@
 import React from 'react';
-import classroom from '../../../assets/classroom_overlay.png';
+import classroom from '@/assets/classroom_overlay.png';
 
 /**
  * Countdown component shows a 3-second timer before revealing the actual question.

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { apiCall } from '../../util/apiCall';
+import { apiCall } from '@/util/apiCall';
+
 import PlayerGameLobby from './component/PlayerGameLobby'
 import PlayerGamePlay  from './component/PlayerGamePlay'
 import PlayerAnswerSubmitted from './component/PlayerAnswerSubmitted'

@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import { useAuthContext } from '../../context/useAuthContext';
 import Lottie from 'lottie-react';
-import BrainInactiveQuiz from '../../assets/BrainInactiveQuiz.json';
-import LinkLogoNavBar from '../../component/LinkLogoNavBar';
+
+import { useAuthContext } from '@/context/useAuthContext';
+import BrainInactiveQuiz from '@/assets/BrainInactiveQuiz.json';
+import LinkLogoNavBar from '@/components/LinkLogoNavBar';
 
 /**
  * InactiveGame component is shown when the player tries to join a quiz

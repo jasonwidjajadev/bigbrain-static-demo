@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useAuthContext } from "@/context/useAuthContext";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { fetchGames, getResultsForSessionId } from "@/util/gamesApi";
 
-import LinkLogoNavBar from "@/component/LinkLogoNavBar";
-import { RiAddCircleLine } from "react-icons/ri";
-import { orangeButtonClass } from "@/component/tailwind";
-import { VscThreeBars } from "react-icons/vsc";
 import { FaPlay } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
-import JoinGameButton from "@/component/JoinGameButton";
-import TabContent from "./component/TabContent";
+import { VscThreeBars } from "react-icons/vsc";
+import { RiAddCircleLine } from "react-icons/ri";
 
-/* 
+import { useAuthContext } from "@/context/useAuthContext";
+import { fetchGames, getResultsForSessionId } from "@/util/gamesApi";
+
+import LinkLogoNavBar from "@/components/LinkLogoNavBar";
+import JoinGameButton from "@/components/JoinGameButton";
+import { orangeButtonClass } from "@/components/tailwind";
+
+import TabContent from "@/pages/quiz/component/TabContent";
+
+/*
 Session results data structure looks as follows:
 [
   {
