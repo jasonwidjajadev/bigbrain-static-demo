@@ -97,24 +97,27 @@ function GameDashboardTile({
               <div
                 className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-cyan-100"
                 data-tip="Edit"
+                onClick={handleEditClick}
               >
-                <button onClick={handleEditClick}>
+                <button>
                   <LuPencil size={20} />
                 </button>
               </div>
               <div
                 className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-red-100"
                 data-tip="Delete"
+                onClick={handleDeleteClick}
               >
-                <button onClick={handleDeleteClick}>
+                <button>
                   <LuTrash2 size={20} />
                 </button>
               </div>
               <div
                 className="tooltip p-2 border-gray-300 flex justify-center items-center text-gray-600 hover:bg-gray-100"
                 data-tip="Previous Sessions"
+                onClick={handlePreviousSessionResults}
               >
-                <button onClick={handlePreviousSessionResults}>
+                <button>
                   <LuClipboardPaste size={20} />
                 </button>
               </div>

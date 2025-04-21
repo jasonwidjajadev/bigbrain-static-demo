@@ -25,6 +25,21 @@ export const updateAllGames = async (allGames, adminToken) => {
   }
 };
 
+export const getResultsForSessionId = async (sessionId, adminToken) => {
+  try {
+    const response = await apiCall(
+      `/admin/session/${sessionId}/results`,
+      "GET",
+      null,
+      adminToken
+    );
+    return response;
+  } catch (error) {
+    // TODO: popup error message if we want
+    throw new Error(error || "Something went wrong");
+  }
+};
+
 // Game Mutation Functions:
 const gameMutateHelper = async (quizId, token, mutationType) => {
   try {
