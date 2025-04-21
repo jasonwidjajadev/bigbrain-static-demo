@@ -253,7 +253,7 @@ function App() {
           <Route path='/quiz/edit/:quizId/:questionId' element={ <QuestionEditor/>} />
 
           {/* //~ ADMIN 2.5.2. 🙉🙉🙉 (For pairs only) Past game session results - Multiple API? , button from dashboard? */}
-          <Route path='/quiz/results/' element={ <QuizResults/>} />
+          <Route path='/quiz/results/:quizId' element={ <QuizResults/>} />
 
           {/* ============================================================== */}
           {/* //* ADMIN 2.4.1. Play Join , API CALL - POST/play/join/:sessionid,
