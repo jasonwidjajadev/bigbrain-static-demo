@@ -1,11 +1,13 @@
-import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { FaStop } from "react-icons/fa6";
-import { orangeButtonClass } from '../../../component/tailwind';
-import { TbPlayerTrackNextFilled } from "react-icons/tb";
-import classroom from '../../../assets/classroom_overlay.png';
 import { FaCheck } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
+import { TbPlayerTrackNextFilled } from "react-icons/tb";
+
+import classroom from '../../../assets/classroom_overlay.png';
 import chalkboard from '../../../assets/chalkboard.jpg';
+
+import { orangeButtonClass } from '../../../component/tailwind';
+import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 
 /**
  * HostQuestionResult component displays the result of a single quiz question from the host's perspective.

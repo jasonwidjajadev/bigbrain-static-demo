@@ -1,12 +1,15 @@
 import React from 'react';
-import { orangeButtonClass } from '../../../component/tailwind';
-import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { FaStop } from "react-icons/fa6";
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
+
 import classroom from '../../../assets/classroom_overlay.png';
 import chalkboard from '../../../assets/chalkboard.jpg';
+
 import Countdown from './Countdown'
 import Music from '../../../components/music/Music';
+
+import { orangeButtonClass } from '../../../component/tailwind';
+import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 
 /**
  * HostGamePlay component handles the in-game quiz view from the host's perspective.
@@ -68,7 +71,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
           <div className="min-h-screen overflow-y-auto flex flex-col
           bg-cover bg-center w-full overflow-hidden" style={{ backgroundImage: `url(${classroom})` }}>
 
-            {/* //*NavBar */}
+            {/* NavBar */}
             <nav className=" flex justify-between items-center px-3 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
               <LinkLogoNavBar targetPath="/dashboard" />
               <div className='flex gap-3 sm:gap-4'>
@@ -98,6 +101,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
               </div>
 
               <div className="w-full max-w-7xl mx-auto space-y-4 sm:space-y-8">
+
                 {/* //^ 1. Question */}
                 <div className="text-3xl sm:text-4xl md:text-5xl font-Nunito-ExtraBold break-words">
                   {question.text}

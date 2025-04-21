@@ -4,9 +4,10 @@ import { FaStop } from "react-icons/fa6";
 import { LuCopy } from "react-icons/lu";
 import { IoPerson } from "react-icons/io5";
 import classroom from '../../../assets/classroom_overlay.png';
+import Music from '../../../components/music/PositiveMusic';
+
 import { orangeButtonClass, lobbyNameClass } from '../../../component/tailwind';
 import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
-import Music from '../../../components/music/PositiveMusic';
 
 /**
  * HostGameLobby component displays the waiting lobby before a quiz starts.
