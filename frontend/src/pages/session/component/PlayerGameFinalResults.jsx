@@ -2,6 +2,15 @@ import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { orangeButtonClass } from '../../../component/tailwind';
 import { Link } from 'react-router-dom';
 
+/**
+ * Renders the final game results screen for a player after completing the quiz.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.results - Array of result data from the backend
+ * @param {Array<Object>} props.history - Array of question history data including answers, timing, and points
+ * @returns {JSX.Element} The rendered result page
+ */
 function PlayerGameResults({ results, history }) {
   const mergedData = results.map((resItem) => {
     const matchedHistory = history.find(
