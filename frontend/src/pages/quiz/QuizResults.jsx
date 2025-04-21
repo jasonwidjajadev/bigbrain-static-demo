@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuthContext } from "@/context/useAuthContext";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { fetchGames, getResultsForSessionId } from "@/util/gamesApi";
 
-import LinkLogoNavBar from "../component/LinkLogoNavBar";
+import LinkLogoNavBar from "@/component/LinkLogoNavBar";
 import { RiAddCircleLine } from "react-icons/ri";
-import { orangeButtonClass } from "../component/tailwind";
-import JoinGameButton from "../component/JoinGameButton";
+import { orangeButtonClass } from "@/component/tailwind";
 import { VscThreeBars } from "react-icons/vsc";
-import { TbLogout } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
+import { TbLogout } from "react-icons/tb";
+import JoinGameButton from "@/component/JoinGameButton";
+import TabContent from "./component/TabContent";
 
 /* 
 Session results data structure looks as follows:
@@ -74,6 +75,7 @@ Session results data structure looks as follows:
 function QuizResults() {
   const navigate = useNavigate();
   const { token } = useAuthContext();
+  const [specificGameData, setSpecificGameData] = useState({});
   const [sessionIdData, setSessionIdData] = useState([]);
   const [sessionResults, setSessionResults] = useState([]);
   const { quizId } = useParams();
@@ -91,9 +93,11 @@ function QuizResults() {
   const fetchData = async () => {
     try {
       // First get the old sessions
-      await getOldSessionIdData();
+      const oldSessionData = await getOldSessionIdData();
+      setSessionIdData(oldSessionData);
+
       // Then fetch results for each session
-      await fetchSessionResults();
+      await fetchSessionResults(oldSessionData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -106,9 +110,10 @@ function QuizResults() {
 
       // Seach through and match the id of the game we clicked on
       const specificGame = gamesData.filter((game) => game.id === quizIdInt);
+      setSpecificGameData(specificGame[0]);
       if (specificGame.length > 0) {
         const oldSessionData = specificGame[0].oldSessions;
-        setSessionIdData(oldSessionData);
+        return oldSessionData;
       } else {
         console.error("Game not found");
       }
@@ -117,11 +122,11 @@ function QuizResults() {
     }
   };
 
-  const fetchSessionResults = async () => {
+  const fetchSessionResults = async (oldSessionData) => {
     try {
       const results = [];
       // Get Sessions data
-      for (const sessionId of sessionIdData) {
+      for (const sessionId of oldSessionData) {
         const sessionData = await getResultsForSessionId(sessionId, token);
         results.push({ sessionId, results: sessionData.results });
       }
@@ -191,6 +196,44 @@ function QuizResults() {
           </div>
         </div>
       </nav>
+
+      {/* Quiz Old Sessions Results Page */}
+      <div className="flex-1 flex flex-col justify-start md:p-8">
+        <div className="w-full max-w-6xl">
+          <h1 className="flex justify-center text-3xl font-semibold text-left p-4 md:p-0 md:mb-4 text-orange-500 font-Nunito-ExtraBold">
+            Previous Sessions for {specificGameData.name}
+          </h1>
+        </div>
+        {sessionResults ? (
+          <div className="tabs tabs-box">
+            {sessionResults.map((session, index) => (
+              <React.Fragment key={`session-${session.sessionId}`}>
+                <input
+                  key={`tab-input-${session.sessionId}`}
+                  type="radio"
+                  name="sessionTabs"
+                  className="tab"
+                  aria-label={`Session ${index + 1}`}
+                  defaultChecked={index === 0}
+                />
+                <div
+                  key={`tab-content-${session.sessionId}`}
+                  className="tab-content"
+                >
+                  <TabContent
+                    index={index}
+                    gameData={specificGameData}
+                    sessionId={session.sessionId}
+                    sessionResults={session.results}
+                  />
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+        ) : (
+          <>Loading</>
+        )}
+      </div>
     </div>
   );
 }
