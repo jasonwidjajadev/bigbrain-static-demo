@@ -1,14 +1,28 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import LinkLogoNavBar from '../../component/LinkLogoNavBar';
-import { orangeButtonClass, input } from '../../component/tailwind';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthContext } from '../../context/useAuthContext';
 import { apiCall } from '../../util/apiCall';
 import register_img from '../../assets/auth/colorful_brain.png';
+import LinkLogoNavBar from '../../component/LinkLogoNavBar';
 import JoinGameButton from '../../component/JoinGameButton';
+import { orangeButtonClass, input } from '../../component/tailwind';
 
+/**
+ * AuthRegister component handles user registration.
+ *
+ * - Collects user name, email, password, and confirmation password.
+ * - Validates input fields (password match and length).
+ * - Sends registration request to `/admin/auth/register`.
+ * - Stores token and email in auth context on success and navigates to the dashboard.
+ * - Displays field-specific and backend error messages.
+ *
+ * @component
+ * @returns {JSX.Element} The user registration page UI
+ */
 function AuthRegister() {
+  /**
+   * If already logged in (token exists), redirect to the dashboard immediately.
+   */
   const navigate = useNavigate();
   const { token, setToken, setEmail} = useAuthContext();
   React.useEffect(() => {
@@ -25,6 +39,14 @@ function AuthRegister() {
   const [errorMessage, setErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
+  /**
+   * Sends registration request to backend and stores auth token on success.
+   * If registration fails due to email conflict, displays error below the email field.
+   *
+   * @async
+   * @function
+   * @returns {Promise<void>}
+   */
   async function submit() {
     setLoading(true);
     try {
@@ -49,6 +71,11 @@ function AuthRegister() {
     }
   }
 
+  /**
+   * Clears all client-side and backend validation error messages.
+   *
+   * @function
+   */
   const clearAllErrors = () => {
     setEmailErrors('');
     setPasswordErrors('');
@@ -56,6 +83,13 @@ function AuthRegister() {
     setErrorMessage('');
   };
 
+  /**
+   * Handles form submission.
+   * Validates password fields before sending the registration request.
+   *
+   * @function
+   * @param {React.FormEvent<HTMLFormElement>} e - Form submission event
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password.length < 6) {
@@ -70,6 +104,9 @@ function AuthRegister() {
     submit();
   };
 
+  /**
+   * Render UI
+   */
   return (
     <div className="min-h-screen flex flex-col font-sans overflow-y-auto">
       {/* Navbar */}

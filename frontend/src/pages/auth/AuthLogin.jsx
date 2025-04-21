@@ -19,20 +19,19 @@ import { orangeButtonClass, input } from '../../component/tailwind';
  * @returns {JSX.Element} The login page UI
  */
 function AuthLogin() {
-
+  /**
+   * If already logged in (token exists), redirect to the dashboard immediately.
+   */
   const navigate = useNavigate();
   const { token, setToken, setEmail } = useAuthContext();
+  React.useEffect(() => {
+    if (token) navigate('/dashboard');
+  }, [token, navigate]);
+
   const [emailInput, setEmailInput] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
-
-  /**
-   * If already logged in (token exists), redirect to the dashboard immediately.
-   */
-  React.useEffect(() => {
-    if (token) navigate('/dashboard');
-  }, [token, navigate]);
 
   /**
    * Handles form submission for login.
@@ -65,7 +64,7 @@ function AuthLogin() {
   };
 
   /**
-   * UI Rendering
+   * Render UI
    */
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col font-sans">
