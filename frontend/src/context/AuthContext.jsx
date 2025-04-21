@@ -3,6 +3,19 @@ import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
+/**
+ * AuthProvider sets up global authentication context using React Context API.
+ *
+ * - Persists token and email to localStorage.
+ * - Exposes `token`, `email`, and `logout` methods to consumers.
+ * - Loads saved credentials on initial render.
+ * - Redirects to `/home` on logout.
+ *
+ * @component
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Wrapped application components
+ * @returns {JSX.Element} AuthContext provider with value for auth state and functions
+ */
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [tokenReady, setTokenReady] = useState(false);
