@@ -2,6 +2,13 @@ import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import Typewriter from 'typewriter-effect';
 import tiger from '../../../assets/Tiger-unscreen.gif';
 
+/**
+ * Displays the waiting lobby screen for players after they join a quiz.
+ * Shows animated avatar, motivational messages, and a video while waiting for the host to start.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered lobby screen
+ */
 function PlayerGameLobby() {
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
@@ -52,4 +59,5 @@ function PlayerGameLobby() {
     </div>
   )
 }
+
 export default PlayerGameLobby;
