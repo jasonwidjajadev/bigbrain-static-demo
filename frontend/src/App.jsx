@@ -17,8 +17,8 @@ import QuizResults from '@/pages/quiz/QuizResults'
 import JoinGame from '@/pages/session/JoinGame';
 import JoinGameViaURL from '@/pages/session/JoinGameViaURL';
 
-import HostGameView from '@/pages/session/HostGameView';
-import PlayerGameView from '@/pages/session/PlayerGameView';
+import HostGameView from '@/pages/session/host/HostGameView';
+import PlayerGameView from '@/pages/session/player/PlayerGameView';
 import InactiveGame from '@/pages/session/InactiveGame';
 
 /**

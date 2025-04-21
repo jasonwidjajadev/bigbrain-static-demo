@@ -2,11 +2,11 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { apiCall } from '@/util/apiCall';
 
-import PlayerGameLobby from './component/PlayerGameLobby'
-import PlayerGamePlay  from './component/PlayerGamePlay'
-import PlayerAnswerSubmitted from './component/PlayerAnswerSubmitted'
-import PlayerGameQuestionResult from './component/PlayerGameQuestionResult'
-import PlayerGameFinalResults from './component/PlayerGameFinalResults'
+import PlayerGameLobby from './PlayerGameLobby'
+import PlayerGamePlay  from './PlayerGamePlay'
+import PlayerAnswerSubmitted from './PlayerAnswerSubmitted'
+import PlayerGameQuestionResult from './PlayerGameQuestionResult'
+import PlayerGameFinalResults from './PlayerGameFinalResults'
 
 /**
  * Main player-side game view.

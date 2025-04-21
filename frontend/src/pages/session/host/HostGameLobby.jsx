@@ -5,8 +5,8 @@ import { LuCopy } from "react-icons/lu";
 import { IoPerson } from "react-icons/io5";
 
 import classroom from '@/assets/classroom_overlay.png';
-import MusicPlayer from '@/components/music/MusicPlayer';
 import lobby_music from '@/assets/positive-orchestral-loop-287417.mp3';
+import MusicPlayer from '@/components/music/MusicPlayer';
 
 import { orangeButtonClass, lobbyNameClass } from '@/components/tailwind';
 import LinkLogoNavBar from '@/components/LinkLogoNavBar';

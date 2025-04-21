@@ -4,10 +4,10 @@ import { useNavigate,  useParams } from 'react-router-dom';
 import { useAuthContext } from "@/context/useAuthContext";
 import { apiCall } from '@/util/apiCall';
 
-import HostGameLobby from './component/HostGameLobby'
-import HostGamePlay from './component/HostGamePlay'
-import HostGameQuestionResult from './component/HostGameQuestionResult'
-import HostGameFinalResults from './component/HostGameFinalResults'
+import HostGameLobby from './HostGameLobby'
+import HostGamePlay from './HostGamePlay'
+import HostGameQuestionResult from './HostGameQuestionResult'
+import HostGameFinalResults from './HostGameFinalResults'
 
 /**
  * HostGameView is the main controller component for hosting a live quiz session.

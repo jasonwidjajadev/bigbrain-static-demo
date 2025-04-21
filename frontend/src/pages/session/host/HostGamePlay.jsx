@@ -4,10 +4,9 @@ import { TbPlayerTrackNextFilled } from "react-icons/tb";
 
 import classroom from '@/assets/classroom_overlay.png';
 import chalkboard from '@/assets/chalkboard.jpg';
-
-import Countdown from './Countdown'
-
 import music_multiple from '@/assets/multiple_puzzle-game-bright-casual-video-game-music-249202.mp3';
+
+import Countdown from '@/pages/session/Countdown'
 import MusicPlayer from '@/components/music/MusicPlayer';
 
 import { orangeButtonClass } from '@/components/tailwind';
