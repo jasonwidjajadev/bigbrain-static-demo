@@ -126,11 +126,11 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
                     {!question.video && !question.image &&
                       <div
                         className='h-[200px] sm:h-[400px] w-full
-                          text-4xl sm:text-6xl md:text-7xl text-emerald-100 font-ChalkLineOutline
+                          text-[45px] sm:text-6xl md:text-7xl text-emerald-100 font-ChalkLineOutline
                           border-10 sm:border-13 border-orange-300 shadow-md
                           flex justify-center items-center bg-cover bg-center break-words'
                         style={{ backgroundImage: `url(${chalkboard})` }}>
-                        Big Brain
+                        <span className="p-4">Big Brain</span>
                       </div>
                     }
 
