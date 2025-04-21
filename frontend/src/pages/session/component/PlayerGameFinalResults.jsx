@@ -1,15 +1,8 @@
 import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { orangeButtonClass } from '../../../component/tailwind';
 import { Link } from 'react-router-dom';
-// import React from 'react';
 
 function PlayerGameResults({ results, history }) {
-  // React.useEffect(() => {
-  //   console.log('Hello from page ------> PlayerGameResults');
-  //   console.log('results', results);
-  //   console.log('history', history);
-  // }, []);
-
   const mergedData = results.map((resItem) => {
     const matchedHistory = history.find(
       (histItem) => histItem.isoTimeLastQuestionStarted === resItem.questionStartedAt
@@ -42,10 +35,6 @@ function PlayerGameResults({ results, history }) {
       .filter(ans => selectedIds.includes(ans.id))
       .map(ans => ans.text)
       .join(', ');
-    // const playerAnswerTexts = selectedIds
-    //   .map(index => answers[index]?.text)
-    //   .filter(Boolean)
-    //   .join(', ');
 
     const correctAnswerTexts = answers
       .filter(ans => ans.isCorrect)
@@ -113,79 +102,3 @@ function PlayerGameResults({ results, history }) {
 }
 
 export default PlayerGameResults;
-
-/*
-setAnswerHistory(prev => [
-  ...prev,
-  {
-    question: question.text,
-    yourAnswer: selectedAnswers.map(id => question.answers.find(a => a.id === id)?.text).join(', '),
-    correctAnswer: question.answers
-      .filter(a => a.isCorrect)
-      .map(a => a.text)
-      .join(', '),
-    points: res.score || 0,
-    time: res.timeTaken || 0,
-    isCorrect: res.correct,
-  }
-]);
-*/
-
-
-/*
-const data = [
-  {
-    question: 'Who is the President of the US?',
-    yourAnswer: 'Joe Biden',
-    correctAnswer: 'Joe Biden',
-    points: 1000,
-    time: 5,
-    isCorrect: true,
-  },
-  {
-    question: 'Capital of France?',
-    yourAnswer: 'Lyon',
-    correctAnswer: 'Paris',
-    points: 0,
-    time: 7,
-    isCorrect: false,
-  },
-  {
-    question: '2 + 2 = ?',
-    yourAnswer: '4',
-    correctAnswer: '4',
-    points: 50,
-    time: 7,
-    isCorrect: true,
-  },
-];
-*/
-
-/**
-questionStartedAt	      ISO string of when the question started for this player
-answeredAt	            ISO string of when the player submitted their answer
-answers	                List of submitted answer IDs (empty if timed out or skipped)
-correct	                Whether the answer matched the correct ones
-
-[
-  {
-    "questionStartedAt": "2024-04-19T12:00:00.000Z",
-    "answeredAt": "2024-04-19T12:00:07.000Z",
-    "answers": [2],
-    "correct": true
-  },
-  {
-    "questionStartedAt": "2024-04-19T12:01:00.000Z",
-    "answeredAt": "2024-04-19T12:01:08.000Z",
-    "answers": [3],
-    "correct": false
-  },
-  {
-    "questionStartedAt": null,
-    "answeredAt": null,
-    "answers": [],
-    "correct": false
-  }
-]
-
-*/
