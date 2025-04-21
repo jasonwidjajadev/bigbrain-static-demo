@@ -95,7 +95,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
             </nav>
 
             {/* //*Main */}
-            <main className="flex-1 flex flex-col justify-center items-center text-center p-4 sm:p-8">
+            <main className="flex-1 flex flex-col justify-start items-center text-center p-4 sm:p-8">
               <div className="flex sm:hidden  flex-col items-center w-[150px] mb-4">
                 <div className="text-4xl font-Nunito-Bold h-20 w-20 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0">{count}</div>
               </div>
