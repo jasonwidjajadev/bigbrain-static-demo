@@ -12,6 +12,10 @@ import { Link } from 'react-router-dom';
  * @returns {JSX.Element} The rendered result page
  */
 function PlayerGameResults({ results, history }) {
+
+  /**
+   * Merges result and history data by matching the question start time.
+   */
   const mergedData = results.map((resItem) => {
     const matchedHistory = history.find(
       (histItem) => histItem.isoTimeLastQuestionStarted === resItem.questionStartedAt
@@ -22,12 +26,18 @@ function PlayerGameResults({ results, history }) {
     };
   });
 
+  /**
+   * Calculates the time taken by the player to answer a question in seconds.
+   */
   const calculateTimeTaken = (answered, started) => {
     const timeAnswered = new Date(answered);
     const timeStarted = new Date(started);
     return Math.round((timeAnswered - timeStarted) / 1000);
   };
 
+  /**
+   * Calculates the score based on whether the answer is correct and how fast it was answered.
+   */
   const calculateScore = (isCorrect, timeTaken, maxTime, basePoints ) => {
     if (!isCorrect) return 0;
     const timeFactor = 1 - (timeTaken / maxTime);
@@ -35,6 +45,9 @@ function PlayerGameResults({ results, history }) {
     return score;
   }
 
+  /**
+   * Builds a cleaned data array of the player's answers and performance per question.
+   */
   const data = mergedData.map((item) => {
     const { history, result } = item;
     const answers = history.answers || [];
@@ -64,6 +77,9 @@ function PlayerGameResults({ results, history }) {
     };
   });
 
+  /**
+   * Render UI for player final result page
+   */
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
       <nav className="flex items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] gap-2 sm:gap-0">
