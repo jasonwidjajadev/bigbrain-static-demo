@@ -7,7 +7,7 @@ import register_img from '@/assets/colorful_brain.png';
 import { orangeButtonClass, input } from '@/components/ui/tailwind';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 import JoinGameButton from '@/components/button/JoinGameButton';
-
+import FormInput from '@/components/inputs/FormInput';
 /**
  * AuthRegister component handles user registration.
  *
@@ -147,7 +147,7 @@ function AuthRegister() {
             {/* FORM */}
             <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               {/* Full Name */}
-              <div>
+              {/* <div>
                 <label htmlFor="name" className="block mb-1 text-sm font-medium">Full Name</label>
                 <input type="text" id="name" name="name" required autoComplete="name"
                   value={name} className={input} placeholder='Enter your name'
@@ -156,10 +156,22 @@ function AuthRegister() {
                     setErrorMessage('');
                   }}
                 />
-              </div>
+              </div> */}
+              <FormInput
+                label="Full Name"
+                type="text"
+                name="name"
+                autoComplete="name"
+                value={name}
+                placeholder="Enter your name"
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setErrorMessage('');
+                }}
+              />
 
               {/* Email */}
-              <div>
+              {/* <div>
                 <label htmlFor="emailInput" className="block mb-1 text-sm font-medium">Email address</label>
                 <input type="email" id="emailInput" name="emailInput" required autoComplete="email"
                   value={emailInput} className={input}
@@ -171,10 +183,23 @@ function AuthRegister() {
                   }}
                 />
                 {emailErrors && (<div className="text-red-500 text-sm mt-1" role="alert">{emailErrors}</div>)}
-              </div>
+              </div> */}
+              <FormInput
+                label="Email address"
+                type="email"
+                name="emailInput"
+                value={emailInput}
+                onChange={(e) => {
+                  setEmailInput(e.target.value);
+                  setEmailErrors('');
+                  setErrorMessage('');
+                }}
+                placeholder="Enter your email"
+                errorMessage={emailErrors}
+              />
 
               {/* Password */}
-              <div>
+              {/* <div>
                 <label htmlFor="password" className="block mb-1 text-sm font-medium">Password</label>
                 <input type="password" id="password" name="password"  required autoComplete="new-password"
                   minLength={6} value={password} className={input}
@@ -186,11 +211,25 @@ function AuthRegister() {
                   }}
                 />
                 {passwordErrors && (<div className="text-red-500 text-sm mt-1" role="alert">{passwordErrors}</div>)}
-              </div>
+              </div> */}
+              <FormInput
+                label="Password"
+                type="password"
+                name="password"
+                autoComplete="new-password"
+                placeholder="Enter your password"
+                value={password}
+                errorMessage={passwordErrors}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordErrors('');
+                  setErrorMessage('');
+                }}
+              />
 
 
               {/* Confirm Password */}
-              <div>
+              {/* <div>
                 <label htmlFor="confirmPassword" className="block mb-1 text-sm font-medium">Confirm Password</label>
                 <input type="password" id="confirmPassword" name="confirmPassword"  required autoComplete="new-password"
                   minLength={6}  value={confirmPassword} className={input}
@@ -202,7 +241,21 @@ function AuthRegister() {
                   }}
                 />
                 {confirmPasswordErrors && (<div className="text-red-500 text-sm mt-1" role="alert">{confirmPasswordErrors}</div>)}
-              </div>
+              </div> */}
+              <FormInput
+                label="Confirm Password"
+                type="password"
+                name="confirmPassword"
+                autoComplete="new-password"
+                placeholder="Confirm your password"
+                value={confirmPassword}
+                errorMessage={confirmPasswordErrors}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  setConfirmPasswordErrors('');
+                  setErrorMessage('');
+                }}
+              />
 
               {/* Backend Error */}
               {errorMessage && (<div className="text-red-500 text-sm mt-2" role="alert">{errorMessage}</div>)}
