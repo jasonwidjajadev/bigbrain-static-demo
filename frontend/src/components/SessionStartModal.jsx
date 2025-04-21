@@ -43,7 +43,7 @@ function SessionStartModal({
             Game Session Started!
           </h3>
           <p className="text-gray-600 mb-4">
-            Share this link with players to join "{gameTitle}"
+            Share this link with players to join &quot;{gameTitle}&quot;
           </p>
 
           {/* Session URL display */}
