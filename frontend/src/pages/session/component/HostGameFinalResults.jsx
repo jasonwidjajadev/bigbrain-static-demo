@@ -21,17 +21,17 @@ You should display the answers for that question.
 
 //TODO reuse card from game
 //TODO RHS statistic?
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 // import { useNavigate, Link } from 'react-router-dom';
 // import LogoNavBar from '../../component/LogoNavBar';
 // import { useLocation } from 'react-router-dom';
-import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
+import LinkLogoNavBar from "../../../component/LinkLogoNavBar";
 // import { FaStop } from "react-icons/fa6";
-import { orangeButtonClass } from '../../../component/tailwind';
+import { orangeButtonClass } from "../../../component/tailwind";
 // import { TbPlayerTrackNextFilled } from "react-icons/tb";
-import classroom from '../../../assets/classroom_overlay.png';
+import classroom from "../../../assets/classroom_overlay.png";
 // import logo_blue from '../../assets/logo_blue.png';
 // import white_house from '../../assets/white_house.png';
 // import chalkboard from '../../assets/chalkboard.jpg';
@@ -41,16 +41,19 @@ import classroom from '../../../assets/classroom_overlay.png';
 // import { MdSpaceDashboard } from "react-icons/md";
 // import { MdDashboard } from "react-icons/md";
 import { GoHomeFill } from "react-icons/go";
-import { Link } from 'react-router-dom';
-import { apiCall } from '../../../util/apiCall';
+import { Link } from "react-router-dom";
+import { apiCall } from "../../../util/apiCall";
 import { ConfettiSideCannons } from "./ConfettiSideCannons";
 import { TiggerSideCannon } from "./TiggerSideCannon";
-import Music from './ResultMusic';
+import Music from "./ResultMusic";
+import ResultsDisplay from "@/pages/quiz/component/ResultsDisplay";
 
 // import { Confetti } from "../../../components/magicui/confetti";
 // import confetti from "canvas-confetti";
 
-function HostGameResults({sessionId, token, hostFinalResults}) {
+function HostGameResults({ sessionId, token, quiz, hostFinalResults }) {
+  console.log("Quiz is", quiz);
+  console.log("Hostfinalresults", hostFinalResults);
   // const confettiRef = React.useRef(null);
 
   // React.useEffect(() => {
@@ -75,28 +78,28 @@ function HostGameResults({sessionId, token, hostFinalResults}) {
   //   toSee();
   // }, [sessionId, token]);
 
-
-  const data = [
-    { nickName: 'Tom', score: 3555 },
-    { nickName: 'Mark1', score: 2555 },
-    { nickName: 'Mark2', score: 1555 },
-    { nickName: 'Mark b', score: 555 },
-    { nickName: 'Mountain Panda', score: 5 },
-  ];
   return (
     <div className="relative">
       {/* {hostFinalResults.results.length !== 0 && <ConfettiSideCannons />} */}
       {<ConfettiSideCannons />}
 
-      <div className="min-h-screen overflow-y-auto flex flex-col
-      bg-cover bg-center w-full overflow-hidden" style={{ backgroundImage: `url(${classroom})` }}>
-
+      <div
+        className="min-h-screen overflow-y-auto flex flex-col
+      bg-cover bg-center w-full overflow-hidden"
+        style={{ backgroundImage: `url(${classroom})` }}
+      >
         {/* //*NavBar */}
         <nav className=" flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
           <LinkLogoNavBar targetPath="/dashboard" />
-          <div className='flex gap-3 items-center'>
+          <div className="flex gap-3 items-center">
             <Music />
-            <Link to="/dashboard"  className={`${orangeButtonClass} flex items-center gap-3 px-5`}><GoHomeFill />Dashboard</Link>
+            <Link
+              to="/dashboard"
+              className={`${orangeButtonClass} flex items-center gap-3 px-5`}
+            >
+              <GoHomeFill />
+              Dashboard
+            </Link>
           </div>
         </nav>
 
@@ -117,32 +120,10 @@ function HostGameResults({sessionId, token, hostFinalResults}) {
               }}
             />
           </div> */}
-
-
-          <h1
-            // onMouseEnter={hostFinalResults.results.length !== 0 && (() => TiggerSideCannon())}
-            className="text-5xl sm:text-7xl font-Nunito-ExtraBold mb-8 text-orange-500">🎉 Scoreboard</h1>
-          {/* <div className="relative">
-            <ConfettiButton>🏆 Scoreboard</ConfettiButton>
-          </div> */}
-          {/* Scoreboard List */}
-          <div className="w-full max-w-3xl space-y-3">
-            {data.map((result, index) => (
-              <div
-                key={index}
-                className={`flex justify-between items-center px-6 py-4 rounded-md shadow
-                  text-xl sm:text-2xl font-Nunito-ExtraBold
-                  ${index === 0 ? 'bg-orange-500' : 'bg-cyan-800'}`}
-              >
-                <span className="text-white">{result.nickName}</span>
-                <span className="text-white">{result.score}</span>
-              </div>
-            ))}
-          </div>
+          <ResultsDisplay gameData={quiz} sessionResults={hostFinalResults} />
         </main>
       </div>
     </div>
-
-  )
+  );
 }
 export default HostGameResults;
