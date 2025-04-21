@@ -291,6 +291,7 @@ function HostGameView() {
       {stage === 'final' && hostFinalResults && (
         <HostGameFinalResults
           hostFinalResults={hostFinalResults}
+          quiz={currQuiz}
           sessionId={sessionId}
           token={token}
         />
