@@ -1,33 +1,53 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import LinkLogoNavBar from '../../component/LinkLogoNavBar';
-import { orangeButtonClass } from '../../component/tailwind';
 import { useAuthContext } from '../../context/useAuthContext';
-import LogoBigRotate from '../../component/LogoBigRotate';
 import { apiCall } from '../../util/apiCall';
 import Typewriter from 'typewriter-effect';
+import LinkLogoNavBar from '../../component/LinkLogoNavBar';
+import LogoBigRotate from '../../component/LogoBigRotate';
+import { orangeButtonClass } from '../../component/tailwind';
 
+/**
+ * JoinGame component allows players to join a game session using a Game PIN and nickname.
+ *
+ * - Validates numeric-only Game PIN input.
+ * - Submits the join request to the backend.
+ * - Stores player ID in localStorage on success.
+ * - Redirects to the player lobby on successful join.
+ * - Displays helpful messages and error handling.
+ *
+ * @component
+ * @returns {JSX.Element} The Join Game page UI
+ */
 function JoinGame() {
-
-  //Show on navbar wether its dashboard or login
+  const navigate = useNavigate();
   const { token } = useAuthContext();
-  const authLink = token ? { path: '/dashboard', label: 'Dashboard' } : { path: '/auth/login', label: 'Log in' };
+  const authLink = token
+    ? { path: '/dashboard', label: 'Dashboard' }
+    : { path: '/auth/login', label: 'Log in' };
 
-  //Game Id and Nickname
   const [sessionIdInput, setSessionIdInput] = React.useState('');
   const [nickName, setNickName] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [isNickFocused, setIsNickFocused] = React.useState(false);
 
-  // Api Call
-  const navigate = useNavigate();
+  /**
+   * Sends a join request to the backend with the Game PIN and nickname.
+   * On success, stores the returned player ID in localStorage and redirects to the player lobby.
+   * Displays an error message on failure.
+   *
+   * @async
+   * @function
+   * @returns {Promise<void>}
+   */
   async function goToLobby() {
     setLoading(true);
     try {
       const data = await apiCall(`/play/join/${sessionIdInput}`, 'POST', {
         name: nickName.trim(),
       })
+
       //Store in local storage
       const playerMap = JSON.parse(localStorage.getItem('playerMap') || '{}');
       playerMap[sessionIdInput] = data.playerId;
@@ -50,6 +70,13 @@ function JoinGame() {
     }
   }
 
+  /**
+   * Handles form submission to join a game.
+   * Prevents default page reload and triggers the join flow.
+   *
+   * @function
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -58,6 +85,7 @@ function JoinGame() {
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
+
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <LinkLogoNavBar targetPath="/home" />
