@@ -59,7 +59,8 @@ function GameDashboardTile({
 
   return (
     <>
-      <div className="w-full h-[400px] bg-white rounded-md border border-gray-300 overflow-hidden drop-shadow-md">
+      <div className="w-full h-[400px] bg-white rounded-md border border-gray-300 overflow-hidden shadow-md
+        hover:scale-105 hover:shadow-lg transition duration-300">
         {/* Thumbnail section */}
         <div className="w-full h-[180px] bg-gray-300 relative">
           {game.thumbnail && (
