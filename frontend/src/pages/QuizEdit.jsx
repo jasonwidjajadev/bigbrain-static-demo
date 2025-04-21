@@ -3,12 +3,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../context/useAuthContext";
 import LogoNavBar from "../component/LogoNavBar";
 import { fetchGames, updateAllGames } from "../util/gamesApi";
-import { orangeButtonClass } from "../component/tailwind";
+import { orangeButtonClass, purpleButtonClass } from "../component/tailwind";
 import { RiAddCircleLine } from "react-icons/ri";
-import { LuSquarePlus } from "react-icons/lu";
+import { LuSquarePlus, LuUpload } from "react-icons/lu";
 import EditGameInfoTile from "../component/EditGameInfoTile";
 import EditQuizMetaDataModal from "../component/EditQuizMetaDataModal";
 import QuestionInfoTile from "../component/QuestionInfoTile";
+import CsvFileUploadModal from "./csvUtil/csvFileUploadModal";
+import { parseBigBrainCSV } from "./csvUtil/csvUtils";
 
 function AdminQuizEdit() {
   const [allGames, setAllGames] = useState([]);
@@ -16,6 +18,7 @@ function AdminQuizEdit() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const { token } = useAuthContext();
@@ -92,7 +95,6 @@ function AdminQuizEdit() {
     navigate("/dashboard");
   };
 
-  //TODO logic
   const handleAddQuestion = () => {
     console.log("Add question button clicked for game id: ", quizId);
     // Navigate to the new question editor route with 'new' as the question ID
@@ -102,6 +104,40 @@ function AdminQuizEdit() {
   const handleEditQuestion = (questionId) => {
     // Navigate to the question editor with the specific question ID
     navigate(`/quiz/edit/${quizId}/${questionId}`);
+  };
+
+  const handleCSVUpload = () => {
+    setIsFileUploadModalOpen(true);
+  };
+
+  const handleFileUpload = async (file) => {
+    try {
+      // Use the current quiz name and description if available
+      const quizName = currentQuiz?.name || "Imported Quiz";
+      const quizDescription =
+        currentQuiz?.description || "Quiz imported from CSV";
+
+      // Parse the CSV file
+      const quizData = await parseBigBrainCSV(file, quizName, quizDescription);
+
+      // Update the current quiz with the new data
+      const updatedQuiz = {
+        ...currentQuiz, // Keep existing quiz properties like ID
+        name: quizData.name,
+        description: quizData.description,
+        thumbnail: quizData.thumbnail || currentQuiz.thumbnail,
+        questions: quizData.questions,
+      };
+
+      // Update the quiz
+      await saveQuizChanges(updatedQuiz);
+
+      // Notify the user
+      alert("Quiz data successfully imported!");
+    } catch (error) {
+      console.error("Error processing CSV file:", error);
+      alert(error.message || "Error processing CSV file. Please try again.");
+    }
   };
 
   return (
@@ -156,6 +192,13 @@ function AdminQuizEdit() {
                 onClose={() => setIsEditModalOpen(false)}
                 onSave={saveQuizChanges}
               />
+
+              {/* File Upload Modal */}
+              <CsvFileUploadModal
+                isOpen={isFileUploadModalOpen}
+                onClose={() => setIsFileUploadModalOpen(false)}
+                onFileUpload={handleFileUpload}
+              />
             </>
           ) : (
             <div>No quiz data found</div>
@@ -165,7 +208,14 @@ function AdminQuizEdit() {
         {/* TODO: Add number of questions heading here */}
         <div className="flex flex-col w-full md:w-[80%] lg:w-[65%] gap-4">
           <div className="lg:flex lg:flex-3 ">
-            <div className="lg:flex lg:w-full ">
+            <div className="flex w-full justify-between">
+              <button
+                onClick={handleCSVUpload}
+                className={`${purpleButtonClass} flex items-center gap-1 px-5`}
+              >
+                <LuUpload /> CSV Import
+              </button>
+
               <button
                 onClick={handleAddQuestion}
                 className={`${orangeButtonClass} flex items-center gap-1 px-5`}
