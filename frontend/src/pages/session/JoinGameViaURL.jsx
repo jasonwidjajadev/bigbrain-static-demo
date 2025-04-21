@@ -1,27 +1,41 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import LinkLogoNavBar from '../../component/LinkLogoNavBar';
-import { orangeButtonClass } from '../../component/tailwind';
-import { useAuthContext } from '../../context/useAuthContext';
-import LogoBigRotate from '../../component/LogoBigRotate';
-import { apiCall } from '../../util/apiCall';
 import Typewriter from 'typewriter-effect';
+import { useAuthContext } from '../../context/useAuthContext';
+import { apiCall } from '../../util/apiCall';
+import LinkLogoNavBar from '../../component/LinkLogoNavBar';
+import LogoBigRotate from '../../component/LogoBigRotate';
+import { orangeButtonClass } from '../../component/tailwind';
 
+/**
+ * JoinGame component allows players to join a game session using a Game PIN and nickname.
+ *
+ * - Validates numeric-only Game PIN input.
+ * - Submits the join request to the backend.
+ * - Stores player ID in localStorage on success.
+ * - Redirects to the player lobby on successful join.
+ * - Displays helpful messages and error handling.
+ *
+ * @component
+ * @returns {JSX.Element} The Join Game page UI
+ */
 function GameJoinViaURL() {
 
-  //Show on navbar wether its dashboard or login
+  const navigate = useNavigate();
+  const { sessionId } = useParams();
   const { token } = useAuthContext();
   const authLink = token ? { path: '/dashboard', label: 'Dashboard' } : { path: '/auth/login', label: 'Log in' };
 
-  //Game Id and Nickname
   const [sessionIdInput, setSessionIdInput] = React.useState('');
-  const { sessionId } = useParams();
-
   const [nickName, setNickName] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [isNickFocused, setIsNickFocused] = React.useState(false);
 
+  /**
+   * When sessionId is available from the URL, pre-fill the session ID input field.
+   * Validates numeric-only input and sets the error message if needed.
+   */
   React.useEffect(() => {
     const value = sessionId?.trimStart() || '';
     setSessionIdInput(value);
@@ -34,8 +48,18 @@ function GameJoinViaURL() {
     }
   }, [sessionId]);
 
-  // Api Call
-  const navigate = useNavigate();
+  /**
+   * Sends a join request to the backend with the Game PIN and nickname.
+   * On success:
+   * - Stores playerId in localStorage
+   * - Redirects to the player lobby
+   * On failure:
+   * - Displays an error message
+   *
+   * @async
+   * @function
+   * @returns {Promise<void>}
+   */
   async function goToLobby() {
     setLoading(true);
     try {
@@ -65,6 +89,12 @@ function GameJoinViaURL() {
     }
   }
 
+  /**
+   * Handles form submission event.
+   * Prevents default reload and initiates the join flow.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - Form submit event
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -73,6 +103,7 @@ function GameJoinViaURL() {
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
+
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <LinkLogoNavBar targetPath="/home" />
@@ -83,7 +114,6 @@ function GameJoinViaURL() {
       <form
         onSubmit={handleSubmit}
         aria-label="Join Game form"
-        // bg-[#fabf24]
         className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-cyan-700 pb-25"
       >
         <div className="flex items-center mb-6 gap-5" >

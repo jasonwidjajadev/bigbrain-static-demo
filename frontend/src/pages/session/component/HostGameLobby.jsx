@@ -1,14 +1,37 @@
-import { FaPlay } from "react-icons/fa";
-import { orangeButtonClass, lobbyNameClass } from '../../../component/tailwind';
-import { FaStop } from "react-icons/fa6";
-import { IoPerson } from "react-icons/io5";
-import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { Link } from 'react-router-dom';
-import classroom from '../../../assets/classroom_overlay.png';
+import { FaPlay } from "react-icons/fa";
+import { FaStop } from "react-icons/fa6";
 import { LuCopy } from "react-icons/lu";
-import Music from './PositiveMusic';
+import { IoPerson } from "react-icons/io5";
+import classroom from '../../../assets/classroom_overlay.png';
+import Music from '../../../components/music/PositiveMusic';
 
+import { orangeButtonClass, lobbyNameClass } from '../../../component/tailwind';
+import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
+
+/**
+ * HostGameLobby component displays the waiting lobby before a quiz starts.
+ *
+ * - Shows the session ID and a copy-to-clipboard feature.
+ * - Displays a list of player nicknames who have joined.
+ * - Allows the host to start the game or end the session.
+ * - Responsive layout adapts to both small and large screens.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.sessionId - The unique game session ID
+ * @param {Function} props.showResults - Callback to end the session and show results
+ * @param {string[]} props.players - Array of player nicknames who have joined
+ * @param {Function} props.onStart - Callback to start the quiz
+ * @returns {JSX.Element} The rendered host lobby interface
+ */
 function HostGameLobby({sessionId, showResults, players, onStart}) {
+
+  /**
+   * Copies the session join URL to the user's clipboard.
+   *
+   * @function
+   */
   const handleCopyToClipboard = () => {
     const sessionUrl = `${window.location.origin}/join/${sessionId}`;
     navigator.clipboard.writeText(sessionUrl);
@@ -16,20 +39,22 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
+
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <LinkLogoNavBar targetPath="/home" />
 
         {/* For Small Screen */}
         <div className="flex gap-3 sm:gap-4 items-center">
-          <div className='block sm:hidden pl-2'>
+          <Music className="mb-5"/>
+          <button
+            className={`${orangeButtonClass} flex items-center gap-3 px-2`}
+            onClick={showResults}
+          >
+            <FaStop className="text-[22px]"/>End
+          </button>
+          <div className='block sm:hidden'>
             <div className='flex items-center gap-4 text-cyan-800'>
-              {/* <div className='flex gap-2 mt-1'>
-                <IoPerson className='text-3xl'/>
-                <span className='text-3xl sm:text-4xl font-Nunito-ExtraBold'>
-                  {players.length}
-                </span>
-              </div> */}
               <button
                 className={`${orangeButtonClass} flex items-center gap-2 px-5`}
                 onClick={onStart}
@@ -38,16 +63,6 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
               </button>
             </div>
           </div>
-
-          <Music className="mb-5"/>
-
-          {/* End Game while in -1 position */}
-          <button
-            className={`${orangeButtonClass} flex items-center gap-3 px-5`}
-            onClick={showResults}
-          >
-            <FaStop className="text-[22px]"/>End
-          </button>
         </div>
       </nav>
 

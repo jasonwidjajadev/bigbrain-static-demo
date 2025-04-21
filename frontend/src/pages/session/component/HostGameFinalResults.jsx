@@ -1,94 +1,41 @@
-/*
-From 2.3.3. Advancing & getting the results of a game:
-
-Once the game session has finished, it should display the following: 
-
-A table of up to top 5 users and their score
-
-A bar/line chart showing a breakdown of what percentage of people (Y axis) got certain questions (X axis) correct
-
-A chart showing the average response/answer time for each question
-
-Any other interesting information you see fit (Bonus mark can be granted for this based on your implementation)
-
-
-When the admin ends a session before the final question is answered, should the results page for the player also be displayed?
-Yes, you should show the results page
-
-Also when the timer hits 0 on the last question, do we display the answers for that question or immediately display the results for the session?
-You should display the answers for that question.
-*/
-
-//TODO reuse card from game
-//TODO RHS statistic?
 "use client";
 
-import React from "react";
-// import { useNavigate, Link } from 'react-router-dom';
-// import LogoNavBar from '../../component/LogoNavBar';
-// import { useLocation } from 'react-router-dom';
-import LinkLogoNavBar from "../../../component/LinkLogoNavBar";
-// import { FaStop } from "react-icons/fa6";
-import { orangeButtonClass } from "../../../component/tailwind";
-// import { TbPlayerTrackNextFilled } from "react-icons/tb";
-import classroom from "../../../assets/classroom_overlay.png";
-// import logo_blue from '../../assets/logo_blue.png';
-// import white_house from '../../assets/white_house.png';
-// import chalkboard from '../../assets/chalkboard.jpg';
-// import { FaCheck } from "react-icons/fa";
-// import { IoCloseSharp } from "react-icons/io5";
-// import { AiOutlineClose } from "react-icons/ai";
-// import { MdSpaceDashboard } from "react-icons/md";
-// import { MdDashboard } from "react-icons/md";
-import { GoHomeFill } from "react-icons/go";
 import { Link } from "react-router-dom";
-import { apiCall } from "../../../util/apiCall";
-import { ConfettiSideCannons } from "./ConfettiSideCannons";
-import { TiggerSideCannon } from "./TiggerSideCannon";
-import Music from "./ResultMusic";
+import { GoHomeFill } from "react-icons/go";
+import classroom from "../../../assets/classroom_overlay.png";
+
+// import { TiggerSideCannon } from "../../../components/confetti/TiggerSideCannon";
+import { ConfettiSideCannons } from "../../../components/confetti/ConfettiSideCannons";
+import Music from "../../../components/music/ResultMusic";
+
+import LinkLogoNavBar from "../../../component/LinkLogoNavBar";
+import { orangeButtonClass } from "../../../component/tailwind";
 import ResultsDisplay from "@/pages/quiz/component/ResultsDisplay";
 
-// import { Confetti } from "../../../components/magicui/confetti";
-// import confetti from "canvas-confetti";
-
-function HostGameResults({ sessionId, token, quiz, hostFinalResults }) {
-  console.log("Quiz is", quiz);
-  console.log("Hostfinalresults", hostFinalResults);
-  // const confettiRef = React.useRef(null);
-
-  // React.useEffect(() => {
-  //   confettiRef.current?.fire({});
-  // }, []);
-
-  // React.useEffect(() => {
-  //   const toSee = async () => {
-  //     try {
-  //       const response = await apiCall(`/admin/session/${sessionId}/status`, 'GET', null, token);
-  //       const sessionStatus = response.results;
-  //       console.log(sessionStatus);
-
-  //       // const res2 = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
-  //       // console.log(res2);
-
-  //       console.log(hostFinalResults);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  //   toSee();
-  // }, [sessionId, token]);
+/**
+ * HostGameResults component displays the final results after a quiz ends, from the host's perspective.
+ *
+ * - Renders celebration effects (confetti cannons).
+ * - Shows the final scoreboard and statistics via `ResultsDisplay`.
+ * - Displays a music player and navigation button to return to the dashboard.
+ * - Background and layout are styled to match the quiz theme.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.quiz - The quiz metadata (e.g., title, questions)
+ * @param {Array<Object>} props.hostFinalResults - The final results of the game (e.g., player scores, ranks)
+ * @returns {JSX.Element} The rendered host results page
+ */
+function HostGameResults({ quiz, hostFinalResults }) {
 
   return (
     <div className="relative">
-      {/* {hostFinalResults.results.length !== 0 && <ConfettiSideCannons />} */}
       {<ConfettiSideCannons />}
-
       <div
-        className="min-h-screen overflow-y-auto flex flex-col
-      bg-cover bg-center w-full overflow-hidden"
+        className="min-h-screen overflow-y-auto flex flex-col bg-cover bg-center w-full overflow-hidden"
         style={{ backgroundImage: `url(${classroom})` }}
       >
-        {/* //*NavBar */}
+        {/* NavBar */}
         <nav className=" flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
           <LinkLogoNavBar targetPath="/dashboard" />
           <div className="flex gap-3 items-center">
@@ -103,27 +50,14 @@ function HostGameResults({ sessionId, token, quiz, hostFinalResults }) {
           </div>
         </nav>
 
-        {/* //*Main */}
+        {/* Main */}
         <main className="flex-1 flex flex-col justify-center items-center text-center p-4 sm:p-8">
-          {/* <Confetti
-            ref={confettiRef}
-            className="absolute inset-0 z-0 pointer-events-none"
-          /> */}
-          {/* <Confetti ref={confettiRef} className="absolute inset-0 z-0" /> */}
-          {/* <div className="relative flex h-[100px] w-full flex-col items-center justify-center overflow-hidden">
-            <h1 className="text-5xl sm:text-7xl font-Nunito-ExtraBold mb-8 text-orange-500">🏆 Scoreboard</h1>
-            <Confetti
-              ref={confettiRef}
-              className="absolute left-0 top-0 z-0 size-full"
-              onMouseEnter={() => {
-                confettiRef.current?.fire({});
-              }}
-            />
-          </div> */}
           <ResultsDisplay gameData={quiz} sessionResults={hostFinalResults} />
         </main>
+
       </div>
     </div>
   );
 }
+
 export default HostGameResults;

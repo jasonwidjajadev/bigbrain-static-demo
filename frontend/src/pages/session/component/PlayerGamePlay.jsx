@@ -4,13 +4,27 @@ import classroom from '../../../assets/classroom_overlay.png';
 import chalkboard from '../../../assets/chalkboard.jpg';
 import Countdown from './Countdown'
 
+/**
+ * Renders the gameplay screen for a quiz question.
+ * Handles countdown timer, answer selection, and submission logic.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.question - The current question data (text, type, answers, media, duration)
+ * @param {Function} props.onSubmit - Callback to submit selected answer(s)
+ * @param {Function} props.onComplete - Callback called when the timer finishes
+ * @param {boolean} props.answered - Whether the player has already submitted an answer
+ * @returns {JSX.Element} The rendered question gameplay screen
+ */
 function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
   const [selected, setSelected] = React.useState([]);
   const [count, setCount] = React.useState(Number(question.duration));
   const [showQuestion, setShowQuestion] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
 
-  // Reset when question changes
+  /**
+   * Reset state when question ID changes (new question is loaded).
+   */
   React.useEffect(() => {
     if (!question?.id) return;
     setSelected([]);
@@ -19,6 +33,9 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
     setShowQuestion(false);
   }, [question.id]);
 
+  /**
+   * Countdown timer logic. Automatically submits an answer when time is up.
+   */
   React.useEffect(() => {
     if (!showQuestion || submitted || answered) return;
     if (count <= 0) {
@@ -34,6 +51,10 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
     return () => clearTimeout(timer);
   }, [showQuestion, count, onComplete, answered]);
 
+  /**
+   * Handles submission of answers.
+   *
+   */
   const handleSubmit = (answers) => {
     if (submitted || answered) return;
     setSubmitted(true);
@@ -41,6 +62,10 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
   };
 
   const filteredAnswers = question.answers.filter(answer => answer.text.trim() !== '');
+
+  /**
+   * Render the gameplay interface, including countdown, question, media, answers, and submission buttons.
+   */
   return (
     <>
       {!showQuestion ? (
@@ -60,7 +85,6 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
               <div className='block sm:hidden'>
                 <nav className=" flex justify-end px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
                   <button
-                    // onClick={() => handleSubmit(selected.map(i => question.answers[i].id))}
                     onClick={() =>
                       handleSubmit(selected.map(i => filteredAnswers[i]?.id))
                     }
@@ -74,7 +98,7 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
             }
 
             {/* //*Main */}
-            <main className="flex-1 flex flex-col justify-center items-center text-center p-4 sm:p-8">
+            <main className="flex-1 flex flex-col justify-start items-center text-center p-4 sm:p-8">
               <div className="w-full max-w-7xl mx-auto space-y-4 sm:space-y-8">
 
                 {/* //^ 1. Question ======================================== */}
@@ -125,7 +149,6 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
                   <div className='w-35 hidden sm:block'>
                     {question.type === 'multiple' &&
                       <button
-                        // onClick={() => handleSubmit(selected.map(i => question.answers[i].id))}
                         onClick={() =>
                           handleSubmit(selected.map(i => filteredAnswers[i]?.id))
                         }
@@ -215,9 +238,5 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
     </>
   )
 }
+
 export default PlayerGamePlay;
-
-
-// React.useEffect(() => {
-//   console.log('Hello from page ------> PlayerGamePlay');
-// }, []);

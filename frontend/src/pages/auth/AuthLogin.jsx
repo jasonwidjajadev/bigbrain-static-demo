@@ -1,14 +1,27 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import LinkLogoNavBar from '../../component/LinkLogoNavBar';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthContext } from '../../context/useAuthContext';
 import { apiCall } from '../../util/apiCall';
-import { orangeButtonClass, input } from '../../component/tailwind';
 import register_img from '../../assets/auth/door.jpg';
+import LinkLogoNavBar from '../../component/LinkLogoNavBar';
 import JoinGameButton from '../../component/JoinGameButton';
+import { orangeButtonClass, input } from '../../component/tailwind';
 
+/**
+ * AuthLogin component handles user authentication via email and password.
+ *
+ * - Redirects authenticated users to the dashboard.
+ * - Sends login request to the backend via `/admin/auth/login`.
+ * - Stores JWT token and email in global auth context.
+ * - Displays loading state and backend error messages.
+ *
+ * @component
+ * @returns {JSX.Element} The login page UI
+ */
 function AuthLogin() {
+  /**
+   * If already logged in (token exists), redirect to the dashboard immediately.
+   */
   const navigate = useNavigate();
   const { token, setToken, setEmail } = useAuthContext();
   React.useEffect(() => {
@@ -20,6 +33,15 @@ function AuthLogin() {
   const [errorMessage, setErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
+  /**
+   * Handles form submission for login.
+   * Sends email/password to backend and stores token in auth context.
+   * Redirects to `/dashboard` on success or shows an error on failure.
+   *
+   * @async
+   * @function
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -41,6 +63,9 @@ function AuthLogin() {
     }
   };
 
+  /**
+   * Render UI
+   */
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col font-sans">
       {/* Navbar */}

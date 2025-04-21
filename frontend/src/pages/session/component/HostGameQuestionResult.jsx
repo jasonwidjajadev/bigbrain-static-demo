@@ -1,130 +1,39 @@
-import React from 'react';
-import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 import { FaStop } from "react-icons/fa6";
-import { orangeButtonClass } from '../../../component/tailwind';
-import { TbPlayerTrackNextFilled } from "react-icons/tb";
-import classroom from '../../../assets/classroom_overlay.png';
 import { FaCheck } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
+import { TbPlayerTrackNextFilled } from "react-icons/tb";
+
+import classroom from '../../../assets/classroom_overlay.png';
 import chalkboard from '../../../assets/chalkboard.jpg';
 
-// import { useNavigate, Link } from 'react-router-dom';
-// import LogoNavBar from '../../component/LogoNavBar';
-// import { useLocation } from 'react-router-dom';
-// import logo_blue from '../../assets/logo_blue.png';
-// import white_house from '../../assets/white_house.png';
-// import { AiOutlineClose } from "react-icons/ai";
-import { apiCall } from '../../../util/apiCall';
+import { orangeButtonClass } from '../../../component/tailwind';
+import LinkLogoNavBar from '../../../component/LinkLogoNavBar';
 
-
-function HostQuestionResult({sessionId, token, question, position, length, onEnd, onNext}) {
-  // const [selected, setSelected] = React.useState([]);
-
-
-  // React.useEffect(() => {
-  //   const toSee = async () => {
-  //     try {
-  //       const response = await apiCall(`/admin/session/${sessionId}/status`, 'GET', null, token);
-  //       const sessionStatus = response.results;
-  //       console.log(sessionStatus);
-
-  //       const res2 = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
-  //       console.log(res2);
-
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  //   toSee();
-  // }, [sessionId, token]);
-
-
-  //===========================================================================
-  /*
-  const [allAnswers, setAllAnswers] = React.useState([]);
-  const submitAnswer = async (selectedAnswers) => {
-    try {
-      await apiCall(`/play/${playerId}/answer`, 'PUT', {
-        answers: selectedAnswers,
-      });
-
-      // Get question + correct answer
-      const answerDetails = {
-        questionText: question.text,
-        selectedAnswers,
-        correctAnswers: question.correctAnswers,
-        points: question.points,
-        timeTaken: question.duration - remainingTime, // you need a timer ref for this
-        isCorrect: compareAnswers(selectedAnswers, question.correctAnswers),
-      };
-
-      // Add to state
-      setAllAnswers(prev => [...prev, answerDetails]);
-
-      setAnswered(true);
-    } catch (err) {
-      console.error('Error submitting answer:', err);
-      setError('Could not submit your answer.');
-    }
-  };
-  function compareAnswers(selected, correct) {
-    const s = [...selected].sort().join(',');
-    const c = [...correct].sort().join(',');
-    return s === c;
-  }
-
-  */
-  /*
-  const data = {
-    "questions": [
-      {
-        "id": 0,
-        "questionString": "Who is the president of America?",
-        "answers": [
-          { "id": 0, "value": "Donald Trump", "correct": true},
-          { "id": 1, "value": "Xi Jinping", "correct": false},
-          { "id": 2, "value": "Vladimir Putin", "correct": false},
-          { "id": 3, "value": "Elon Musk", "correct": false},
-          { "id": 4, "value": "Dracula", "correct": false},
-          { "id": 5, "value": "Kanye West", "correct": false}
-        ],
-        "time": 10,
-        "embed": "/static/media/default_quiz_thumbnail.8acd421a181f51f4d02f.png",
-        "point": 2,
-        "type": "single"
-      }
-    ]
-  };
-  */
-  // const answers = question.correctAnswers;
-  /*
-  const color = [
-    { label: '🟦', count: 12, color: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
-    { label: '🟥', count: 5,  color: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
-    { label: '🟩', count: 8,  color: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
-    { label: '🟨', count: 2,  color: 'bg-amber-400', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
-    { label: '🟪', count: 8,  color: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
-    { label: '🩵', count: 6,  color: 'bg-cyan-400', shadow: 'shadow-[0_4px_0_0_#066b7c]' },
-  ];
-  const choices = ['Donald Trump', 'Xi Jinping', 'Vladimir Putin', 'Elon Musk'];
-  const max = Math.max(...color.map(d => d.count), 1);
-  const [maxBarHeight, setMaxBarHeight] = React.useState(
-    window.innerWidth < 640 ? 150 : 250
-  );
-  React.useEffect(() => {
-    const handleResize = () => {
-      setMaxBarHeight(window.innerWidth < 640 ? 150 : 250);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  */
+/**
+ * HostQuestionResult component displays the result of a single quiz question from the host's perspective.
+ *
+ * - Shows the question text, media (image/video), and which answers were correct.
+ * - Highlights correct vs. incorrect answers using color and icon (✓ / ✕).
+ * - Provides "End" and "Next" controls to allow the host to move the quiz forward.
+ * - Responsive layout optimized for small and large screens.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.question - The question object with text, answers, media, and correct answer IDs
+ * @param {number} props.position - The current question index (1-based)
+ * @param {number} props.length - The total number of questions in the quiz
+ * @param {Function} props.onEnd - Callback triggered when the host clicks the "End" button
+ * @param {Function} props.onNext - Callback triggered when the host clicks the "Next" button
+ * @returns {JSX.Element} The rendered view of the question result screen
+ */
+function HostQuestionResult({ question, position, length, onEnd, onNext}) {
   const filteredAnswers = question.answers.filter(answer => answer.text.trim() !== '');
+
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col
      bg-cover bg-center w-full overflow-hidden" style={{ backgroundImage: `url(${classroom})` }}>
 
-      {/* //*NavBar */}
+      {/* NavBar */}
       <nav className=" flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <LinkLogoNavBar targetPath="/dashboard" />
         <div className='flex gap-4'>
@@ -146,7 +55,7 @@ function HostQuestionResult({sessionId, token, question, position, length, onEnd
       </nav>
 
       {/* //*Main */}
-      <main className="flex-1 flex flex-col justify-center items-center text-center p-4 sm:p-8">
+      <main className="flex-1 flex flex-col justify-start items-center text-center p-4 sm:p-8">
         <div className="w-full max-w-7xl mx-auto space-y-4 sm:space-y-8">
 
           {/* //^ 1. Question */}
@@ -176,7 +85,6 @@ function HostQuestionResult({sessionId, token, question, position, length, onEnd
               </div>
               <div className='font-Nunito-Bold text-xl pt-4'>3 player(s) did not submit an answer</div>
             </div> */}
-
 
             <div className='w-full max-w-2xl bg-green-500'>
               {question.image &&
@@ -255,4 +163,5 @@ function HostQuestionResult({sessionId, token, question, position, length, onEnd
     </div>
   )
 }
+
 export default HostQuestionResult;

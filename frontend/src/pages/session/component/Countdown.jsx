@@ -1,8 +1,32 @@
-import classroom from '../../../assets/classroom_overlay.png';
 import React from 'react';
+import classroom from '../../../assets/classroom_overlay.png';
 
+/**
+ * Countdown component shows a 3-second timer before revealing the actual question.
+ *
+ * - Displays the current countdown value in a large circular UI.
+ * - Shows contextual instructions based on the question type:
+ *   - "single": Single choice question
+ *   - "judgement": Judgement question
+ *   - "multiple": Multiple choice question with submit required
+ * - Triggers `onComplete` callback when countdown finishes.
+ * - Optionally displays the current question number (position / length).
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {number} [props.position] - Current question index (1-based)
+ * @param {number} [props.length] - Total number of questions in the quiz
+ * @param {Object} [props.question] - The question object (used to determine type)
+ * @param {Function} props.onComplete - Callback triggered after countdown ends
+ * @returns {JSX.Element} The rendered countdown screen
+ */
 function Countdown({position, length, question, onComplete}) {
   const [count, setCount] = React.useState(3);
+
+  /**
+   * Countdown effect that decrements the count every second.
+   * Once the counter reaches 0, the `onComplete` callback is triggered.
+   */
   React.useEffect(() => {
     if (count <= 0) {
       if (onComplete) onComplete();
@@ -16,6 +40,7 @@ function Countdown({position, length, question, onComplete}) {
     return () => clearTimeout(timer);
   }, [count, onComplete]);
 
+  // Determine instructions based on question type
   let text = '';
   let description = '';
   if (question?.type === 'single') {
@@ -28,6 +53,7 @@ function Countdown({position, length, question, onComplete}) {
     text = 'Multiple choice question';
     description = 'Multiple answers might be correct, you must click "SUBMIT" to answer'
   }
+
   return (
     <main
       className="flex-1 flex flex-col items-center text-center p-6 bg-cover bg-center h-screen"
@@ -49,4 +75,5 @@ function Countdown({position, length, question, onComplete}) {
     </main>
   )
 }
+
 export default Countdown;
