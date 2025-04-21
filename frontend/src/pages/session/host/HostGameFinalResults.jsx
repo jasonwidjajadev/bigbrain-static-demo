@@ -52,10 +52,11 @@ function HostGameResults({ quiz, hostFinalResults }) {
         </nav>
 
         {/* Main */}
-        <main className="flex-1 flex flex-col justify-center items-center text-center p-4 sm:p-8">
-          <ResultsDisplay gameData={quiz} sessionResults={hostFinalResults} />
+        <main className="flex-1 flex justify-center items-center text-center p-6">
+          <div className="max-w-7xl w-full">
+            <ResultsDisplay gameData={quiz} sessionResults={hostFinalResults} />
+          </div>
         </main>
-
       </div>
     </div>
   );
