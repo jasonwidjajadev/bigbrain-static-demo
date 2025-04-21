@@ -8,13 +8,13 @@ import { FaPlay } from "react-icons/fa";
 import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, updateAllGames, createGameSession, stopGameSession } from "@/util/gamesApi";
 
-import GameDashboardTile from "@/components/GameDashboardTile";
-import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
-import SessionStartModal from "@/components/SessionStartModal";
+import GameDashboardTile from "@/components/cards/GameDashboardTile";
+import DeleteConfirmationModal from "@/components/modals/DeleteConfirmationModal";
+import SessionStartModal from "@/components/modals/SessionStartModal";
 
-import LinkLogoNavBar from "@/components/LinkLogoNavBar";
-import { orangeButtonClass } from "@/components/tailwind";
-import JoinGameButton from "@/components/JoinGameButton";
+import LinkLogoNavBar from "@/components/logo/LogoNavBar";
+import { orangeButtonClass } from "@/components/ui/tailwind";
+import JoinGameButton from "@/components/button/JoinGameButton";
 
 function Dashboard() {
   /*

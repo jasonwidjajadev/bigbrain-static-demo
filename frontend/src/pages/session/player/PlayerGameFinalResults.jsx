@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import LinkLogoNavBar from '@/components/LinkLogoNavBar';
-import { orangeButtonClass } from '@/components/tailwind';
+import LinkLogoNavBar from '@/components/logo/LogoNavBar';
+import { orangeButtonClass } from '@/components/ui/tailwind';
 
 /**
  * Renders the final game results screen for a player after completing the quiz.

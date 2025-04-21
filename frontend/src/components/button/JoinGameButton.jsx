@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaPlay } from "react-icons/fa";
-import { orangeButtonClass } from '@/components/tailwind';
+import { orangeButtonClass } from '@/components/ui/tailwind';
 
 const JoinGameButton = () => {
   return (

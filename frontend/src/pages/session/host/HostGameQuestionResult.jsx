@@ -6,8 +6,8 @@ import { TbPlayerTrackNextFilled } from "react-icons/tb";
 import classroom from '@/assets/classroom_overlay.png';
 import chalkboard from '@/assets/chalkboard.jpg';
 
-import LinkLogoNavBar from '@/components/LinkLogoNavBar';
-import { orangeButtonClass } from '@/components/tailwind';
+import LinkLogoNavBar from '@/components/logo/LogoNavBar';
+import { orangeButtonClass } from '@/components/ui/tailwind';
 
 /**
  * HostQuestionResult component displays the result of a single quiz question from the host's perspective.

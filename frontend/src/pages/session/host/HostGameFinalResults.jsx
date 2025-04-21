@@ -9,9 +9,9 @@ import MusicPlayer from '@/components/music/MusicPlayer';
 import final_music from '@/assets/happy-runner-fast-paced-kids-game-music-loop-248099.mp3';
 // import final_music from '@/assets/fun-game-upbeat-happy-video-game-music-249646.mp3';
 
-import LinkLogoNavBar from "@/components/LinkLogoNavBar";
-import { orangeButtonClass } from "@/components/tailwind";
-import ResultsDisplay from "@/pages/quiz/component/ResultsDisplay";
+import LinkLogoNavBar from "@/components/logo/LogoNavBar";
+import { orangeButtonClass } from "@/components/ui/tailwind";
+import ResultsDisplay from "@/pages/quiz/charts/ResultsDisplay";
 
 /**
  * HostGameResults component displays the final results after a quiz ends, from the host's perspective.

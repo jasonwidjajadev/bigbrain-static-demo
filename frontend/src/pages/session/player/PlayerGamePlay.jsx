@@ -4,7 +4,7 @@ import Countdown from '@/pages/session/Countdown'
 import classroom from '@/assets/classroom_overlay.png';
 import chalkboard from '@/assets/chalkboard.jpg';
 
-import { orangeButtonClass } from '@/components/tailwind';
+import { orangeButtonClass } from '@/components/ui/tailwind';
 
 /**
  * Renders the gameplay screen for a quiz question.

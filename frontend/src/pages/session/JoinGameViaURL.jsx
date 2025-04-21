@@ -5,9 +5,9 @@ import Typewriter from 'typewriter-effect';
 import { useAuthContext } from '@/context/useAuthContext';
 import { apiCall } from '@/util/apiCall';
 
-import LinkLogoNavBar from '@/components/LinkLogoNavBar';
-import LogoBigRotate from '@/components/LogoBigRotate';
-import { orangeButtonClass } from '@/components/tailwind';
+import LinkLogoNavBar from '@/components/logo/LogoNavBar';
+import LogoBigRotate from '@/components/logo/LogoBigRotate';
+import { orangeButtonClass } from '@/components/ui/tailwind';
 
 /**
  * JoinGame component allows players to join a game session using a Game PIN and nickname.

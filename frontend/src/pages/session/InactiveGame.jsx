@@ -3,7 +3,7 @@ import Lottie from 'lottie-react';
 
 import { useAuthContext } from '@/context/useAuthContext';
 import BrainInactiveQuiz from '@/assets/BrainInactiveQuiz.json';
-import LinkLogoNavBar from '@/components/LinkLogoNavBar';
+import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 
 /**
  * InactiveGame component is shown when the player tries to join a quiz

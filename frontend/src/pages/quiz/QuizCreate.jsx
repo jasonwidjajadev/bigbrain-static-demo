@@ -5,10 +5,9 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
 import { convertFileToBase64 } from "@/util/imageUtils";
 
-import LinkLogoNavBar from "@/components/LinkLogoNavBar";
-import { orangeButtonClass } from "@/components/tailwind";
-
-import ImgSelection from "@/components/ImgSelection";
+import LinkLogoNavBar from "@/components/logo/LogoNavBar";
+import { orangeButtonClass } from "@/components/ui/tailwind";
+import ImgSelection from "@/components/modals/ImgSelection";
 
 
 function AdminQuizCreate() {
@@ -145,7 +144,7 @@ function AdminQuizCreate() {
           >
             {/* Pass the image handler to the child component */}
             <ImgSelection handleImgChange={handleImgChange} />
-            <div className="w-full flex flex-col bg-white w-full border-gray-500 drop-shadow-md/25 rounded-lg p-8 mb-6 items-center justify-center transition-colors">
+            <div className="w-full flex flex-col bg-white border-gray-500 drop-shadow-md/25 rounded-lg p-8 mb-6 items-center justify-center transition-colors">
               {/* Title Field */}
               <div className="mb-6 w-full">
                 <div className="flex justify-between items-center mb-2">

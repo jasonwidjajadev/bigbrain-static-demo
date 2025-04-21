@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { convertFileToBase64 } from "@/util/imageUtils";
-import ImgSelection from "@/components/ImgSelection";
+import ImgSelection from "@/components/modals/ImgSelection";
 
 function EditQuizMetaDataModal({ quiz, isOpen, onClose, onSave }) {
   // State of Form data

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { LuCopy, LuCopyCheck, LuX } from "react-icons/lu";
-import { orangeButtonClass } from "@/components/tailwind";
+import { orangeButtonClass } from "@/components/ui/tailwind";
 
 function SessionStartModal({
   isOpen,

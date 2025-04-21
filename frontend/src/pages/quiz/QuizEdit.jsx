@@ -6,13 +6,13 @@ import { LuSquarePlus, LuUpload } from "react-icons/lu";
 import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
 
-import LinkLogoNavBar from "@/components/LinkLogoNavBar";
+import LinkLogoNavBar from "@/components/logo/LogoNavBar";
 
-import { orangeButtonClass, purpleButtonClass } from "@/components/tailwind";
+import { orangeButtonClass, purpleButtonClass } from "@/components/ui/tailwind";
 
-import EditGameInfoTile from "@/components/EditGameInfoTile";
-import EditQuizMetaDataModal from "@/components/EditQuizMetaDataModal";
-import QuestionInfoTile from "@/components/QuestionInfoTile";
+import EditGameInfoTile from "@/components/cards/EditGameInfoTile";
+import EditQuizMetaDataModal from "@/components/modals/EditQuizMetaDataModal";
+import QuestionInfoTile from "@/components/cards/QuestionInfoTile";
 
 import CsvFileUploadModal from "@/pages/csvUtil/csvFileUploadModal";
 import { parseBigBrainCSV } from "@/pages/csvUtil/csvUtils";

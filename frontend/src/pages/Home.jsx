@@ -5,9 +5,9 @@ import Typewriter from 'typewriter-effect';
 import { useAuthContext } from '@/context/useAuthContext';
 import classroom from '@/assets/classroom.mp4';
 
-import LinkLogoNavBar from '@/components/LinkLogoNavBar';
-import LogoBigRotate from '@/components/LogoBigRotate';
-import JoinGameButton from '@/components/JoinGameButton';
+import LinkLogoNavBar from '@/components/logo/LogoNavBar';
+import LogoBigRotate from '@/components/logo/LogoBigRotate';
+import JoinGameButton from '@/components/button/JoinGameButton';
 
 /**
  * Home component is the landing page of the Big Brain quiz platform.

@@ -1,6 +1,6 @@
 import { FaEdit } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
-import { cyanButtonWFullClass } from "@/components/tailwind";
+import { cyanButtonWFullClass } from "@/components/ui/tailwind";
 
 function EditGameInfoTile({
   thumbnail,

@@ -4,9 +4,9 @@ import { useAuthContext } from '@/context/useAuthContext';
 import { apiCall } from '@/util/apiCall';
 import register_img from '@/assets/colorful_brain.png';
 
-import { orangeButtonClass, input } from '@/components/tailwind';
-import LinkLogoNavBar from '@/components/LinkLogoNavBar';
-import JoinGameButton from '@/components/JoinGameButton';
+import { orangeButtonClass, input } from '@/components/ui/tailwind';
+import LinkLogoNavBar from '@/components/logo/LogoNavBar';
+import JoinGameButton from '@/components/button/JoinGameButton';
 
 /**
  * AuthRegister component handles user registration.

@@ -6,7 +6,7 @@ import {
   LuClipboardPaste,
   LuCircleStop,
 } from "react-icons/lu";
-import { cyanButtonClass, redButtonClass } from "@/components/tailwind";
+import { cyanButtonClass, redButtonClass } from "@/components/ui/tailwind";
 
 function GameDashboardTile({
   game,

@@ -1,5 +1,5 @@
 import Typewriter from 'typewriter-effect';
-import LinkLogoNavBar from '@/components/LinkLogoNavBar';
+import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 import tiger from '@/assets/Tiger-unscreen.gif';
 
 /**

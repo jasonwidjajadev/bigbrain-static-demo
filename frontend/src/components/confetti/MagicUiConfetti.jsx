@@ -1,6 +1,6 @@
 "use client";;
 import confetti from "canvas-confetti";
-import React, {
+import {
   createContext,
   forwardRef,
   useCallback,

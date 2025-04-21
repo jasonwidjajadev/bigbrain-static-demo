@@ -3,12 +3,12 @@ import AuthProvider from '@/context/AuthContext';
 
 import NotFound from '@/pages/NotFound';
 import Home from '@/pages/Home';
+import Dashboard from '@/pages/Dashboard';
 
 import AuthLogin from '@/pages/auth/AuthLogin';
 import AuthRegister from '@/pages/auth/AuthRegister';
 import AuthLogout from '@/pages/auth/AuthLogout';
 
-import Dashboard from '@/pages/Dashboard';
 import QuizCreate from '@/pages/quiz/QuizCreate';
 import QuizEdit from '@/pages/quiz/QuizEdit';
 import QuestionEditor from '@/pages/quiz/QuestionEditor';
@@ -16,10 +16,10 @@ import QuizResults from '@/pages/quiz/QuizResults'
 
 import JoinGame from '@/pages/session/JoinGame';
 import JoinGameViaURL from '@/pages/session/JoinGameViaURL';
+import InactiveGame from '@/pages/session/InactiveGame';
 
 import HostGameView from '@/pages/session/host/HostGameView';
 import PlayerGameView from '@/pages/session/player/PlayerGameView';
-import InactiveGame from '@/pages/session/InactiveGame';
 
 /**
  * App is the root component that sets up routing and global auth context.

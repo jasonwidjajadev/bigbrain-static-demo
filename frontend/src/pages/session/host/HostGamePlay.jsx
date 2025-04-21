@@ -9,8 +9,8 @@ import music_multiple from '@/assets/multiple_puzzle-game-bright-casual-video-ga
 import Countdown from '@/pages/session/Countdown'
 import MusicPlayer from '@/components/music/MusicPlayer';
 
-import { orangeButtonClass } from '@/components/tailwind';
-import LinkLogoNavBar from '@/components/LinkLogoNavBar';
+import { orangeButtonClass } from '@/components/ui/tailwind';
+import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 
 /**
  * HostGamePlay component handles the in-game quiz view from the host's perspective.

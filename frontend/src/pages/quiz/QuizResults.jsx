@@ -9,11 +9,11 @@ import { RiAddCircleLine } from "react-icons/ri";
 import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, getResultsForSessionId } from "@/util/gamesApi";
 
-import LinkLogoNavBar from "@/components/LinkLogoNavBar";
-import JoinGameButton from "@/components/JoinGameButton";
-import { orangeButtonClass } from "@/components/tailwind";
+import LinkLogoNavBar from "@/components/logo/LogoNavBar";
+import JoinGameButton from "@/components/button/JoinGameButton";
+import { orangeButtonClass } from "@/components/ui/tailwind";
 
-import TabContent from "@/pages/quiz/component/TabContent";
+import TabContent from "@/pages/quiz/charts/TabContent";
 
 /*
 Session results data structure looks as follows:
