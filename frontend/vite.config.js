@@ -11,10 +11,24 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // test: {
+  //   globals: true,
+  //   environment: 'jsdom',
+  //   setupFiles: './src/setup.js',
+  // },
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setup.js',
+    // deps: {
+    //   inline: ['vitest-canvas-mock'],
+    // },
+    threads: false,
+    environmentOptions: {
+      jsdom: {
+        resources: 'usable',
+      },
+    },
   },
   server: {
     port: 3000,

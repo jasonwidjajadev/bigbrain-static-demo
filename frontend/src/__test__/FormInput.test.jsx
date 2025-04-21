@@ -1,6 +1,16 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import FormInput from '@/components/inputs/FormInput';
 
+vi.mock('lottie-web', () => {
+  return {
+    loadAnimation: vi.fn(() => ({
+      play: vi.fn(),
+      stop: vi.fn(),
+      destroy: vi.fn(),
+    })),
+  };
+});
+
 describe('FormInput', () => {
   it('renders label and input correctly', () => {
     render(<FormInput label="Email" name="email" placeholder="Enter email" />);
