@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { useAuthContext } from "../../context/useAuthContext";
-import { apiCall } from '../../util/apiCall';
+import { useAuthContext } from "@/context/useAuthContext";
+import { apiCall } from '@/util/apiCall';
 
 /**
  * AuthLogout component logs the user out by:

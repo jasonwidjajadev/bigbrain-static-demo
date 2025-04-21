@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuthContext } from '../../context/useAuthContext';
-import { apiCall } from '../../util/apiCall';
-import register_img from '../../assets/auth/colorful_brain.png';
-import LinkLogoNavBar from '../../component/LinkLogoNavBar';
-import JoinGameButton from '../../component/JoinGameButton';
-import { orangeButtonClass, input } from '../../component/tailwind';
+import { useAuthContext } from '@/context/useAuthContext';
+import { apiCall } from '@/util/apiCall';
+import register_img from '@/assets/auth/colorful_brain.png';
+
+import { orangeButtonClass, input } from '@/components/tailwind';
+import LinkLogoNavBar from '@/components/LinkLogoNavBar';
+import JoinGameButton from '@/components/button/JoinGameButton';
 
 /**
  * AuthRegister component handles user registration.

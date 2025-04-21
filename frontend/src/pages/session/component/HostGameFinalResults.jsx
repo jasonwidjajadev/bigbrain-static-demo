@@ -2,14 +2,14 @@
 
 import { Link } from "react-router-dom";
 import { GoHomeFill } from "react-icons/go";
-import classroom from "../../../assets/classroom_overlay.png";
+import classroom from "@/assets/classroom_overlay.png";
 
-// import { TiggerSideCannon } from "../../../components/confetti/TiggerSideCannon";
-import { ConfettiSideCannons } from "../../../components/confetti/ConfettiSideCannons";
-import Music from "../../../components/music/ResultMusic";
+// import { TiggerSideCannon } from "@/components/confetti/TiggerSideCannon";
+import { ConfettiSideCannons } from "@/components/confetti/ConfettiSideCannons";
+import Music from "@/components/music/ResultMusic";
 
-import LinkLogoNavBar from "../../../component/LinkLogoNavBar";
-import { orangeButtonClass } from "../../../component/tailwind";
+import LinkLogoNavBar from "@/components/LinkLogoNavBar";
+import { orangeButtonClass } from "@/components/tailwind";
 import ResultsDisplay from "@/pages/quiz/component/ResultsDisplay";
 
 /**
