@@ -1,8 +1,19 @@
 import { Link } from 'react-router-dom';
-import LinkLogoNavBar from '../component/LinkLogoNavBar';
 import { useAuthContext } from '../context/useAuthContext';
-import img_404 from '../assets/img_404.png';
 
+import img_404 from '../assets/img_404.png';
+import LinkLogoNavBar from '../component/LinkLogoNavBar';
+
+/**
+ * NotFound component displays a 404-style error page when a user navigates to a route that doesn't exist.
+ *
+ * - Shows a friendly image and message to inform the user that the page was not found.
+ * - Provides a redirect link to either the dashboard (if authenticated) or home page (if not).
+ * - Includes the main navigation bar with dynamic routing based on user login status.
+ *
+ * @component
+ * @returns {JSX.Element} Rendered 404 Not Found screen with redirect navigation
+ */
 function NotFound() {
   const { token } = useAuthContext();
   const targetPath = token ? '/dashboard' : '/home';

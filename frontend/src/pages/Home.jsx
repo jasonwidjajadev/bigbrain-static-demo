@@ -1,14 +1,29 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuthContext } from '../context/useAuthContext';
+import Typewriter from 'typewriter-effect';
+
 import classroom from '../assets/classroom.mp4';
 import LinkLogoNavBar from '../component/LinkLogoNavBar';
 import LogoBigRotate from '../component/LogoBigRotate';
 import JoinGameButton from '../component/JoinGameButton';
-import Typewriter from 'typewriter-effect';
-import { useAuthContext } from '../context/useAuthContext';
 
+/**
+ * Home component is the landing page of the Big Brain quiz platform.
+ *
+ * - If the user is already authenticated (has a token), they are redirected to the dashboard.
+ * - Displays a welcoming hero section with:
+ *   - A looping classroom video on the left.
+ *   - Rotating typewriter text and action buttons on the right.
+ * - Includes navigation bar with logo and "Join a Game" button.
+ * - Provides access to login and registration routes via buttons.
+ * - Footer includes copyright.
+ *
+ * @component
+ * @returns {JSX.Element} The public-facing landing page with navigation and animated intro
+ */
 function Home() {
+
   const navigate = useNavigate();
   const { token } = useAuthContext();
   React.useEffect(() => {
@@ -19,6 +34,7 @@ function Home() {
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
+
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 text-center  bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
@@ -76,4 +92,5 @@ function Home() {
     </div>
   );
 }
+
 export default Home;
