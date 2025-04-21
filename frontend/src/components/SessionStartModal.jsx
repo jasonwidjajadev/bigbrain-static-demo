@@ -25,11 +25,10 @@ function SessionStartModal({
       setTimeout(() => setCopied(false), 2000);
     });
   };
-
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-6 sm:px-0">
       <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
         {/* Close button */}
         <button
