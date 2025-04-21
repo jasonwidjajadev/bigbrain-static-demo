@@ -5,7 +5,9 @@ import { GoHomeFill } from "react-icons/go";
 import classroom from "@/assets/classroom_overlay.png";
 
 import { ConfettiSideCannons } from "@/components/confetti/ConfettiSideCannons";
-import Music from "@/components/music/ResultMusic";
+import MusicPlayer from '@/components/music/MusicPlayer';
+import final_music from '@/assets/happy-runner-fast-paced-kids-game-music-loop-248099.mp3';
+// import final_music from '@/assets/fun-game-upbeat-happy-video-game-music-249646.mp3';
 
 import LinkLogoNavBar from "@/components/LinkLogoNavBar";
 import { orangeButtonClass } from "@/components/tailwind";
@@ -38,7 +40,7 @@ function HostGameResults({ quiz, hostFinalResults }) {
         <nav className=" flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
           <LinkLogoNavBar targetPath="/dashboard" />
           <div className="flex gap-3 items-center">
-            <Music />
+            <MusicPlayer src={final_music} className="mb-5"/>
             <Link
               to="/dashboard"
               className={`${orangeButtonClass} flex items-center gap-3 px-5`}

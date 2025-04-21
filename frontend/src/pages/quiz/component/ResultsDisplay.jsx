@@ -1,13 +1,13 @@
-// import { Chart as ChartJS } from "chart.js/auto";
-// import { Bar, Radar, Line } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
+import { Bar, Radar, Line } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import ScoreboardComponent from "./ScoreboardComponent";
 import PercentageChartComponent from "./PercentageChartComponent";
 import ResponseTimeComponent from "./ResponseTimeComponent";
 
 function ResultsDisplay({ gameData, sessionResults }) {
-  console.log("Game Data is", gameData);
-  console.log("Sessions results", sessionResults);
+  // console.log("Game Data is", gameData);
+  // console.log("Sessions results", sessionResults);
   const [processedData, setProcessedData] = useState({
     players: [],
     questions: [],
@@ -132,7 +132,7 @@ function ResultsDisplay({ gameData, sessionResults }) {
   // Process the data when component mounts or when props change
   useEffect(() => {
     const data = processQuizSessionData(gameData, sessionResults);
-    console.log("Processed Data:", data);
+    // console.log("Processed Data:", data);
     setProcessedData(data);
   }, [gameData, sessionResults]);
 

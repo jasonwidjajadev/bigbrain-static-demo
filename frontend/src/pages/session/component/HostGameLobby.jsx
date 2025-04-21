@@ -5,7 +5,8 @@ import { LuCopy } from "react-icons/lu";
 import { IoPerson } from "react-icons/io5";
 
 import classroom from '@/assets/classroom_overlay.png';
-import Music from '@/components/music/PositiveMusic';
+import MusicPlayer from '@/components/music/MusicPlayer';
+import lobby_music from '@/assets/positive-orchestral-loop-287417.mp3';
 
 import { orangeButtonClass, lobbyNameClass } from '@/components/tailwind';
 import LinkLogoNavBar from '@/components/LinkLogoNavBar';
@@ -47,7 +48,7 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
 
         {/* For Small Screen */}
         <div className="flex gap-3 sm:gap-4 items-center">
-          <Music className="mb-5"/>
+          <MusicPlayer src={lobby_music} className="mb-5"/>
           <button
             className={`${orangeButtonClass} flex items-center gap-3 px-2`}
             onClick={showResults}

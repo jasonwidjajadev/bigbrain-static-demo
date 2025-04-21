@@ -7,7 +7,9 @@ import chalkboard from '@/assets/chalkboard.jpg';
 
 import Countdown from './Countdown'
 
-import Music from '@/components/music/Music';
+import music_multiple from '@/assets/multiple_puzzle-game-bright-casual-video-game-music-249202.mp3';
+import MusicPlayer from '@/components/music/MusicPlayer';
+
 import { orangeButtonClass } from '@/components/tailwind';
 import LinkLogoNavBar from '@/components/LinkLogoNavBar';
 
@@ -75,7 +77,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
             <nav className=" flex justify-between items-center px-3 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
               <LinkLogoNavBar targetPath="/dashboard" />
               <div className='flex gap-3 sm:gap-4'>
-                <Music className="mb-5"/>
+                <MusicPlayer src={music_multiple} className="mb-5"/>
                 <button
                   onClick={onEnd}
                   className={`${orangeButtonClass} flex items-center gap-3`}>
