@@ -292,8 +292,6 @@ function HostGameView() {
         <HostGameFinalResults
           hostFinalResults={hostFinalResults}
           quiz={currQuiz}
-          sessionId={sessionId}
-          token={token}
         />
       )}
 
@@ -305,15 +303,6 @@ function HostGameView() {
           onStart={handleStartGame}
         />
       )}
-
-      {/* {stage === 'countdown' && (
-        <Countdown
-          position={Number(position) + 1}
-          length={questions.length}
-          question={questions[position]}
-          onComplete={() => setStage('question')}
-        />
-      )} */}
 
       {questions.length === 0 && (stage === 'question' || stage === 'answer') && (
         <div className="text-center p-6 text-gray-500">Loading question...</div>
@@ -333,8 +322,6 @@ function HostGameView() {
 
       {stage === 'answer' && questions[position] && (
         <HostGameQuestionResult
-          sessionId={sessionId}
-          token={token}
           question={questions[position]}
           position={Number(position) + 1}
           length={questions.length}
