@@ -52,6 +52,7 @@ function QuestionEditor() {
   const [previewImage, setPreviewImage] = useState(null);
   const [showYouTubeModal, setShowYouTubeModal] = useState(false);
   const [previewVideo, setPreviewVideo] = useState(null);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     if (!token) {
@@ -61,6 +62,22 @@ function QuestionEditor() {
 
     fetchGameData();
   }, [token, quizId]);
+
+  // Auto-hide toast after 3 seconds
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
+  // Function to show toast
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+  };
 
   useEffect(() => {
     if (game && questionId !== "new") {
@@ -243,6 +260,7 @@ function QuestionEditor() {
       } catch (err) {
         console.error("Error converting image:", err);
         setError("Failed to process image");
+        showToast("Failed to process image", "error");
       }
     }
   };
@@ -350,6 +368,7 @@ function QuestionEditor() {
         (answer) => answer.isCorrect
       );
       if (!hasCorrectAnswer) {
+        showToast("At least one answer must be marked as correct", "error");
         setError("At least one answer must be marked as correct");
         setLoading(false);
         return;
@@ -400,6 +419,17 @@ function QuestionEditor() {
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
+      {/* Toast notifications */}
+      {toast && (
+        <div className="toast toast-top toast-center z-50">
+          <div
+            className={`alert ${toast.type === "success" ? "alert-success" : "alert-error"}`}
+          >
+            <span>{toast.message}</span>
+          </div>
+        </div>
+      )}
+
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
@@ -503,7 +533,6 @@ function QuestionEditor() {
                 <div className="flex flex-col pt-6 sm:pt-0 sm:flex-row gap-4 mb-9">
                   <div className="flex flex-col">
                     <div className="flex flex-row sm:flex-col sm:w-full flex-2 justify-end items-center gap-4 px-6">
-                      {/* TODO: Make these work */}
                       <ImageButton onClick={handleImageButtonClick} />
                       <VideoButton onClick={handleVideoButtonClick} />
                     </div>
