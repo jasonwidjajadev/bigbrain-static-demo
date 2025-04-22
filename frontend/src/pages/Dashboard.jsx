@@ -6,7 +6,12 @@ import { TbLogout } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
 
 import { useAuthContext } from "@/context/useAuthContext";
-import { fetchGames, updateAllGames, createGameSession, stopGameSession } from "@/util/gamesApi";
+import {
+  fetchGames,
+  updateAllGames,
+  createGameSession,
+  stopGameSession,
+} from "@/util/gamesApi";
 
 import GameDashboardTile from "@/components/cards/GameDashboardTile";
 import DeleteConfirmationModal from "@/components/modals/DeleteConfirmationModal";
@@ -17,12 +22,6 @@ import { orangeButtonClass } from "@/components/ui/tailwind";
 import JoinGameButton from "@/components/button/JoinGameButton";
 
 function Dashboard() {
-  /*
-  TODO:
-  - Figure out how to display title and description if they
-    are very long
-  - Get the game thumbnail to display
-  */
   const navigate = useNavigate();
   const { token } = useAuthContext();
   const [games, setGames] = useState([]);
@@ -44,23 +43,6 @@ function Dashboard() {
       getGamesToDisplay();
     }
   }, [token, navigate]);
-
-  // Effect to log gameToDelete state changes
-  // React.useEffect(() => {
-  //   console.log("Updated gameToDelete state:", gameToDelete);
-  // }, [gameToDelete]);
-
-  // UseEffect hook to update the active session data on Dashboard
-  // React.useEffect(async () => {
-  //   // Do something
-  //   const gamesData = await fetchGames(token);
-
-  // }, [games]);
-
-  // UseEffect hook to update the active session data on Dashboard
-  // React.useEffect(() => {
-  //   console.log("Updated activeSessionData state:", activeSessionData);
-  // }, [activeSessionData]);
 
   const getGamesToDisplay = async () => {
     try {
@@ -125,14 +107,11 @@ function Dashboard() {
   // Hander for previous session button click
   const handlePreviousSessionResults = (quizId) => {
     console.log("See previous sessions for game with ID:", quizId);
-    // TODO: Implement previous session logic
     navigate(`/quiz/results/${quizId}`);
   };
 
   // Handler for play/host button click
   const handleStartSession = async (quizId) => {
-    // console.log("Play game with ID:", quizId);
-
     try {
       // Find the game to get its details
       const game = games.find((g) => g.id === quizId);
@@ -140,8 +119,6 @@ function Dashboard() {
 
       // API call to create a session
       const sessionId = await createGameSession(quizId, token);
-      /* Return response from createGameSession is actually: data: { sessionId: "556883", status "started"} */
-      // console.log(sessionId);
 
       // Update our current state
       const updatedGames = games.map((g) => {
@@ -176,7 +153,6 @@ function Dashboard() {
   };
 
   // Handler for closing the session model
-  // TODO: Think about how this should operate....
   const handleCloseSessionModal = () => {
     setIsSessionModalOpen(false);
   };
@@ -202,8 +178,7 @@ function Dashboard() {
     setIsSessionModalOpen(false);
   };
 
-  // TODO: When pressing back -> it clears the activeSessionData state (when it should persist)
-  // Need to figure out why and how to fix.
+  // Handles stopping a session with quizId
   const handleStopSession = async (quizId) => {
     console.log("Stopping game with ID:", quizId);
     try {
@@ -227,8 +202,6 @@ function Dashboard() {
       setGames(updatedGames);
 
       // Remove from activeSessionData array
-      // TODO: Finish this
-      // Remove from activeSessionData array
       const updatedSessionData = activeSessionData.filter(
         (session) => session.gameId !== quizId
       );
@@ -241,12 +214,34 @@ function Dashboard() {
           setSelectedSessionIndex(null);
         }
       }
-
-      console.log("Session stopped successfully for game:", game.name);
     } catch (error) {
       console.error("Failed to start game session:", error);
       setError("Failed to start game session. Please try again.");
     }
+  };
+
+  // Handler for going to an active session
+  const handleGoToSessionClick = (quizId, sessionId) => {
+    console.log(
+      "Going to session for game with ID:",
+      quizId,
+      "Session ID:",
+      sessionId
+    );
+
+    // Find the game to get its details
+    const game = games.find((g) => g.id === quizId);
+    if (!game) return;
+
+    // Navigate to the host page with the required state data
+    navigate(`/host/${sessionId}`, {
+      state: {
+        sessionId: sessionId,
+        gameId: quizId,
+        game: game,
+        from: "/dashboard",
+      },
+    });
   };
 
   return (
@@ -316,45 +311,8 @@ function Dashboard() {
           <h1 className="text-5xl font-semibold text-left mb-6 text-orange-500 font-Nunito-ExtraBold">
             My Games
           </h1>
-
-          {/* TODO placeholder
-          {loading ? (
-            <div className="text-center text-gray-600 py-10">
-              Loading your games...
-            </div>
-          ) : games.length === 0 ? (
-            <div className="text-center py-10">
-              <p className="text-gray-600 mb-4">
-                You have not created any games yet.
-              </p>
-              <Link
-                to="/quiz/create"
-                className={`${orangeButtonClass} inline-flex items-center gap-2`}
-              >
-                <RiAddCircleLine className="text-xl" /> Create your first game
-              </Link>
-            </div>
-          ) : (
-            // Have a variable here; that picks out the game that has been updated
-            // For each game 
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {games.map((game, i) => (
-                <GameDashboardTile
-                  key={i}
-                  game={game}
-                  onDelete={handleDeleteClick}
-                  onEdit={handleEditClick}
-                  onPreviousSessionResults={handlePreviousSessionResults}
-                  onPlay={handleStartSession}
-                  onStop={handleStopSession}
-                />
-              ))}
-            </div>
-          )} */}
           {games ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* {console.log("Triggering games", games)} */}
               {games.map((game, i) => (
                 <GameDashboardTile
                   key={i}
@@ -364,6 +322,7 @@ function Dashboard() {
                   onPreviousSessionResults={handlePreviousSessionResults}
                   onPlay={handleStartSession}
                   onStop={handleStopSession}
+                  onGoToSession={handleGoToSessionClick}
                 />
               ))}
             </div>
@@ -378,7 +337,7 @@ function Dashboard() {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        gameTitle={gameToDelete?.name}
+        title={gameToDelete?.name}
       />
 
       {/* Session Start Modal */}
