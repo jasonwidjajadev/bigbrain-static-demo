@@ -1,12 +1,6 @@
 import Papa from "papaparse";
 
-export const parseBigBrainCSV = (
-  file,
-  quizName = "Imported Quiz",
-  quizDescription = "Quiz imported from CSV"
-) => {
-  console.log("Starting CSV parsing with file:", file.name);
-
+export const parseBigBrainCSV = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -18,28 +12,16 @@ export const parseBigBrainCSV = (
           skipEmptyLines: true,
           dynamicTyping: true, // Convert numeric values automatically
           complete: function (results) {
-            console.log(
-              "PapaParse results - data length:",
-              results.data.length
-            );
-
             if (results.data.length === 0) {
               reject(new Error("No data found in CSV file"));
               return;
             }
 
-            console.log("First row sample:", results.data[0]);
-
             try {
               // Process the parsed data
-              const quizData = convertBigBrainCSVToQuiz(
-                results.data,
-                quizName,
-                quizDescription
-              );
+              const quizData = convertBigBrainCSVToQuiz(results.data);
               resolve(quizData);
             } catch (error) {
-              console.error("Error processing CSV data:", error);
               reject(new Error(`Error processing CSV data: ${error.message}`));
             }
           },
@@ -60,24 +42,57 @@ export const parseBigBrainCSV = (
   });
 };
 
-const convertBigBrainCSVToQuiz = (csvData, quizName, quizDescription) => {
-  // Create basic quiz structure
+const convertBigBrainCSVToQuiz = (csvData) => {
+  // Create basic quiz structure with default values
   const quizData = {
-    name: quizName,
-    description: quizDescription,
+    name: "Imported Quiz",
+    description: "Quiz imported from CSV",
     thumbnail: "", // Default empty thumbnail
     questions: [],
   };
 
-  // Skip the first row as it's just the column descriptions, not a real question
-  let startIndex = 1;
+  // Look for the title and description rows first
+  let foundMetadata = false;
+  let questionHeaderRowIndex = -1;
+  let startIndex = 0;
 
-  // Check if the first row contains "Question Text" in the empty column
-  // This indicates it's a header row, not a question
-  if (csvData.length > 0 && csvData[0][""] === "Question Text") {
-    console.log("Skipping first row as it's a header row");
-    startIndex = 1;
+  // Find Title, Description and Question header row
+  for (let i = 0; i < csvData.length; i++) {
+    const row = csvData[i];
+    const firstColumnValue = row[""];
+
+    if (firstColumnValue === "Title") {
+      // Extract the title value which is likely in the next column (_1)
+      if (row._1 !== null && row._1 !== undefined) {
+        quizData.name = String(row._1);
+        foundMetadata = true;
+      }
+    } else if (firstColumnValue === "Description") {
+      // Extract the description from the _1 column
+      if (row._1 !== null && row._1 !== undefined) {
+        quizData.description = String(row._1);
+        foundMetadata = true;
+      }
+    } else if (
+      firstColumnValue === "Question #" ||
+      firstColumnValue === "Question Text"
+    ) {
+      // Found the header row for questions
+      questionHeaderRowIndex = i;
+      break;
+    }
   }
+
+  // If we found the question header row, start processing from the next row
+  if (questionHeaderRowIndex !== -1) {
+    startIndex = questionHeaderRowIndex + 1;
+  } else if (foundMetadata) {
+    // If we found metadata but no question header, start from row 3 (typical structure)
+    startIndex = 3;
+  }
+
+  // Generate a base timestamp for question IDs
+  const baseTimestamp = Date.now();
 
   // Process each row into a question
   for (let i = startIndex; i < csvData.length; i++) {
@@ -85,9 +100,6 @@ const convertBigBrainCSVToQuiz = (csvData, quizName, quizDescription) => {
 
     // If we hit a row where the question text is empty or null, stop processing completely
     if (!row[""] || String(row[""]).trim() === "") {
-      console.log(
-        `Stopping at row ${i}: Empty question text. No more rows will be processed.`
-      );
       break; // Exit the loop entirely
     }
 
@@ -182,12 +194,17 @@ const convertBigBrainCSVToQuiz = (csvData, quizName, quizDescription) => {
     // Get points from _7 column, or default to 100
     const points = row._7 || 100;
 
+    // Generate a unique ID for each question based on its position
+    // Add the row index to ensure uniqueness within this import
+    const uniqueQuestionId = baseTimestamp + (i - startIndex + 1);
+
     // Create question object in exact format from screenshots
     const question = {
       answers: answerObjects,
       correctAnswers: correctAnswersArray,
       duration: duration,
-      id: row["BigBrain Import Template"] || Date.now(), // Use ID from CSV or generate timestamp-based ID
+      // Generate a unique ID for each question
+      id: uniqueQuestionId,
       image: "",
       points: points,
       text: questionText,
@@ -195,10 +212,7 @@ const convertBigBrainCSVToQuiz = (csvData, quizName, quizDescription) => {
       video: "",
     };
 
-    console.log(`Created question from row ${i}:`, question);
     quizData.questions.push(question);
   }
-
-  console.log(`Total questions imported: ${quizData.questions.length}`);
   return quizData;
 };
