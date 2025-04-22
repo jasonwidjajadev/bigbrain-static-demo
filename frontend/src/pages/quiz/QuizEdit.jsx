@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RiAddCircleLine } from "react-icons/ri";
 import { LuSquarePlus } from "react-icons/lu";
+import { IoReturnUpBackSharp } from "react-icons/io5";
 
 import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
@@ -156,7 +157,7 @@ function AdminQuizEdit() {
   };
 
   return (
-    <div className="min-h-screen overflow-y-auto flex flex-col font-sans">
+    <div className="min-h-screen overflow-y-auto flex flex-col font-sans ">
       {/* Toast notifications */}
       {toast && (
         <div className="toast toast-center z-50">
@@ -185,64 +186,79 @@ function AdminQuizEdit() {
       </nav>
 
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-start lg:flex-row lg:items-start lg:gap-10 text-center p-8">
-        <div className="w-full md:w-[80%] flex flex-col lg:flex-2">
-          <h1 className="text-4xl font-semibold text-orange-500 font-Nunito-Black mb-4">
-            Quiz Edit
-          </h1>
-          {/* Quiz editing UI */}
-          {/* Quiz information tile */}
-          {loading ? (
-            <div>Loading quiz information...</div>
-          ) : error ? (
-            <div>{error}</div>
-          ) : currentQuiz ? (
-            <>
-              <EditGameInfoTile
-                thumbnail={currentQuiz.thumbnail}
-                name={currentQuiz.name}
-                description={currentQuiz.description}
-                onEditInfo={handleEditClick}
-                onSaveQuiz={handleOverallQuizSave}
-              />
+      <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
+        <div className="w-full max-w-7xl">
+          <main className="flex flex-col items-center lg:flex-row lg:items-start lg:gap-10 text-center">
+            <section className="w-full md:w-[80%] flex flex-col lg:flex-2">
 
-              {/* Edit Quiz Modal */}
-              <EditQuizMetaDataModal
-                quiz={currentQuiz}
-                isOpen={isEditModalOpen}
-                onClose={() => setIsEditModalOpen(false)}
-                onSave={saveQuizChanges}
-              />
-            </>
-          ) : (
-            <div>No quiz data found</div>
-          )}
-        </div>
-        {/* Add question button */}
-        {/* TODO: Add number of questions heading here */}
-        <div className="flex flex-col w-full md:w-[80%] lg:w-[65%] gap-4">
-          <div className="lg:flex lg:flex-3 gap-2">
-            <button
-              onClick={handleAddQuestion}
-              className={`${orangeButtonClass} flex items-center gap-1 px-5`}
-            >
-              <LuSquarePlus /> Add Question
-            </button>
-          </div>
+              <div className="flex flex-row justify-between w-full mb-3 sm:mb-5 items-center">
+                <div className={`${orangeButtonClass} px-5 h-[44px] mr-3`}>
+                  <Link to="/dashboard">
+                    <IoReturnUpBackSharp size={30}/>
+                  </Link>
+                </div>
 
-          {/* Display questions for current quiz */}
-          {!loading &&
-            currentQuiz &&
-            currentQuiz.questions &&
-            currentQuiz.questions.map((question, index) => (
-              <QuestionInfoTile
-                key={question.id || index}
-                question={question}
-                index={index}
-                onEdit={() => handleEditQuestion(question.id)}
-                onDelete={() => handleDeleteQuestion(question.id)}
-              />
-            ))}
+                <h1 className="text-[44px] sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold whitespace-nowrap">
+                  Quiz Edit
+                </h1>
+                <div className="w-[70px]"></div>
+              </div>
+
+              {/* Quiz editing UI */}
+              {/* Quiz information tile */}
+              {loading ? (
+                <div>Loading quiz information...</div>
+              ) : error ? (
+                <div>{error}</div>
+              ) : currentQuiz ? (
+                <>
+                  <EditGameInfoTile
+                    thumbnail={currentQuiz.thumbnail}
+                    name={currentQuiz.name}
+                    description={currentQuiz.description}
+                    onEditInfo={handleEditClick}
+                    onSaveQuiz={handleOverallQuizSave}
+                  />
+
+                  {/* Edit Quiz Modal */}
+                  <EditQuizMetaDataModal
+                    quiz={currentQuiz}
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSave={saveQuizChanges}
+                  />
+                </>
+              ) : (
+                <div>No quiz data found</div>
+              )}
+            </section>
+
+            {/* TODO: Add number of questions heading here */}
+            <section className="flex flex-col w-full md:w-[80%] lg:w-[65%] gap-4">
+              <div className="lg:flex lg:flex-3 gap-2 mb-2">
+                <button
+                  onClick={handleAddQuestion}
+                  className={`${orangeButtonClass} flex items-center gap-1 px-5 h-[47px]`}
+                >
+                  <LuSquarePlus /> Add Question
+                </button>
+              </div>
+
+              {/* Display questions for current quiz */}
+              {!loading &&
+                currentQuiz &&
+                currentQuiz.questions &&
+                currentQuiz.questions.map((question, index) => (
+                  <QuestionInfoTile
+                    key={question.id || index}
+                    question={question}
+                    index={index}
+                    onEdit={() => handleEditQuestion(question.id)}
+                    onDelete={() => handleDeleteQuestion(question.id)}
+                  />
+                ))}
+            </section>
+          </main>
         </div>
       </div>
     </div>

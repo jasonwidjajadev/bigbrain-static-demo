@@ -7,7 +7,7 @@ function QuestionInfoTile({ question, index, onEdit, onDelete }) {
     <div className="w-full bg-white rounded-md shadow-md mb-4 overflow-hidden">
       <div className="flex flex-col">
         {/* Question header with number and edit button */}
-        <div className="flex justify-between items-center bg-gray-100 p-3">
+        <div className="flex justify-between items-center bg-gray-300 p-3 px-4">
           <h3 className="text-lg font-semibold">Question {index + 1}</h3>
           <button
             onClick={() => onEdit && onEdit(question.id)}
@@ -18,14 +18,14 @@ function QuestionInfoTile({ question, index, onEdit, onDelete }) {
         </div>
 
         {/* Question content */}
-        <div className="p-4">
+        <div className="p-3 px-4">
           <p className="text-lg text-gray-800">
             {question.text || "How tall am I?"}
           </p>
         </div>
 
         {/* Footer with buttons */}
-        <div className="flex justify-between items-center p-2 border-t border-gray-200">
+        <div className="flex justify-between items-center p-3 px-4 border-t border-gray-200">
           <div>
             <button
               onClick={() => onDelete && onDelete(question.id)}
@@ -35,7 +35,7 @@ function QuestionInfoTile({ question, index, onEdit, onDelete }) {
               <FaTrash />
             </button>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <TbArrowsShuffle className="text-gray-500" />
             <span className="bg-gray-700 text-white px-2 py-1 rounded text-sm">
               {question.duration || 20} sec

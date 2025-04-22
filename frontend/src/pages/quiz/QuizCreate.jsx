@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/useAuthContext";
+import { IoReturnUpBackSharp } from "react-icons/io5";
 
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
 import { convertFileToBase64 } from "@/util/imageUtils";
@@ -212,10 +213,20 @@ function AdminQuizCreate() {
 
         {/* Main Content */}
         {/* Quiz creation UI can go here */}
-        <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
-          <h1 className="text-4xl font-semibold text-orange-500 font-Nunito-Black mb-4">
-            Create Quiz
-          </h1>
+        <main className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-[#f7f7f7]">
+          <div className="flex flex-row justify-between w-full sm:w-[80%] md:w-[60%] lg:w-[50%] items-center mb-3 sm:mb-5">
+            <div className={`${orangeButtonClass} px-5 h-[45px]`}>
+              <Link to="/dashboard">
+                <IoReturnUpBackSharp size={30}/>
+              </Link>
+            </div>
+
+            <h1 className="text-[44px] sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold">
+              Create Quiz
+            </h1>
+            <div className="w-[70px] hidden [@media(min-width:500px)]:block"></div>
+          </div>
+
           {/* Quiz creation UI can go here */}
           <form
             onSubmit={handleSubmit}
@@ -223,7 +234,9 @@ function AdminQuizCreate() {
           >
             {/* Pass the image handler to the child component */}
             <ImgSelection handleImgChange={handleImgChange} />
-            <div className="w-full flex flex-col bg-white border-gray-500 drop-shadow-md/25 rounded-lg p-8 mb-6 items-center justify-center transition-colors">
+            <div className="w-full flex flex-col bg-white border border-gray-200 drop-shadow-md/25
+              rounded-lg p-8 mb-6 items-center justify-center transition-colors">
+
               {/* Title Field */}
               <div className="mb-6 w-full">
                 <div className="flex justify-between items-center mb-2">
@@ -266,24 +279,26 @@ function AdminQuizCreate() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 resize-y"
                 />
               </div>
-
-              {/* CSV upload Button */}
-              <button
-                type="button"
-                onClick={handleCSVUpload}
-                className={`${purpleButtonClass} flex items-center gap-1 px-5`}
-              >
-                <LuUpload /> CSV Import
-              </button>
-
-              {/* Submit Button */}
-              <div className="mt-6">
+              <div className="flex flex-row gap-5 w-full justify-center items-center">
+                {/* CSV upload Button */}
                 <button
-                  type="submit"
-                  className="w-full py-3 px-4 bg-orange-500 text-white font-semibold rounded-lg shadow-[0_4px_0_0_#c2410c] hover:bg-orange-400 hover:-translate-y-1 transition-all duration-300 ease-in-out"
+                  type="button"
+                  onClick={handleCSVUpload}
+                  className={`${purpleButtonClass} flex items-center gap-2 px-5 py-[15px] mt-1`}
                 >
-                  Create Quiz
+                  <LuUpload className="shrink-0 hidden sm:block"/>
+                  <span className="text-sm">CSV Import</span>
                 </button>
+
+                {/* Submit Button */}
+                <div>
+                  <button
+                    type="submit"
+                    className="w-full py-3 px-4 bg-orange-500 text-white font-semibold rounded-lg shadow-[0_4px_0_0_#c2410c] hover:bg-orange-400 hover:-translate-y-1 transition-all duration-300 ease-in-out"
+                  >
+                    Create Quiz
+                  </button>
+                </div>
               </div>
             </div>
           </form>
@@ -293,7 +308,7 @@ function AdminQuizCreate() {
             onClose={() => setIsFileUploadModalOpen(false)}
             onFileUpload={handleFileUpload}
           />
-        </div>
+        </main>
       </div>
     </>
   );

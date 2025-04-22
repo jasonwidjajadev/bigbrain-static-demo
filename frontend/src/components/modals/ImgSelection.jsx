@@ -15,7 +15,8 @@ const ImgSelection = ({ handleImgChange }) => {
 
   return (
     <>
-      <div className="bg-white w-full border-2 border-gray-500 border-dashed drop-shadow-md/25 rounded-lg p-8 mb-6 flex flex-col items-center justify-center  transition-colors">
+      <div className="bg-white w-full border border-gray-500 border-dashed
+        drop-shadow-md/25 rounded-lg p-8 mb-6 flex flex-col items-center justify-center  transition-colors">
         <h2 className="text-xl font-semibold mb-2 text-gray-700">
           Cover Image
         </h2>

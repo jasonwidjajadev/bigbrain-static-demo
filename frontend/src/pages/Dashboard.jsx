@@ -100,7 +100,6 @@ function Dashboard() {
   // Handler for edit button click
   const handleEditClick = (quizId) => {
     console.log("Edit game with ID:", quizId);
-    // Navigate to edit page
     navigate(`/quiz/edit/${quizId}`);
   };
 
@@ -245,7 +244,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen overflow-y-auto flex flex-col">
+    <div className="min-h-screen overflow-y-auto flex flex-col ">
       {/* Navbar Left Side*/}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
@@ -308,7 +307,7 @@ function Dashboard() {
       {/* //*Games Feed */}
       <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
         <div className="w-full max-w-6xl">
-          <h1 className="text-5xl font-semibold text-left mb-6 text-orange-500 font-Nunito-ExtraBold">
+          <h1 className="text-5xl  text-left mb-6 text-orange-500 font-Nunito-ExtraBold">
             My Games
           </h1>
           {games ? (

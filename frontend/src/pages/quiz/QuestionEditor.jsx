@@ -418,7 +418,7 @@ function QuestionEditor() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col font-sans bg-[#f7f7f7]">
       {/* Toast notifications */}
       {toast && (
         <div className="toast toast-top toast-center z-50">
@@ -447,9 +447,10 @@ function QuestionEditor() {
       </nav>
 
       {/* Question Editor */}
-      <main className="flex items-center justify-center text-center px-6 py-8">
-        <div className="flex flex-col w-full gap-5">
-          <h1 className="text-4xl sm:text-5xl font-semibold text-orange-500 font-Nunito-Black mb-4">
+      <main className="flex-1 flex items-center justify-center text-center p-8">
+        {/* <div className="flex flex-col w-full gap-5"> */}
+        <div className="w-full max-w-7xl">
+          <h1 className="text-4xl sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold mb-6 sm:mb-8">
             {questionId === "new" ? "Add New Question" : "Edit Question"}
           </h1>
 
