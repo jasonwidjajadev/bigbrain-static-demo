@@ -6,8 +6,6 @@ import PercentageChartComponent from "./PercentageChartComponent";
 import ResponseTimeComponent from "./ResponseTimeComponent";
 
 function ResultsDisplay({ gameData, sessionResults }) {
-  // console.log("Game Data is", gameData);
-  // console.log("Sessions results", sessionResults);
   const [processedData, setProcessedData] = useState({
     players: [],
     questions: [],
@@ -55,9 +53,12 @@ function ResultsDisplay({ gameData, sessionResults }) {
 
       // Process player answers
       const playerAnswers = playerData.answers.map((answer, index) => {
-        const question = questions[index];
-        const basePoints = question.points;
-        const maxTime = question.duration;
+        // Add null/undefined check for question
+        const question = index < questions.length ? questions[index] : null;
+
+        // Default values if question is undefined
+        const basePoints = question?.points || 0;
+        const maxTime = question?.duration || 30; // Provide a default duration
 
         const questionStartedAt = answer.questionStartedAt;
         const answeredAt = answer.answeredAt;
@@ -74,7 +75,7 @@ function ResultsDisplay({ gameData, sessionResults }) {
           isCorrect,
           score,
           answers: answer.answers,
-          question,
+          question, // This might be null, which is okay
         };
       });
 
@@ -148,11 +149,23 @@ function ResultsDisplay({ gameData, sessionResults }) {
         questionStats={processedData.statistics.questionStats}
       />
 
-      {/* Average response time */}
       {/* Response Time Component */}
       <ResponseTimeComponent
         questionStats={processedData.statistics.questionStats}
       />
+
+      {/* Point System */}
+      <div className="flex flex-col items-center justify-center w-full space-y-3 bg-cyan-50 rounded p-4">
+        <h2 className="font-bold text-lg mb-3">🔢 How scoring works</h2>
+        <code className="mt-2 text-sm">
+          Score = Max Points <br className="block sm:hidden" /> × (1 - Time
+          Taken / Max Time)
+        </code>
+        <p className="mt-3 text-sm text-center">
+          Answering instantly earns full points. Waiting too long gives fewer
+          points. Wrong answers get 0.
+        </p>
+      </div>
     </div>
   );
 }
