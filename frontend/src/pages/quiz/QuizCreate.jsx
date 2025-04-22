@@ -1,31 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/useAuthContext";
 
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
 import { convertFileToBase64 } from "@/util/imageUtils";
+import { LuUpload } from "react-icons/lu";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-import { orangeButtonClass } from "@/components/ui/tailwind";
+import { orangeButtonClass, purpleButtonClass } from "@/components/ui/tailwind";
 import ImgSelection from "@/components/modals/ImgSelection";
 
+import CsvFileUploadModal from "./csvUtil/CsvFileUploadModal";
+import { parseBigBrainCSV } from "./csvUtil/csvUtils";
 
 function AdminQuizCreate() {
   // State of Form data
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     title: "",
     description: "",
     image: null,
   });
-  // const [loading, setLoading] = React.useState(false);
+  const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState(null);
 
   const navigate = useNavigate();
   const { token, email } = useAuthContext();
+
   React.useEffect(() => {
-    // console.log("Initial token:", token);
-    // console.log("Initial email:", email);
     if (!token) navigate("/home");
   }, [token, navigate]);
+
+  // Auto-hide toast after 3 seconds
+  React.useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
+  // Function to show toast
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+  };
 
   //TODO logic
   // Update any form field
@@ -46,10 +67,6 @@ function AdminQuizCreate() {
       });
     }
   };
-
-  // const unique_id = Date.now();
-  // Sumbit the form and push to database
-  // async function sumbitCreateJob()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,15 +127,66 @@ function AdminQuizCreate() {
     } catch (error) {
       console.error("Error creating game:", error);
       // Set error state or show error message
-    } finally {
-      // setLoading(false);
     }
   };
 
-  // Debugging:
-  React.useEffect(() => {
-    // console.log("formData changed:", formData);
-  }, [formData]);
+  const handleCSVUpload = () => {
+    setIsFileUploadModalOpen(true);
+  };
+
+  const handleFileUpload = async (file) => {
+    try {
+      // Parse the CSV file (values will include title and description now)
+      const parsedData = await parseBigBrainCSV(file);
+
+      // Verify questions were found
+      if (!parsedData.questions || parsedData.questions.length === 0) {
+        throw new Error("No valid questions found in the CSV file");
+      }
+
+      // Update form data with the title and description from CSV
+      setFormData({
+        ...formData,
+        title: parsedData.name,
+        description: parsedData.description,
+      });
+
+      // Create new game with data from CSV
+      const gamesData = await fetchGames(token);
+
+      // Create new game
+      const newGameId = Date.now();
+      const newGame = {
+        id: newGameId,
+        owner: email,
+        name: parsedData.name,
+        questions: parsedData.questions,
+        thumbnail: "", // Default empty thumbnail
+        description: parsedData.description,
+        active: null,
+        oldSessions: [],
+      };
+
+      // Append new game to current game data
+      const updatedGames = [...gamesData, newGame];
+      const updatedGamesObj = { games: updatedGames };
+
+      // Put updated games data back to the database
+      const updateResult = await updateAllGames(updatedGamesObj, token);
+      if (updateResult.error) {
+        throw new Error(updateResult.error);
+      }
+
+      // Show success message
+      showToast(`Game "${parsedData.name}" successfully uploaded!`, "success");
+
+      // Navigate to dashboard after short delay
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error processing CSV file:", error);
+      showToast(error.message || "Error processing CSV file", "error");
+    }
+  };
 
   return (
     <>
@@ -130,6 +198,17 @@ function AdminQuizCreate() {
             Log out
           </Link>
         </nav>
+
+        {/* Toast notifications */}
+        {toast && (
+          <div className="toast toast-top toast-center z-50">
+            <div
+              className={`alert ${toast.type === "success" ? "alert-success" : "alert-error"}`}
+            >
+              <span>{toast.message}</span>
+            </div>
+          </div>
+        )}
 
         {/* Main Content */}
         {/* Quiz creation UI can go here */}
@@ -188,6 +267,15 @@ function AdminQuizCreate() {
                 />
               </div>
 
+              {/* CSV upload Button */}
+              <button
+                type="button"
+                onClick={handleCSVUpload}
+                className={`${purpleButtonClass} flex items-center gap-1 px-5`}
+              >
+                <LuUpload /> CSV Import
+              </button>
+
               {/* Submit Button */}
               <div className="mt-6">
                 <button
@@ -199,6 +287,12 @@ function AdminQuizCreate() {
               </div>
             </div>
           </form>
+          {/* File Upload Modal */}
+          <CsvFileUploadModal
+            isOpen={isFileUploadModalOpen}
+            onClose={() => setIsFileUploadModalOpen(false)}
+            onFileUpload={handleFileUpload}
+          />
         </div>
       </div>
     </>
