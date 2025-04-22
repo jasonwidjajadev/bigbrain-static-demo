@@ -5,6 +5,7 @@ import {
   LuTrash2,
   LuClipboardPaste,
   LuCircleStop,
+  LuExternalLink,
 } from "react-icons/lu";
 import { cyanButtonClass, redButtonClass } from "@/components/ui/tailwind";
 
@@ -15,6 +16,7 @@ function GameDashboardTile({
   onPreviousSessionResults,
   onPlay,
   onStop,
+  onGoToSession,
 }) {
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
@@ -57,10 +59,19 @@ function GameDashboardTile({
     }
   };
 
+  // Handler for go to session button click
+  const handleGoToSessionClick = () => {
+    if (onGoToSession && hasActiveSession) {
+      onGoToSession(game.id, game.active);
+    }
+  };
+
   return (
     <>
-      <div className="w-full h-[400px] bg-white rounded-md border border-gray-300 overflow-hidden shadow-md
-        hover:scale-105 hover:shadow-lg transition duration-300">
+      <div
+        className="w-full h-[400px] bg-white rounded-md border border-gray-300 overflow-hidden shadow-md
+        hover:scale-105 hover:shadow-lg transition duration-300"
+      >
         {/* Thumbnail section */}
         <div className="w-full h-[180px] bg-gray-300 relative">
           {game.thumbnail && (
@@ -94,7 +105,9 @@ function GameDashboardTile({
 
           {/* Action Buttons */}
           <div className="p-2 flex flex-col justify-end items-center gap-4">
-            <div className="w-full border-t border-b border-gray-300 grid grid-cols-3">
+            <div
+              className={`w-full border-t border-b border-gray-300 grid grid-cols-3 ${hasActiveSession ? "hidden" : ""}`}
+            >
               <div
                 className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-cyan-100"
                 data-tip="Edit"
@@ -126,13 +139,25 @@ function GameDashboardTile({
 
             {/* Game Mode Buttons */}
             {hasActiveSession ? (
-              <button
-                className={`flex justify-center items-center ${redButtonClass}`}
-                onClick={handleStopClick}
-              >
-                <LuCircleStop size={20} className="mr-2" />
-                <span>Stop</span>
-              </button>
+              <div className="flex flex-col gap-4">
+                {/* Go to Session button */}
+                <button
+                  className={`flex justify-center items-center ${cyanButtonClass}`}
+                  onClick={handleGoToSessionClick}
+                >
+                  <LuExternalLink size={20} className="mr-2" />
+                  <span>Go to Session</span>
+                </button>
+
+                {/* Stop Session button */}
+                <button
+                  className={`flex justify-center items-center ${redButtonClass}`}
+                  onClick={handleStopClick}
+                >
+                  <LuCircleStop size={20} className="mr-2" />
+                  <span>Stop</span>
+                </button>
+              </div>
             ) : (
               <button
                 className={`flex justify-center items-center ${cyanButtonClass}`}
