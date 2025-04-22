@@ -20,7 +20,6 @@ export const updateAllGames = async (allGames, adminToken) => {
     const response = await apiCall("/admin/games", "PUT", allGames, adminToken);
     return response;
   } catch (error) {
-    // TODO: popup error message if we want
     throw new Error(error || "Something went wrong");
   }
 };
@@ -35,7 +34,6 @@ export const getResultsForSessionId = async (sessionId, adminToken) => {
     );
     return response;
   } catch (error) {
-    // TODO: popup error message if we want
     throw new Error(error || "Something went wrong");
   }
 };
