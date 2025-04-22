@@ -1,5 +1,15 @@
+/**
+ * Shows a loading spinner and a message while waiting for other players to finish answering.
+ *
+ * @component
+ * @returns {JSX.Element} A full-screen view with a top navigation bar and a centered message/spinner.
+ *
+ * @example
+ * return (
+ *   <PlayerAnswerSubmitted />
+ * )
+ */
 function PlayerAnswerSubmitted() {
-
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col">
       <nav className="flex justify-center items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] gap-2 sm:gap-0">
