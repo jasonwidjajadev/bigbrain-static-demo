@@ -11,6 +11,10 @@ vi.mock('lottie-web', () => {
   };
 });
 
+// https://gist.github.com/in2Unknown/b47cdd304d5fff309a4a7948154c4025
+// https://vitest.dev/api/
+// https://testing-library.com/docs/queries/about/
+// https://github.com/testing-library/jest-dom
 describe('FormInput', () => {
   it('renders label and input correctly', () => {
     render(<FormInput label="Email" name="email" placeholder="Enter email" />);
