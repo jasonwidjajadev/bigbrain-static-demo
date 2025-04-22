@@ -13,34 +13,57 @@
  * @returns {JSX.Element}
  */
 function FormInput({
-  label,
+  id,
+  labelContent,
+
+  placeholder = '',
+
   type = 'text',
+  autoComplete = 'off', // name | useranme | email | current-password | new-password | on/off
+
   name,
   value,
+
+  autoFocus = false,
   onChange,
-  placeholder = '',
   errorMessage = '',
-  autoComplete = 'off',
-  className = '',
+
+  required = true,
+  ariaLabel = '',
+  addClassName = '',
 }) {
   return (
     <div className="w-full">
-      <label htmlFor={name} className="block mb-1 text-sm font-medium">
-        {label}
+      <label
+        htmlFor={id}
+        className="block mb-1 text-sm font-medium"
+      >
+        {labelContent}
       </label>
       <input
-        type={type}
-        id={name}
-        name={name}
-        value={value}
-        autoComplete={autoComplete}
-        onChange={onChange}
-        className={`w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 placeholder:text-sm font-Nunito-Medium ${className}`}
+        id={id}
+
+        required={required}
+        className={`w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 placeholder:text-sm font-Nunito-Medium ${addClassName}`}
+
         placeholder={placeholder}
-        required
+
+        type={type}     autoComplete={autoComplete}
+        name={name}     value={value}
+
+        autoFocus={autoFocus}
+        onChange={onChange}
+
+        aria-label={ariaLabel || labelContent}
+        aria-invalid={!!errorMessage}
+        aria-describedby={errorMessage ? `${id}-error` : undefined}
       />
       {errorMessage && (
-        <div className="text-red-500 text-sm mt-1" role="alert">
+        <div
+          id={`${id}-error`}
+          className="text-red-500 text-sm mt-1"
+          role="alert"
+        >
           {errorMessage}
         </div>
       )}

@@ -50,16 +50,16 @@ export default [
       "react/prop-types": "off",
     },
   },
-  {
-    files: ["cypress/**/*.cy.{js,ts,jsx,tsx}"],
-    plugins: {
-      cypress,
-    },
-    languageOptions: {
-      globals: globals.browser,
-    },
-    rules: {
-      ...cypress.configs.recommended.rules,
-    },
-  },
+  // {
+  //   files: ["cypress/**/*.cy.{js,ts,jsx,tsx}"],
+  //   plugins: {
+  //     cypress,
+  //   },
+  //   languageOptions: {
+  //     globals: globals.browser,
+  //   },
+  //   rules: {
+  //     ...cypress.configs.recommended.rules,
+  //   },
+  // },
 ];

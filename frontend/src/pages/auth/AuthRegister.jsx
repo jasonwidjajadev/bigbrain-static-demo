@@ -4,7 +4,7 @@ import { useAuthContext } from '@/context/useAuthContext';
 import { apiCall } from '@/util/apiCall';
 import register_img from '@/assets/colorful_brain.png';
 
-import { orangeButtonClass, input } from '@/components/ui/tailwind';
+import { orangeButtonClass } from '@/components/ui/tailwind';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 import JoinGameButton from '@/components/button/JoinGameButton';
 import FormInput from '@/components/inputs/FormInput';
@@ -147,114 +147,60 @@ function AuthRegister() {
             {/* FORM */}
             <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               {/* Full Name */}
-              {/* <div>
-                <label htmlFor="name" className="block mb-1 text-sm font-medium">Full Name</label>
-                <input type="text" id="name" name="name" required autoComplete="name"
-                  value={name} className={input} placeholder='Enter your name'
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    setErrorMessage('');
-                  }}
-                />
-              </div> */}
               <FormInput
-                label="Full Name"
-                type="text"
-                name="name"
-                autoComplete="name"
-                value={name}
-                placeholder="Enter your name"
+                id="registerName"
+                labelContent="Full Name"          placeholder="Enter your name"
+                type="text"                       autoComplete="name"
+                name="name"                       value={name}
+                autoFocus={true}
                 onChange={(e) => {
                   setName(e.target.value);
                   setErrorMessage('');
                 }}
               />
-
               {/* Email */}
-              {/* <div>
-                <label htmlFor="emailInput" className="block mb-1 text-sm font-medium">Email address</label>
-                <input type="email" id="emailInput" name="emailInput" required autoComplete="email"
-                  value={emailInput} className={input}
-                  placeholder='Enter your email'
-                  onChange={(e) => {
-                    setEmailInput(e.target.value);
-                    setEmailErrors('');
-                    setErrorMessage('');
-                  }}
-                />
-                {emailErrors && (<div className="text-red-500 text-sm mt-1" role="alert">{emailErrors}</div>)}
-              </div> */}
               <FormInput
-                label="Email address"
-                type="email"
-                name="emailInput"
-                value={emailInput}
+                id="registerEmail"
+                labelContent="Email address"      placeholder="Enter your email"
+                type="email"                      autoComplete="email"
+                name="email"                      value={emailInput}
+                autoFocus={false}
                 onChange={(e) => {
                   setEmailInput(e.target.value);
                   setEmailErrors('');
                   setErrorMessage('');
                 }}
-                placeholder="Enter your email"
                 errorMessage={emailErrors}
               />
 
               {/* Password */}
-              {/* <div>
-                <label htmlFor="password" className="block mb-1 text-sm font-medium">Password</label>
-                <input type="password" id="password" name="password"  required autoComplete="new-password"
-                  minLength={6} value={password} className={input}
-                  placeholder='Enter your password'
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setPasswordErrors('');
-                    setErrorMessage('');
-                  }}
-                />
-                {passwordErrors && (<div className="text-red-500 text-sm mt-1" role="alert">{passwordErrors}</div>)}
-              </div> */}
               <FormInput
-                label="Password"
-                type="password"
-                name="password"
-                autoComplete="new-password"
-                placeholder="Enter your password"
-                value={password}
-                errorMessage={passwordErrors}
+                id="registerPassword"
+                labelContent="Password"           placeholder="Enter your password"
+                type="password"                   autoComplete="new-password"
+                name="password"                   value={password}
+                autoFocus={false}
                 onChange={(e) => {
                   setPassword(e.target.value);
                   setPasswordErrors('');
                   setErrorMessage('');
                 }}
+                errorMessage={passwordErrors}
               />
 
-
               {/* Confirm Password */}
-              {/* <div>
-                <label htmlFor="confirmPassword" className="block mb-1 text-sm font-medium">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword"  required autoComplete="new-password"
-                  minLength={6}  value={confirmPassword} className={input}
-                  placeholder='Confirm your password'
-                  onChange={(e) => {
-                    setConfirmPassword(e.target.value);
-                    setConfirmPasswordErrors('');
-                    setErrorMessage('');
-                  }}
-                />
-                {confirmPasswordErrors && (<div className="text-red-500 text-sm mt-1" role="alert">{confirmPasswordErrors}</div>)}
-              </div> */}
               <FormInput
-                label="Confirm Password"
-                type="password"
-                name="confirmPassword"
-                autoComplete="new-password"
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                errorMessage={confirmPasswordErrors}
+                id="registerConfirmPassword"
+                labelContent="Confirm Password"   placeholder="Confirm your password"
+                type="password"                   autoComplete="new-password"
+                name="confirmPassword"            value={confirmPassword}
+                autoFocus={false}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                   setConfirmPasswordErrors('');
                   setErrorMessage('');
                 }}
+                errorMessage={confirmPasswordErrors}
               />
 
               {/* Backend Error */}
