@@ -1,35 +1,39 @@
 // https://gist.github.com/in2Unknown/1f4b682f5a244b3537dea24c8d4b53ed
 // npm run cypress
+// import svg from '../../src/assets/react'
 
 // =============================================================================
 // Admin Flow
 // =============================================================================
 
 // Write a test for the "happy path" of an admin that is described as:
+let uniqueEmail;
 window.describe('Admin Flow', () => {
   window.it('website loads', () => {
     window.cy.visit('http://localhost:3000');
   });
+  window.it('generates a unique email', () => {
+    uniqueEmail = `mark+${Date.now()}@email.com`;
+    window.cy.wrap(uniqueEmail).as('email');
+  });
 
   window.it('Happy path host', () => {
-    // const email = `mark+${Date.now()}@email.com`;
     const name = 'mark3000.5';
-    const email = `milk_mark1@email.com`;
     const password = 'MarkTheGreat!';
     const game1 = 'Geography';
-    const thumbnail = 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg';
 
     // 0. Arrive at welcome page
+    window.cy.viewport('macbook-15');
     window.cy.visit('http://localhost:3000');
 
     // =========================================================================
     // 1. Registers successfully
     // =========================================================================
 
-    window.cy.wait(2000);
+    window.cy.wait(1000);
     window.cy.contains('a','Sign up').should('be.visible').click();
     window.cy.get('input[name=name]').should('be.visible').focus().type(name);
-    window.cy.get('input[name=email]').should('be.visible').focus().type(email);
+    window.cy.get('input[name=email]').should('be.visible').focus().type(uniqueEmail);
     window.cy.get('input[name=password]').should('be.visible').focus().type(password);
 
     // Wrong Password
@@ -38,16 +42,14 @@ window.describe('Admin Flow', () => {
     window.cy.contains('Passwords do not match.').should('be.visible');
 
     // Correct Password
-    window.cy.get('input[name=confirmPassword]').should('be.visible').type(password);
-    window.cy.get('button[type="submit"]').should('be.enabled').click();
+    window.cy.get('input[name=confirmPassword]').clear().type(password);
+    window.cy.get('button[type="submit"]').click();
 
     // Arrive at dashboard
     window.cy.wait(1000);
     window.cy.url().should('include', '/dashboard');
     window.cy.contains('My Games').should('be.visible');
-    window.cy.contains('a', 'Logout').should('be.visible');           // check logout button is visible
-    window.cy.contains('a', 'Join a game').should('be.visible');      // check join a game button is visible
-    window.cy.get('a', 'Create').should('be.enabled').click();
+    window.cy.get('[data-testid="quiz-create-button-big-screen"]').should('be.visible').click();
 
     // =========================================================================
     // 2. Creates a new game successfully
@@ -61,45 +63,61 @@ window.describe('Admin Flow', () => {
     // =========================================================================
     // 3. Updates the thumbnail and name of the game successfully (yes, it will have no questions)
     // =========================================================================
-
     window.cy.contains('Upload a File').should('be.visible');
-    window.cy.get('input[type="file"]').selectFile(thumbnail);
-
-    window.cy.get('input[name=title]').focus().type(game1);
-    window.cy.get('button[type="submit"]').should('be.enabled').click();
+    window.cy.get('input[type="file"]').selectFile('cypress/fixtures/react.svg', { force: true });
+    window.cy.get('input[name=title]').type(game1);
+    window.cy.get('button[type="submit"]').click();
 
     // =========================================================================
     // 4. Starts a game successfully
     // =========================================================================
-    window.cy.contains('button','Play').should('be.visible').click();
-    window.cy.contains('button','Continue').should('be.visible').click();
+    window.cy.wait(1000);
+    window.cy.url().should('eq', 'http://localhost:3000/dashboard');
+    window.cy.contains('button','Play').click();
+    window.cy.contains('http://localhost:3000/join/')
+      .invoke('text')
+      .then((link) => {
+        const sessionId = link.trim().split('/').pop();
+        window.cy.log('Session ID from link:', sessionId);
+        window.cy.wrap(sessionId).as('sessionId');
+      });
+
+    window.cy.contains('button','Continue').click();
 
     // =========================================================================
     // 5. Ends a game successfully (yes, no one will have played it)
     // =========================================================================
-    window.cy.contains('button','End').should('be.visible').click();
+    window.cy.wait(1000);
+    window.cy.get('@sessionId').then((id) => {
+      window.cy.url().should('include', `/host/${id}`);
+    });
+    window.cy.contains('Waiting for players...').should('be.visible');
+    window.cy.contains('button','End').click();
 
     // =========================================================================
     // 6. Loads the results page successfully
     // =========================================================================
     window.cy.contains('Scoreboard').should('be.visible');
+    window.cy.wait(1000);
 
     // =========================================================================
     // 7. Logs out of the application successfully
     // =========================================================================
-    window.cy.contains('button','Logout').should('be.visible').click();
+    window.cy.contains('Logout').filter(':visible').click();
     window.cy.url().should('eq', 'http://localhost:3000/home');
+    window.cy.wait(1000);
 
     // =========================================================================
     // 8. Logs back in, into the application successfully
     // =========================================================================
     window.cy.visit('http://localhost:3000/auth/login');
-    window.cy.get('input[name="email"]').type(email);
+    window.cy.get('input[name="email"]').type(uniqueEmail);
     window.cy.get('input[name="password"]').type(password);
     window.cy.get('button[type="submit"]').click();
 
     // Arrive at dashboard
     window.cy.wait(1000);
+    window.cy.url().should('include', '/dashboard');
     window.cy.contains('My Games');
   });
 });

@@ -286,6 +286,7 @@ function Dashboard() {
           <div className="flex gap-3 items-center">
             {/* Create */}
             <Link
+              data-testid="quiz-create-button-big-screen"
               to="/quiz/create"
               className={`${orangeButtonClass} flex items-center gap-2`}
             >
@@ -296,6 +297,7 @@ function Dashboard() {
             {/* Logout */}
             <Link
               to="/auth/logout"
+              data-testid="logout-button-big-screen"
               className={`${orangeButtonClass} px-5 flex items-center gap-2`}
             >
               <TbLogout className="text-2xl" /> Logout

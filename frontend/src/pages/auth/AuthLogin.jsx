@@ -109,7 +109,7 @@ function AuthLogin() {
                 {/* Email */}
                 <div>
                   <label htmlFor="emailInput" className="block mb-1 text-sm font-medium">Email address</label>
-                  <input type="email" id="emailInput" name="emailInput" required autoComplete="email" value={emailInput} className={input}
+                  <input type="email" id="emailInput" name="email" required autoComplete="email" value={emailInput} className={input}
                     placeholder='Enter your email'
                     onChange={(e) => {
                       setEmailInput(e.target.value);
