@@ -25,6 +25,10 @@
 
 - Navigation bar: that switches format for mobile with hamburger icon
 
+## Add/Edit question
+
+- Image associated with a question will show up as a preview.
+
 ## Micro-interactions
 
 - Dashboard: hoverability on quiz cards to slightly expand and make a shadow to show they can be interacted and are focused on the screen
@@ -34,6 +38,8 @@
 ## Quiz
 
 - thumbnails for job card, allowing user to personalize their quiz
+  - thumbnails can take svg format (which required additional thinking
+    and functionality to handle this case)
 - Edit question and edit answer: indication for required fields with server-side validation
 
 ## Quiz Join
