@@ -29,7 +29,7 @@ export default [
       ...react.configs["jsx-runtime"].rules,
       ...reactHooks.configs.recommended.rules,
       "react-hooks/exhaustive-deps": "off",
-      "no-unused-vars": ["error", { 
+      "no-unused-vars": ["error", {
         "argsIgnorePattern": "^_",
         "caughtErrorsIgnorePattern": "^_"
       }],
@@ -49,17 +49,5 @@ export default [
       indent: ["error", 2],
       "react/prop-types": "off",
     },
-  },
-  // {
-  //   files: ["cypress/**/*.cy.{js,ts,jsx,tsx}"],
-  //   plugins: {
-  //     cypress,
-  //   },
-  //   languageOptions: {
-  //     globals: globals.browser,
-  //   },
-  //   rules: {
-  //     ...cypress.configs.recommended.rules,
-  //   },
-  // },
+  }
 ];
