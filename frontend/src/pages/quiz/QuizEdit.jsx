@@ -14,8 +14,8 @@ import EditGameInfoTile from "@/components/cards/EditGameInfoTile";
 import EditQuizMetaDataModal from "@/components/modals/EditQuizMetaDataModal";
 import QuestionInfoTile from "@/components/cards/QuestionInfoTile";
 
-import CsvFileUploadModal from "@/pages/csvUtil/csvFileUploadModal";
-import { parseBigBrainCSV } from "@/pages/csvUtil/csvUtils";
+import CsvFileUploadModal from "./csvUtil/CsvFileUploadModal";
+import { parseBigBrainCSV } from "./csvUtil/csvUtils";
 
 function AdminQuizEdit() {
   const [allGames, setAllGames] = useState([]);
@@ -24,6 +24,9 @@ function AdminQuizEdit() {
   const [error, setError] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState(null);
 
   const navigate = useNavigate();
   const { token } = useAuthContext();
@@ -38,6 +41,22 @@ function AdminQuizEdit() {
       fetchQuizData();
     }
   }, [token, quizId, navigate]);
+
+  // Auto-hide toast after 3 seconds
+  React.useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
+  // Function to show toast
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+  };
 
   // Functions to handle pull and pushing to the backend
   const fetchQuizData = async () => {
@@ -59,6 +78,7 @@ function AdminQuizEdit() {
     } catch (error) {
       console.error("Error fetching games:", error);
       setError("Failed to load quiz. Please try again later.");
+      showToast("Failed to load quiz. Please try again later.", "error");
     } finally {
       setLoading(false);
     }
@@ -78,11 +98,13 @@ function AdminQuizEdit() {
       setAllGames(updatedGames);
       setCurrentQuiz(updatedQuiz);
 
-      // Optional: Show success message
+      // Show success message as toast
+      showToast("Quiz successfully updated", "success");
       console.log("Quiz successfully updated");
     } catch (error) {
       console.error("Error updating quiz:", error);
       setError("Failed to save changes. Please try again.");
+      showToast("Failed to save changes. Please try again.", "error");
     } finally {
       setLoading(false);
     }
@@ -111,34 +133,80 @@ function AdminQuizEdit() {
     navigate(`/quiz/edit/${quizId}/${questionId}`);
   };
 
+  const handleDeleteQuestion = async (questionId) => {
+    // Create an updated quiz with the question filtered out
+    const updatedQuiz = {
+      ...currentQuiz,
+      questions: currentQuiz.questions.filter(
+        (question) => question.id !== questionId
+      ),
+    };
+
+    try {
+      // Show loading state
+      setLoading(true);
+
+      // Save the updated quiz
+      await saveQuizChanges(updatedQuiz);
+
+      // Show success toast
+      showToast(`Question successfully deleted`, "success");
+    } catch (error) {
+      console.error("Error deleting question:", error);
+      showToast("Failed to delete question. Please try again.", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleCSVUpload = () => {
     setIsFileUploadModalOpen(true);
   };
 
   const handleFileUpload = async (file) => {
     try {
-      // Use the current quiz name and description if available
-      const quizName = currentQuiz?.name || "Imported Quiz";
-      const quizDescription =
-        currentQuiz?.description || "Quiz imported from CSV";
+      // Parse the CSV file (values for name/description are ignored)
+      const parsedData = await parseBigBrainCSV(file, "Temp", "Temp");
 
-      // Parse the CSV file
-      const quizData = await parseBigBrainCSV(file, quizName, quizDescription);
+      // Verify questions were found
+      if (!parsedData.questions || parsedData.questions.length === 0) {
+        throw new Error("No valid questions found in the CSV file");
+      }
 
-      // Update the current quiz with the new data
+      // Generate new IDs for imported questions
+      let nextId = 1;
+      if (currentQuiz.questions && currentQuiz.questions.length > 0) {
+        const maxId = Math.max(
+          ...currentQuiz.questions.map((q) =>
+            typeof q.id === "number" ? q.id : 0
+          )
+        );
+        nextId = maxId + 1;
+      }
+
+      // Assign new IDs to imported questions
+      const newQuestions = parsedData.questions.map((question) => ({
+        ...question,
+        id: nextId++,
+      }));
+
+      // Create updated quiz with ONLY questions added
       const updatedQuiz = {
-        ...currentQuiz, // Keep existing quiz properties like ID
-        name: quizData.name,
-        description: quizData.description,
-        thumbnail: quizData.thumbnail || currentQuiz.thumbnail,
-        questions: quizData.questions,
+        ...currentQuiz, // Keep ALL existing properties
+        questions: [
+          ...(currentQuiz.questions || []), // Keep existing questions
+          ...newQuestions, // Add new questions
+        ],
       };
 
       // Update the quiz
       await saveQuizChanges(updatedQuiz);
 
-      // Notify the user
-      alert("Quiz data successfully imported!");
+      // Notify the user with toast
+      showToast(
+        `Successfully imported ${newQuestions.length} questions!`,
+        "success"
+      );
     } catch (error) {
       console.error("Error processing CSV file:", error);
       alert(error.message || "Error processing CSV file. Please try again.");
@@ -147,6 +215,17 @@ function AdminQuizEdit() {
 
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col font-sans">
+      {/* Toast notifications */}
+      {toast && (
+        <div className="toast toast-center z-50">
+          <div
+            className={`alert ${toast.type === "success" ? "alert-success" : "alert-error"}`}
+          >
+            <span>{toast.message}</span>
+          </div>
+        </div>
+      )}
+
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
@@ -235,6 +314,7 @@ function AdminQuizEdit() {
                 question={question}
                 index={index}
                 onEdit={() => handleEditQuestion(question.id)}
+                onDelete={() => handleDeleteQuestion(question.id)}
               />
             ))}
         </div>

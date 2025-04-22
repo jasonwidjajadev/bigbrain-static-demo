@@ -43,7 +43,7 @@ const ImageUploaderModal = ({ isOpen, onClose, onImageSelect }) => {
               </label>
               <input
                 type="file"
-                className="file-input file-input-bordered file-input-primary w-full"
+                className="file-input file-input-bordered file-input-neutral w-full"
                 accept="image/*"
                 onChange={handleFileSelect}
               />
@@ -55,7 +55,7 @@ const ImageUploaderModal = ({ isOpen, onClose, onImageSelect }) => {
                 Cancel
               </button>
               <button
-                className="btn btn-primary"
+                className="btn btn-neutral"
                 onClick={onClose}
                 disabled={!fileName}
               >

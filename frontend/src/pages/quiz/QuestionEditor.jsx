@@ -9,12 +9,12 @@ import LinkLogoNavBar from "@/components/logo/LogoNavBar";
 import VideoButton from "@/components/button/VideoButton";
 import ImageButton from "@/components/button/ImageButton";
 import ImageUploaderModal from "@/components/modals/ImageUploaderModal";
+import YouTubeUrlModal from "@/components/modals/YouTubeUrlModal";
 import {
   orangeButtonClass,
   cyanButtonClassSmall,
   greyButtonClassSmall,
 } from "@/components/ui/tailwind";
-
 
 function QuestionEditor() {
   // STATE VARIABLES //////////////////////////
@@ -49,8 +49,9 @@ function QuestionEditor() {
   const [error, setError] = useState(null);
   // Image and video selection state
   const [showImageModal, setShowImageModal] = useState(false);
-  const [showVideoSelection, setShowVideoSelection] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [showYouTubeModal, setShowYouTubeModal] = useState(false);
+  const [previewVideo, setPreviewVideo] = useState(null);
 
   useEffect(() => {
     if (!token) {
@@ -73,6 +74,11 @@ function QuestionEditor() {
         // Set preview image if available
         if (existingQuestion.image) {
           setPreviewImage(formatBase64Image(existingQuestion.image));
+        }
+
+        // Set preview video if available
+        if (existingQuestion.video) {
+          setPreviewVideo(existingQuestion.video);
         }
 
         // If the existing question doesn't have correctAnswers field, derive it from answers
@@ -210,16 +216,27 @@ function QuestionEditor() {
     if (e.target.files && e.target.files[0]) {
       try {
         const file = e.target.files[0];
+        const fileType = file.type;
+        const fileName = file.name.toLowerCase();
         const base64 = await convertFileToBase64(file, true);
+
+        // Detect if this is an SVG file
+        const isSvg = fileType === "image/svg+xml" || fileName.endsWith(".svg");
 
         // Update question with base64 image data
         setQuestion({
           ...question,
           image: base64,
+          video: "", // Clear any existing video
         });
 
-        // Set preview image
-        setPreviewImage(formatBase64Image(base64));
+        // Set preview image with the correct MIME type
+        const mimeType = isSvg ? "image/svg+xml" : "image/jpeg";
+        setPreviewImage(formatBase64Image(base64, mimeType));
+
+        // Clear any existing video preview
+        setPreviewVideo(null);
+        setShowImageModal(false);
 
         // Close the image selection panel
         setShowImageModal(false);
@@ -231,9 +248,42 @@ function QuestionEditor() {
   };
 
   const handleImageButtonClick = () => {
-    // setShowImageModal(!showImageModal);
     setShowImageModal(true);
-    setShowVideoSelection(false); // Close video selection if open
+    setShowYouTubeModal(false);
+  };
+
+  // Helper function to extract YouTube video ID from URL
+  const extractVideoId = (url) => {
+    if (!url) return null;
+    const match = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+    );
+    return match ? match[1] : null;
+  };
+
+  // Updated handleYouTubeVideoSelect function in QuestionEditor.jsx
+  const handleYouTubeVideoSelect = (youtubeUrl) => {
+    // Update the question state with just the URL
+    setQuestion({
+      ...question,
+      video: youtubeUrl,
+      image: "", // Clear any existing image
+    });
+
+    // Set preview state with just the URL
+    setPreviewVideo(youtubeUrl);
+    console.log("Youtube URL is", youtubeUrl);
+    console.log("Preview video", previewVideo);
+
+    // Clear any existing image preview
+    setPreviewImage(null);
+    // Close the YouTube modal
+    setShowYouTubeModal(false);
+  };
+
+  const handleVideoButtonClick = () => {
+    setShowYouTubeModal(true);
+    setShowImageModal(false); // Close image selection if open
   };
 
   const handleAnswerChange = (index, field, value) => {
@@ -421,7 +471,7 @@ function QuestionEditor() {
                       max="60"
                       title="Must be between be 5 to 60"
                     />
-                    <p className="validator-hint hidden">
+                    <p className="validator-hint hidden text-black-900">
                       Must be between be 5 to 60
                     </p>
                   </div>
@@ -449,16 +499,17 @@ function QuestionEditor() {
               </div>
 
               <section className="sm:p-8">
-
                 {/* Question content */}
                 <div className="flex flex-col pt-6 sm:pt-0 sm:flex-row gap-4 mb-9">
-                  <div className="flex flex-row sm:flex-col sm:w-full flex-2 justify-end items-center gap-4">
-                    {/* TODO: Make these work */}
-                    <ImageButton onClick={handleImageButtonClick} />
-                    <VideoButton />
+                  <div className="flex flex-col">
+                    <div className="flex flex-row sm:flex-col sm:w-full flex-2 justify-end items-center gap-4 px-6">
+                      {/* TODO: Make these work */}
+                      <ImageButton onClick={handleImageButtonClick} />
+                      <VideoButton onClick={handleVideoButtonClick} />
+                    </div>
                     {/* Show preview image if available */}
                     {previewImage && (
-                      <div className="mt-2 border rounded p-2">
+                      <div className="flex flex-col justify-center mt-2 border rounded p-2">
                         <img
                           src={previewImage}
                           alt="Question image"
@@ -470,6 +521,33 @@ function QuestionEditor() {
                           onClick={() => {
                             setPreviewImage(null);
                             setQuestion({ ...question, image: "" });
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Show preview video if available */}
+                    {previewVideo && (
+                      <div className="flex flex-col justify-center mt-2 border rounded p-2">
+                        <div className="aspect-w-16 aspect-h-9">
+                          <iframe
+                            src={`https://www.youtube.com/embed/${extractVideoId(previewVideo)}`}
+                            className="w-full h-24"
+                            allowFullScreen
+                            title="YouTube video"
+                          ></iframe>
+                        </div>
+                        <div className="text-xs text-gray-500 truncate mt-1">
+                          {previewVideo}
+                        </div>
+                        <button
+                          type="button"
+                          className="text-xs text-red-600 mt-1"
+                          onClick={() => {
+                            setPreviewVideo(null);
+                            setQuestion({ ...question, video: "" });
                           }}
                         >
                           Remove
@@ -489,7 +567,6 @@ function QuestionEditor() {
                       required
                     />
                   </div>
-
                 </div>
 
                 {/* Image Uploader Modal */}
@@ -497,6 +574,13 @@ function QuestionEditor() {
                   isOpen={showImageModal}
                   onClose={() => setShowImageModal(false)}
                   onImageSelect={handleImgChange}
+                />
+
+                {/* YouTube URL Modal */}
+                <YouTubeUrlModal
+                  isOpen={showYouTubeModal}
+                  onClose={() => setShowYouTubeModal(false)}
+                  onVideoSelect={handleYouTubeVideoSelect}
                 />
 
                 {/* Answers */}
@@ -545,7 +629,11 @@ function QuestionEditor() {
                               type="text"
                               value={answer.text}
                               onChange={(e) =>
-                                handleAnswerChange(index, "text", e.target.value)
+                                handleAnswerChange(
+                                  index,
+                                  "text",
+                                  e.target.value
+                                )
                               }
                               placeholder={`Answer ${index + 1} ${isOptional}`}
                               className="bg-transparent border-b border-white w-9/10 py-2 text-white placeholder-white text-center text-l"
@@ -561,7 +649,6 @@ function QuestionEditor() {
             </div>
           </form>
         </div>
-
       </main>
     </div>
   );
