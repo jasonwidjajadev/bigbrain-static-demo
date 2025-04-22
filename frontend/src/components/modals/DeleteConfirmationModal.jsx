@@ -1,11 +1,11 @@
-function DeleteConfirmationModal({ isOpen, onClose, onConfirm, gameTitle }) {
+function DeleteConfirmationModal({ isOpen, onClose, onConfirm, title }) {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg p-6 max-w-md w-11/12">
         <h2 className="text-2xl text-center font-bold mb-6">
-          Do you really want to delete {gameTitle}?
+          Do you really want to delete {title}?
         </h2>
 
         <div className="flex justify-between gap-4">
