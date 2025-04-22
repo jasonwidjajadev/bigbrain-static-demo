@@ -7,3 +7,9 @@ describe('App', () => {
     render(<App />)
   })
 })
+
+describe("example test", () => {
+  it("should pass", () => {
+    expect(true).toBe(true);
+  });
+});
