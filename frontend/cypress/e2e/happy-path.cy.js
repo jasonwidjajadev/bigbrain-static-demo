@@ -58,35 +58,41 @@ window.describe('Admin Flow', () => {
     window.cy.get('button[type="submit"]').click();
     window.cy.url().should('eq', 'http://localhost:3000/quiz/create'); // still on same page
 
-    window.cy.get('input[name=title]').focus().type(game1);
-    window.cy.get('button[type="submit"]').should('be.enabled').click();
-
     // =========================================================================
     // 3. Updates the thumbnail and name of the game successfully (yes, it will have no questions)
     // =========================================================================
 
+    window.cy.contains('Upload a File').should('be.visible');
+    window.cy.get('input[type="file"]').selectFile(thumbnail);
 
+    window.cy.get('input[name=title]').focus().type(game1);
+    window.cy.get('button[type="submit"]').should('be.enabled').click();
 
     // =========================================================================
     // 4. Starts a game successfully
     // =========================================================================
+    window.cy.contains('button','Play').should('be.visible').click();
+    window.cy.contains('button','Continue').should('be.visible').click();
 
     // =========================================================================
     // 5. Ends a game successfully (yes, no one will have played it)
     // =========================================================================
+    window.cy.contains('button','End').should('be.visible').click();
 
     // =========================================================================
     // 6. Loads the results page successfully
     // =========================================================================
+    window.cy.contains('Scoreboard').should('be.visible');
 
     // =========================================================================
     // 7. Logs out of the application successfully
     // =========================================================================
+    window.cy.contains('button','Logout').should('be.visible').click();
+    window.cy.url().should('eq', 'http://localhost:3000/home');
 
     // =========================================================================
     // 8. Logs back in, into the application successfully
     // =========================================================================
-
     window.cy.visit('http://localhost:3000/auth/login');
     window.cy.get('input[name="email"]').type(email);
     window.cy.get('input[name="password"]').type(password);

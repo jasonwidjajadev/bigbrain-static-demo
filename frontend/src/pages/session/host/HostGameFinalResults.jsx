@@ -3,6 +3,7 @@
 import { Link } from "react-router-dom";
 import { GoHomeFill } from "react-icons/go";
 import classroom from "@/assets/classroom_overlay.png";
+import { TbLogout } from "react-icons/tb";
 
 import { ConfettiSideCannons } from "@/components/confetti/ConfettiSideCannons";
 import MusicPlayer from '@/components/music/MusicPlayer';
@@ -41,19 +42,20 @@ function HostGameResults({ quiz, hostFinalResults }) {
           <LinkLogoNavBar targetPath="/dashboard" />
           <div className="flex gap-3 items-center">
             <MusicPlayer src={final_music} className="mb-5"/>
-            <Link
-              to="/dashboard"
-              className={`${orangeButtonClass} flex items-center gap-3 px-5`}
-            >
-              <GoHomeFill />
-              Dashboard
+            <div className="hidden sm:block">
+              <Link to="/dashboard" className={`${orangeButtonClass} flex items-center gap-3 px-5`}>
+                <GoHomeFill /> Dashboard
+              </Link>
+            </div>
+            <Link to="/auth/logout" className={`${orangeButtonClass} px-5 flex items-center gap-2`}>
+              <TbLogout className="text-2xl" /> Logout
             </Link>
           </div>
         </nav>
 
         {/* Main */}
         <main className="flex-1 flex justify-center items-center text-center p-6">
-          <div className="max-w-7xl w-full">
+          <div className="w-full sm:w-[90%]">
             <ResultsDisplay gameData={quiz} sessionResults={hostFinalResults} />
           </div>
         </main>

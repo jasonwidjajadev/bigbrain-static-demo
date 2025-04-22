@@ -187,7 +187,7 @@ function AdminQuizEdit() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
-        <div className="w-full max-w-7xl">
+        <div className="w-full xl:w-[90%]">
           <main className="flex flex-col items-center lg:flex-row lg:items-start lg:gap-10 text-center">
             <section className="w-full md:w-[80%] flex flex-col lg:flex-2">
 

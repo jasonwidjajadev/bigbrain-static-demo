@@ -449,7 +449,7 @@ function QuestionEditor() {
       {/* Question Editor */}
       <main className="flex-1 flex items-center justify-center text-center p-8">
         {/* <div className="flex flex-col w-full gap-5"> */}
-        <div className="w-full max-w-7xl">
+        <div className="w-full xl:w-[90%]">
           <h1 className="text-4xl sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold mb-6 sm:mb-8">
             {questionId === "new" ? "Add New Question" : "Edit Question"}
           </h1>
