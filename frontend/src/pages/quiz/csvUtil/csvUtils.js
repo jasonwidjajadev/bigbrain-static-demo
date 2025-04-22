@@ -182,3 +182,23 @@ const convertBigBrainCSVToQuiz = (csvData, quizName, quizDescription) => {
     // Get points from _7 column, or default to 100
     const points = row._7 || 100;
 
+    // Create question object in exact format from screenshots
+    const question = {
+      answers: answerObjects,
+      correctAnswers: correctAnswersArray,
+      duration: duration,
+      id: row["BigBrain Import Template"] || Date.now(), // Use ID from CSV or generate timestamp-based ID
+      image: "",
+      points: points,
+      text: questionText,
+      type: questionType,
+      video: "",
+    };
+
+    console.log(`Created question from row ${i}:`, question);
+    quizData.questions.push(question);
+  }
+
+  console.log(`Total questions imported: ${quizData.questions.length}`);
+  return quizData;
+};
