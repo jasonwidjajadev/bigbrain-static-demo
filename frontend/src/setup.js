@@ -5,6 +5,11 @@ import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
 
+// runs a clean after each test case (e.g. clearing jsdom)
+afterEach(() => {
+  cleanup();
+})
+
 //https://github.com/jsdom/jsdom/issues/1782
 // Object.defineProperty(window.HTMLCanvasElement.prototype, 'getContext', {
 //   value: () => ({
@@ -35,7 +40,3 @@ import { afterEach } from 'vitest';
 //   }),
 // });
 
-// runs a clean after each test case (e.g. clearing jsdom)
-afterEach(() => {
-  cleanup();
-})
