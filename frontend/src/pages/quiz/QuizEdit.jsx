@@ -1,21 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RiAddCircleLine } from "react-icons/ri";
-import { LuSquarePlus, LuUpload } from "react-icons/lu";
+import { LuSquarePlus } from "react-icons/lu";
 
 import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
 
-import { orangeButtonClass, purpleButtonClass } from "@/components/ui/tailwind";
+import { orangeButtonClass } from "@/components/ui/tailwind";
 
 import EditGameInfoTile from "@/components/cards/EditGameInfoTile";
 import EditQuizMetaDataModal from "@/components/modals/EditQuizMetaDataModal";
 import QuestionInfoTile from "@/components/cards/QuestionInfoTile";
-
-import CsvFileUploadModal from "./csvUtil/CsvFileUploadModal";
-import { parseBigBrainCSV } from "./csvUtil/csvUtils";
 
 function AdminQuizEdit() {
   const [allGames, setAllGames] = useState([]);
@@ -23,7 +20,6 @@ function AdminQuizEdit() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
 
   // Toast state
   const [toast, setToast] = useState(null);
@@ -159,60 +155,6 @@ function AdminQuizEdit() {
     }
   };
 
-  const handleCSVUpload = () => {
-    setIsFileUploadModalOpen(true);
-  };
-
-  const handleFileUpload = async (file) => {
-    try {
-      // Parse the CSV file (values for name/description are ignored)
-      const parsedData = await parseBigBrainCSV(file, "Temp", "Temp");
-
-      // Verify questions were found
-      if (!parsedData.questions || parsedData.questions.length === 0) {
-        throw new Error("No valid questions found in the CSV file");
-      }
-
-      // Generate new IDs for imported questions
-      let nextId = 1;
-      if (currentQuiz.questions && currentQuiz.questions.length > 0) {
-        const maxId = Math.max(
-          ...currentQuiz.questions.map((q) =>
-            typeof q.id === "number" ? q.id : 0
-          )
-        );
-        nextId = maxId + 1;
-      }
-
-      // Assign new IDs to imported questions
-      const newQuestions = parsedData.questions.map((question) => ({
-        ...question,
-        id: nextId++,
-      }));
-
-      // Create updated quiz with ONLY questions added
-      const updatedQuiz = {
-        ...currentQuiz, // Keep ALL existing properties
-        questions: [
-          ...(currentQuiz.questions || []), // Keep existing questions
-          ...newQuestions, // Add new questions
-        ],
-      };
-
-      // Update the quiz
-      await saveQuizChanges(updatedQuiz);
-
-      // Notify the user with toast
-      showToast(
-        `Successfully imported ${newQuestions.length} questions!`,
-        "success"
-      );
-    } catch (error) {
-      console.error("Error processing CSV file:", error);
-      alert(error.message || "Error processing CSV file. Please try again.");
-    }
-  };
-
   return (
     <div className="min-h-screen overflow-y-auto flex flex-col font-sans">
       {/* Toast notifications */}
@@ -271,13 +213,6 @@ function AdminQuizEdit() {
                 onClose={() => setIsEditModalOpen(false)}
                 onSave={saveQuizChanges}
               />
-
-              {/* File Upload Modal */}
-              <CsvFileUploadModal
-                isOpen={isFileUploadModalOpen}
-                onClose={() => setIsFileUploadModalOpen(false)}
-                onFileUpload={handleFileUpload}
-              />
             </>
           ) : (
             <div>No quiz data found</div>
@@ -286,22 +221,13 @@ function AdminQuizEdit() {
         {/* Add question button */}
         {/* TODO: Add number of questions heading here */}
         <div className="flex flex-col w-full md:w-[80%] lg:w-[65%] gap-4">
-          <div className="lg:flex lg:flex-3 ">
-            <div className="flex w-full justify-between">
-              <button
-                onClick={handleCSVUpload}
-                className={`${purpleButtonClass} flex items-center gap-1 px-5`}
-              >
-                <LuUpload /> CSV Import
-              </button>
-
-              <button
-                onClick={handleAddQuestion}
-                className={`${orangeButtonClass} flex items-center gap-1 px-5`}
-              >
-                <LuSquarePlus /> Add Question
-              </button>
-            </div>
+          <div className="lg:flex lg:flex-3 gap-2">
+            <button
+              onClick={handleAddQuestion}
+              className={`${orangeButtonClass} flex items-center gap-1 px-5`}
+            >
+              <LuSquarePlus /> Add Question
+            </button>
           </div>
 
           {/* Display questions for current quiz */}
