@@ -58,7 +58,7 @@ function HostQuestionResult({ question, position, length, onEnd, onNext}) {
 
       {/* //*Main */}
       <main className="flex-1 flex flex-col justify-start items-center text-center p-4 sm:p-8">
-        <div className="w-full max-w-7xl mx-auto space-y-4 sm:space-y-8">
+        <div className="w-full sm:w-[90%] mx-auto space-y-4 sm:space-y-8">
 
           {/* //^ 1. Question */}
           <div className="text-3xl sm:text-4xl md:text-5xl font-Nunito-ExtraBold break-words">
@@ -88,7 +88,7 @@ function HostQuestionResult({ question, position, length, onEnd, onNext}) {
               <div className='font-Nunito-Bold text-xl pt-4'>3 player(s) did not submit an answer</div>
             </div> */}
 
-            <div className='w-full max-w-2xl bg-green-500'>
+            <div className='w-full max-w-2xl bg-gray-300'>
               {question.image &&
                 <img src={formatBase64Image(question.image)} alt="quiz-image"
                   className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />

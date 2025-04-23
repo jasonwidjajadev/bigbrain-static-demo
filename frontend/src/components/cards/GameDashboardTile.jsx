@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { formatBase64Image } from "@/util/imageUtils";
 import { LuPencil, LuPlay, LuTrash2, LuClipboardPaste, LuCircleStop, LuExternalLink } from "react-icons/lu";
 import { cyanButtonClass, redButtonClass } from "@/components/ui/tailwind";
-// import StopGameDialog from "@/components/StopGameDialog";
 
 function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, onPlay, onStop, onGoToSession }) {
   const [showModal, setShowModal] = useState(false);
@@ -182,10 +181,6 @@ function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, o
                 </button>
               </div>
             </div>
-
-
-
-
 
             {/* Game Mode Buttons */}
             {hasActiveSession ? (

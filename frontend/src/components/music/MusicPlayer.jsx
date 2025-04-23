@@ -21,7 +21,7 @@ function MusicPlayer({ src = '', initialVolume = 0.1 }) {
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
-              console.log('✅ Audio playback started');
+              // console.log('✅ Audio playback started');
             })
             .catch((error) => {
               console.warn('🚫 Autoplay failed:', error);

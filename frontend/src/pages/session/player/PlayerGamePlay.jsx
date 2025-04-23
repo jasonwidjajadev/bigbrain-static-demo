@@ -1,11 +1,9 @@
 import React from 'react';
-import Countdown from '@/pages/session/Countdown'
 
 import classroom from '@/assets/classroom_overlay.png';
 import chalkboard from '@/assets/chalkboard.jpg';
 
 import { orangeButtonClass } from '@/components/ui/tailwind';
-
 import { formatBase64Image } from '@/util/imageUtils';
 
 /**
@@ -23,7 +21,6 @@ import { formatBase64Image } from '@/util/imageUtils';
 function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
   const [selected, setSelected] = React.useState([]);
   const [count, setCount] = React.useState(Number(question.duration));
-  const [showQuestion, setShowQuestion] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
 
   /**
@@ -34,14 +31,13 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
     setSelected([]);
     setSubmitted(false);
     setCount(Number(question.duration));
-    setShowQuestion(false);
   }, [question.id]);
 
   /**
    * Countdown timer logic. Automatically submits an answer when time is up.
    */
   React.useEffect(() => {
-    if (!showQuestion || submitted || answered) return;
+    if (submitted || answered) return;
     if (count <= 0) {
       handleSubmit([-1]);
       console.warn("⏰ Time is up — skipping submission.");
@@ -53,7 +49,7 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [showQuestion, count, onComplete, answered]);
+  }, [count, onComplete, answered]);
 
   /**
    * Handles submission of answers.
@@ -71,175 +67,162 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
    * Render the gameplay interface, including countdown, question, media, answers, and submission buttons.
    */
   return (
-    <>
-      {!showQuestion ? (
-        <Countdown
-          position={null}
-          length={null}
-          question={question}
-          onComplete={() => setShowQuestion(true)}
-        />
-      ) : (
-        <>
-          <div className="min-h-screen overflow-y-auto flex flex-col
-          bg-cover bg-center w-full overflow-hidden" style={{ backgroundImage: `url(${classroom})` }}>
+    <div className="min-h-screen overflow-y-auto flex flex-col
+    bg-cover bg-center w-full overflow-hidden" style={{ backgroundImage: `url(${classroom})` }}>
 
-            {/* Nav for Smaller Screen */}
-            {question.type === 'multiple' &&
-              <div className='block sm:hidden'>
-                <nav className=" flex justify-end px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
-                  <button
-                    onClick={() =>
-                      handleSubmit(selected.map(i => filteredAnswers[i]?.id))
-                    }
-                    disabled={submitted}
-                    className={`${orangeButtonClass} px-6 py-2`}
-                  >
-                    Submit
-                  </button>
-                </nav>
-              </div>
+      {/* Nav for Smaller Screen */}
+      {question.type === 'multiple' &&
+        <div className='block sm:hidden'>
+          <nav className=" flex justify-end px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
+            <button
+              onClick={() =>
+                handleSubmit(selected.map(i => filteredAnswers[i]?.id))
+              }
+              disabled={submitted}
+              className={`${orangeButtonClass} px-6 py-2`}
+            >
+              Submit
+            </button>
+          </nav>
+        </div>
+      }
+
+      {/* //*Main */}
+      <main className="flex-1 flex flex-col justify-start items-center text-center p-4 sm:p-8">
+        <div className="w-full sm:w-[90%] mx-auto space-y-4 sm:space-y-8">
+
+          {/* //^ 1. Question ======================================== */}
+          <div className="text-3xl sm:text-4xl md:text-5xl font-Nunito-ExtraBold break-words">
+            {question.text}
+          </div>
+
+          {/* //^ 2. Timer/Image/Next ================================ */}
+          <div className="w-full flex flex-col sm:flex-row justify-around items-center gap-6 sm:gap-10">
+
+            {/* Timer ================================================ */}
+            <div className="hidden sm:flex flex-col items-center gap-5">
+              <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0">{count}</div>
+            </div>
+
+            {/* Image ================================================ */}
+            <div className='w-full max-w-2xl bg-gray-300'>
+              {question.image &&
+                <img src={formatBase64Image(question.image)} alt="quiz-image"
+                  className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
+              }
+
+              {!question.video && !question.image &&
+                <div
+                  className='h-[200px] sm:h-[400px] w-full
+                    text-4xl sm:text-6xl md:text-7xl text-emerald-100 font-ChalkLineOutline
+                    border-10 sm:border-13 border-orange-300 shadow-md
+                    flex justify-center items-center bg-cover bg-center break-words'
+                  style={{ backgroundImage: `url(${chalkboard})` }}>
+                  Big Brain
+                </div>
+              }
+
+              {question.video &&
+                <div className="w-full border-10 sm:border-13 border-orange-300 shadow-md">
+                  <iframe
+                    className="w-full h-[200px] sm:h-[400px] object-cover"
+                    src={question.video}
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              }
+            </div>
+
+            {/* Submit button on large screens ======================= */}
+            <div className='w-35 hidden sm:block'>
+              {question.type === 'multiple' &&
+                <button
+                  onClick={() =>
+                    handleSubmit(selected.map(i => filteredAnswers[i]?.id))
+                  }
+                  disabled={submitted}
+                  className={`${orangeButtonClass} px-7 py-3`}
+                >
+                  Submit
+                </button>
+              }
+            </div>
+          </div>
+
+          {/* //^ 3. Answer ========================================== */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-Nunito-ExtraBold text-2xl text-gray-100">
+            {(question.type === 'single' ||  question.type === 'judgement') &&
+              <>
+                {filteredAnswers.map((choice, index) => {
+
+                  //For single and judgement choice
+                  const colorClasses = [
+                    { hover: 'bg-blue-400', base: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
+                    { hover: 'bg-pink-400', base: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
+                    { hover: 'bg-green-400', base: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
+                    { hover: 'bg-amber-400', base: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
+                    { hover: 'bg-purple-400', base: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
+                    { hover: 'bg-cyan-300', base: 'bg-cyan-400', shadow: 'shadow-[0_4px_0_0_#066b7c]' },
+                  ];
+
+                  const color = colorClasses[index % colorClasses.length];
+                  const baseStyle = `min-h-20 sm:min-h-25 w-full flex justify-center items-center rounded-md
+                  transition-all duration-300 ease-in-out text-white hover:-translate-y-1`;
+                  const stateStyle = `${color.base} ${color.shadow} hover:${color.hover}`;
+
+                  return (
+                    <button
+                      key={index}
+                      className={`${baseStyle} ${stateStyle}`}
+                      onClick={() => handleSubmit([choice.id])}
+                    >
+                      {choice.text}
+                    </button>
+                  );
+                })}
+              </>
             }
 
-            {/* //*Main */}
-            <main className="flex-1 flex flex-col justify-start items-center text-center p-4 sm:p-8">
-              <div className="w-full max-w-7xl mx-auto space-y-4 sm:space-y-8">
+            {question.type === 'multiple' &&
+              <>
+                {filteredAnswers.map((choice, index) => {
+                  const colorClasses = [
+                    { base: 'bg-cyan-900', hover: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
+                    { base: 'bg-cyan-900', hover: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
+                    { base: 'bg-cyan-900', hover: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
+                    { base: 'bg-cyan-900', hover: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
+                    { base: 'bg-cyan-900', hover: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
+                    { base: 'bg-cyan-900', hover: 'bg-cyan-400', shadow: 'shadow-[0_4px_0_0_#066b7c]' },
+                  ];
+                  const color = colorClasses[index % colorClasses.length];
+                  const isSelected = selected.includes(index);
+                  const baseStyle = `min-h-20 sm:min-h-25 w-full flex justify-center items-center rounded-md
+                  transition-all duration-300 ease-in-out text-white hover:-translate-y-1`;
+                  const stateStyle = isSelected
+                    ? `${color.hover} ${color.shadow}`
+                    : `${color.base} ${color.shadow} hover:${color.hover}`;
 
-                {/* //^ 1. Question ======================================== */}
-                <div className="text-3xl sm:text-4xl md:text-5xl font-Nunito-ExtraBold break-words">
-                  {question.text}
-                </div>
-
-                {/* //^ 2. Timer/Image/Next ================================ */}
-                <div className="w-full flex flex-col sm:flex-row justify-around items-center gap-6 sm:gap-10">
-
-                  {/* Timer ================================================ */}
-                  <div className="hidden sm:flex flex-col items-center gap-5">
-                    <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0">{count}</div>
-                  </div>
-
-                  {/* Image ================================================ */}
-                  <div className='w-full max-w-2xl bg-green-500'>
-                    {question.image &&
-                      <img src={formatBase64Image(question.image)} alt="quiz-image"
-                        className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
-                    }
-
-                    {!question.video && !question.image &&
-                      <div
-                        className='h-[200px] sm:h-[400px] w-full
-                          text-4xl sm:text-6xl md:text-7xl text-emerald-100 font-ChalkLineOutline
-                          border-10 sm:border-13 border-orange-300 shadow-md
-                          flex justify-center items-center bg-cover bg-center break-words'
-                        style={{ backgroundImage: `url(${chalkboard})` }}>
-                        Big Brain
-                      </div>
-                    }
-
-                    {question.video &&
-                      <div className="w-full border-10 sm:border-13 border-orange-300 shadow-md">
-                        <iframe
-                          className="w-full h-[200px] sm:h-[400px] object-cover"
-                          src={question.video}
-                          title="YouTube video player"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                    }
-                  </div>
-
-                  {/* Submit button on large screens ======================= */}
-                  <div className='w-35 hidden sm:block'>
-                    {question.type === 'multiple' &&
-                      <button
-                        onClick={() =>
-                          handleSubmit(selected.map(i => filteredAnswers[i]?.id))
-                        }
-                        disabled={submitted}
-                        className={`${orangeButtonClass} px-7 py-3`}
-                      >
-                        Submit
-                      </button>
-                    }
-                  </div>
-                </div>
-
-                {/* //^ 3. Answer ========================================== */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-Nunito-ExtraBold text-2xl text-gray-100">
-                  {(question.type === 'single' ||  question.type === 'judgement') &&
-                    <>
-                      {filteredAnswers.map((choice, index) => {
-
-                        //For single and judgement choice
-                        const colorClasses = [
-                          { hover: 'bg-blue-400', base: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
-                          { hover: 'bg-pink-400', base: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
-                          { hover: 'bg-green-400', base: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
-                          { hover: 'bg-amber-400', base: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
-                          { hover: 'bg-purple-400', base: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
-                          { hover: 'bg-cyan-300', base: 'bg-cyan-400', shadow: 'shadow-[0_4px_0_0_#066b7c]' },
-                        ];
-
-                        const color = colorClasses[index % colorClasses.length];
-                        const baseStyle = `min-h-20 sm:min-h-25 w-full flex justify-center items-center rounded-md
-                        transition-all duration-300 ease-in-out text-white hover:-translate-y-1`;
-                        const stateStyle = `${color.base} ${color.shadow} hover:${color.hover}`;
-
-                        return (
-                          <button
-                            key={index}
-                            className={`${baseStyle} ${stateStyle}`}
-                            onClick={() => handleSubmit([choice.id])}
-                          >
-                            {choice.text}
-                          </button>
-                        );
-                      })}
-                    </>
-                  }
-
-                  {question.type === 'multiple' &&
-                    <>
-                      {filteredAnswers.map((choice, index) => {
-                        const colorClasses = [
-                          { base: 'bg-cyan-900', hover: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
-                          { base: 'bg-cyan-900', hover: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
-                          { base: 'bg-cyan-900', hover: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
-                          { base: 'bg-cyan-900', hover: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
-                          { base: 'bg-cyan-900', hover: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
-                          { base: 'bg-cyan-900', hover: 'bg-cyan-400', shadow: 'shadow-[0_4px_0_0_#066b7c]' },
-                        ];
-                        const color = colorClasses[index % colorClasses.length];
-                        const isSelected = selected.includes(index);
-                        const baseStyle = `min-h-20 sm:min-h-25 w-full flex justify-center items-center rounded-md
-                        transition-all duration-300 ease-in-out text-white hover:-translate-y-1`;
-                        const stateStyle = isSelected
-                          ? `${color.hover} ${color.shadow}`
-                          : `${color.base} ${color.shadow} hover:${color.hover}`;
-
-                        return (
-                          <button
-                            key={index}
-                            className={`${baseStyle} ${stateStyle}`}
-                            onClick={() => { isSelected
-                              ? (setSelected(selected.filter(i => i !== index)))  // remove
-                              : (setSelected([...selected, index]))               // add
-                            }}
-                          >
-                            {choice.text}
-                          </button>
-                        );
-                      })}
-                    </>
-                  }
-                </div>
-              </div>
-            </main>
+                  return (
+                    <button
+                      key={index}
+                      className={`${baseStyle} ${stateStyle}`}
+                      onClick={() => { isSelected
+                        ? (setSelected(selected.filter(i => i !== index)))  // remove
+                        : (setSelected([...selected, index]))               // add
+                      }}
+                    >
+                      {choice.text}
+                    </button>
+                  );
+                })}
+              </>
+            }
           </div>
-        </>
-      )}
-    </>
+        </div>
+      </main>
+    </div>
   )
 }
 

@@ -8,7 +8,6 @@ import { TbLogout } from "react-icons/tb";
 import { ConfettiSideCannons } from "@/components/confetti/ConfettiSideCannons";
 import MusicPlayer from '@/components/music/MusicPlayer';
 import final_music from '@/assets/happy-runner-fast-paced-kids-game-music-loop-248099.mp3';
-// import final_music from '@/assets/fun-game-upbeat-happy-video-game-music-249646.mp3';
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
 import { orangeButtonClass } from "@/components/ui/tailwind";
