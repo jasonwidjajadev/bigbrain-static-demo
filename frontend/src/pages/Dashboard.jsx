@@ -308,12 +308,13 @@ function Dashboard() {
 
       {/* //*Games Feed */}
       <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
-        <div className="w-full md:w-[90%] xl:w-[90%]">
+        <div className="w-full md:w-[90%] xl:w-[80%]">
           <h1 className="text-5xl  text-left mb-6 text-orange-500 font-Nunito-ExtraBold">
             My Games
           </h1>
           {games ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3
+              [@media(min-width:1800px)]:grid-cols-4 gap-8">
               {games.map((game, i) => (
                 <GameDashboardTile
                   key={i}
