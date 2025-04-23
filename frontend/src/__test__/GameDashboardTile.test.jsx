@@ -164,4 +164,104 @@ describe("GameDashboardTile", () => {
     expect(mockHandlers.onPlay).toHaveBeenCalledWith("game-123");
   });
 
+  it("should call onGoToSession when go to session button is clicked", () => {
+    renderWithRouter(
+      <GameDashboardTile game={mockGameWithActiveSession} {...mockHandlers} />
+    );
 
+    fireEvent.click(
+      screen.getByRole("button", { name: /go to active game session/i })
+    );
+
+    expect(mockHandlers.onGoToSession).toHaveBeenCalledOnce();
+    expect(mockHandlers.onGoToSession).toHaveBeenCalledWith(
+      "game-123",
+      "active-session-123"
+    );
+  });
+
+  it("should call onStop and show modal when stop button is clicked", () => {
+    renderWithRouter(
+      <GameDashboardTile game={mockGameWithActiveSession} {...mockHandlers} />
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /stop active game session/i })
+    );
+
+    expect(mockHandlers.onStop).toHaveBeenCalledOnce();
+    expect(mockHandlers.onStop).toHaveBeenCalledWith("game-123");
+
+    // Check that the modal is displayed by looking for its heading text
+    expect(screen.getByText("The Quiz has ended early!")).toBeInTheDocument();
+  });
+
+  it("should hide the quiz ended modal when onClose is triggered", () => {
+    renderWithRouter(
+      <GameDashboardTile game={mockGameWithActiveSession} {...mockHandlers} />
+    );
+
+    // Show the modal
+    fireEvent.click(
+      screen.getByRole("button", { name: /stop active game session/i })
+    );
+    expect(screen.getByText("The Quiz has ended early!")).toBeInTheDocument();
+
+    // Close the modal by clicking the Close button
+    fireEvent.click(screen.getByRole("button", { name: /close/i }));
+    expect(
+      screen.queryByText("The Quiz has ended early!")
+    ).not.toBeInTheDocument();
+  });
+
+  it("should show singular text when there is 1 play", () => {
+    const singlePlayGame = {
+      ...mockGame,
+      oldSessions: ["session1"],
+    };
+
+    renderWithRouter(
+      <GameDashboardTile game={singlePlayGame} {...mockHandlers} />
+    );
+
+    const playCountDiv = screen.getByLabelText("There have been 1 Play");
+    expect(playCountDiv).toBeInTheDocument();
+    expect(playCountDiv).toHaveTextContent("1");
+    expect(playCountDiv).toHaveTextContent("Play");
+  });
+
+  it("should show singular text when there is 1 question", () => {
+    const singleQuestionGame = {
+      ...mockGame,
+      questions: [{ duration: 30 }],
+    };
+
+    renderWithRouter(
+      <GameDashboardTile game={singleQuestionGame} {...mockHandlers} />
+    );
+
+    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(screen.getByText("Question")).toBeInTheDocument();
+  });
+
+  it("should handle games with no plays (undefined oldSessions)", () => {
+    const noPlaysGame = {
+      ...mockGame,
+      oldSessions: undefined,
+    };
+
+    renderWithRouter(
+      <GameDashboardTile game={noPlaysGame} {...mockHandlers} />
+    );
+
+    expect(screen.getByText("0")).toBeInTheDocument();
+    expect(screen.getByText("Plays")).toBeInTheDocument();
+  });
+
+  it("should calculate duration correctly from question durations", () => {
+    renderWithRouter(<GameDashboardTile game={mockGame} {...mockHandlers} />);
+
+    // Total duration is 30 + 45 + 60 = 135 seconds = 2 mins, 15 secs
+    expect(screen.getByText("2 mins, 15 secs")).toBeInTheDocument();
+  });
+});
