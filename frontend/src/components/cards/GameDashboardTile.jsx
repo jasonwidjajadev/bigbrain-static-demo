@@ -1,21 +1,33 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
 import { formatBase64Image } from "@/util/imageUtils";
-import { LuPencil, LuPlay, LuTrash2, LuClipboardPaste, LuCircleStop, LuExternalLink } from "react-icons/lu";
+import {
+  LuPencil,
+  LuPlay,
+  LuTrash2,
+  LuClipboardPaste,
+  LuCircleStop,
+  LuExternalLink,
+} from "react-icons/lu";
 import { cyanButtonClass, redButtonClass } from "@/components/ui/tailwind";
+import QuizEndedModal from "../modals/QuizEndedModal";
 
-function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, onPlay, onStop, onGoToSession }) {
+function GameDashboardTile({
+  game,
+  onDelete,
+  onEdit,
+  onPreviousSessionResults,
+  onPlay,
+  onStop,
+  onGoToSession,
+}) {
   const [showModal, setShowModal] = useState(false);
   const [stoppedSessionId, setStoppedSessionId] = useState(null);
   const onStopClick = () => {
-    // console.log("before", game.active);  // Should be the session ID
-    setStoppedSessionId(game.active);    // Store it
-    handleStopClick();                   // Mutate to end the session
-    // console.log("after", game.active);   // May now be false/null
+    setStoppedSessionId(game.active); // Store it
+    handleStopClick(); // Mutate to end the session
     setShowModal(true);
   };
 
-  // console.log("Game is", game);
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
 
@@ -80,55 +92,40 @@ function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, o
 
   return (
     <>
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-6">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-md px-6 py-8 text-center">
-            <h3 className="text-2xl font-bold mb-2">The Quiz has ended early!</h3>
-            <p className="mb-10">Would you like to view the results?</p>
-            <div className="flex justify-center gap-4">
-              <button onClick={() => setShowModal(false)}
-                className="px-4 py-2 rounded-md bg-gray-300 text-black font-bold no-underline
-                  shadow-[0_4px_0_0_#6b7283] transition-all duration-300 ease-in-out
-                  hover:bg-gray-200 hover:-translate-y-1 w-[125px]">
-                Close
-              </button>
-              <Link
-                to={`/host/${stoppedSessionId}`}
-                className="px-4 py-2 rounded-md bg-green-500 text-white font-bold no-underline
-                  shadow-[0_4px_0_0_#166534] transition-all duration-300 ease-in-out
-                  hover:bg-green-400 hover:-translate-y-1">
-                View Results
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Modal for ending the quiz and having the option to see results */}
+      <QuizEndedModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        sessionId={stoppedSessionId}
+      />
 
-      <div
+      <article
         className="w-full min-h-[400px] bg-white rounded-md border border-gray-300 overflow-hidden shadow-md
         hover:scale-105 hover:shadow-lg transition duration-300"
+        aria-labelledby={`game-title-${game.id}`}
       >
-
         {/* Thumbnail section */}
         <div className="w-full h-[180px] bg-gray-300 relative">
           {game.thumbnail && (
             <img
               src={formatBase64Image(game.thumbnail)}
-              alt={game.title || "Game thumbnail"}
+              alt={`Thumbnail for ${game.name}`}
               className="w-full h-full object-cover"
-              // TODO: handle default thumbnail
             />
           )}
-          {/* Questions Badge Overlay */}
-          <div className="absolute bottom-4 left-4 bg-black/60 text-white rounded px-2 py-1 text-sm flex items-center">
+          {/* Duration Badge Overlay */}
+          <div
+            className="absolute bottom-4 left-4 bg-black/60 text-white rounded px-2 py-1 text-sm flex items-center"
+            aria-label={`Game duration is ${calculateDuration()}`}
+          >
             <span className="mr-1">{calculateDuration()}</span>
-            <span>
-              {/* {game.questions.length === 1 ? "Question" : "Questions"} */}
-            </span>
           </div>
 
-          {/* Duration Badge Overlay */}
-          <div className="absolute bottom-4 right-4 bg-black/60 text-white rounded px-2 py-1 text-sm flex items-center">
+          {/* Question Number Badge Overlay */}
+          <div
+            className="absolute bottom-4 right-4 bg-black/60 text-white rounded px-2 py-1 text-sm flex items-center"
+            aria-label={`There are ${game.questions.length} ${game.questions.length === 1 ? "Question" : "Questions"}`}
+          >
             <span className="mr-1">{game.questions.length}</span>
             <span>
               {game.questions.length === 1 ? "Question" : "Questions"}
@@ -138,12 +135,18 @@ function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, o
 
         {/* Game Info Section */}
         <div className="p-4">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h2
+            id={`game-title-${game.id}`}
+            className="text-2xl font-semibold text-gray-800 mb-4"
+          >
             {game.name}
           </h2>
 
-          <div className="flex items-center mt-2 text-gray-600 text-lg font-semibold mb-1">
-            <LuPlay size={20} className="mr-1" />
+          <div
+            className="flex items-center mt-2 text-gray-600 text-lg font-semibold mb-1"
+            aria-label={`There have been ${playCount} ${playCount === 1 ? "Play" : "Plays"}`}
+          >
+            <LuPlay size={20} className="mr-1" aria-hidden="true" />
             <span className="mr-1">{playCount}</span>
             <span>{playCount === 1 ? "Play" : "Plays"}</span>
           </div>
@@ -152,9 +155,12 @@ function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, o
           <div className="p-2 flex flex-col justify-end items-center gap-4">
             <div
               className={`w-full border-t border-b border-gray-300 grid grid-cols-3 ${hasActiveSession ? "hidden" : ""}`}
+              role="toolbar"
+              aria-label="Game management options"
             >
               <div
                 className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-cyan-100"
+                aria-label="Edit game"
                 data-tip="Edit"
                 onClick={handleEditClick}
               >
@@ -164,20 +170,22 @@ function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, o
               </div>
               <div
                 className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-red-100"
+                aria-label="Delete game"
                 data-tip="Delete"
                 onClick={handleDeleteClick}
               >
                 <button>
-                  <LuTrash2 size={20} />
+                  <LuTrash2 size={20} aria-hidden="true" />
                 </button>
               </div>
               <div
                 className="tooltip p-2 border-gray-300 flex justify-center items-center text-gray-600 hover:bg-gray-100"
+                aria-label="View previous sessions"
                 data-tip="Previous Sessions"
                 onClick={handlePreviousSessionResults}
               >
                 <button>
-                  <LuClipboardPaste size={20} />
+                  <LuClipboardPaste size={20} aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -189,25 +197,21 @@ function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, o
                 <button
                   className={`flex justify-center items-center ${cyanButtonClass}`}
                   onClick={handleGoToSessionClick}
+                  aria-label="Go to active game session"
                 >
-                  <LuExternalLink size={20} className="mr-2" />
+                  <LuExternalLink
+                    size={20}
+                    className="mr-2"
+                    aria-hidden="true"
+                  />
                   <span>Go to Session</span>
                 </button>
-
-                {/* Stop Session button */}
-                {/* <button
-                  className={`flex justify-center items-center ${redButtonClass}`}
-                  onClick={handleStopClick}
-                >
-                  <LuCircleStop size={20} className="mr-2" />
-                  <span>Stop</span>
-                </button> */}
-
                 <button
                   className={`flex justify-center items-center ${redButtonClass}`}
                   onClick={onStopClick}
+                  aria-label="Stop active game session"
                 >
-                  <LuCircleStop size={20} className="mr-2" />
+                  <LuCircleStop size={20} className="mr-2" aria-hidden="true" />
                   <span>Stop</span>
                 </button>
               </div>
@@ -215,14 +219,15 @@ function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, o
               <button
                 className={`flex justify-center items-center ${cyanButtonClass}`}
                 onClick={handlePlayClick}
+                aria-label="Play this game"
               >
-                <LuPlay size={20} className="mr-2" />
+                <LuPlay size={20} className="mr-2" aria-hidden="true" />
                 <span>Play</span>
               </button>
             )}
           </div>
         </div>
-      </div>
+      </article>
     </>
   );
 }
