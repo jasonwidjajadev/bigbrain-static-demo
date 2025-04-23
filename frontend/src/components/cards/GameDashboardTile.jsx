@@ -18,6 +18,7 @@ function GameDashboardTile({
   onStop,
   onGoToSession,
 }) {
+  console.log("Game is", game);
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
 
@@ -66,6 +67,20 @@ function GameDashboardTile({
     }
   };
 
+  const calculateDuration = () => {
+    // Sum up the duration of all questions
+    const totalSeconds = game.questions.reduce((total, question) => {
+      return total + (question.duration || 0);
+    }, 0);
+
+    // Convert to minutes and seconds format
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    // Format as "MM:SS" (e.g., "2:30" for 2 minutes and 30 seconds)
+    return `${minutes} mins, ${seconds.toString().padStart(2, "0")} secs`;
+  };
+
   return (
     <>
       <div
@@ -83,6 +98,14 @@ function GameDashboardTile({
             />
           )}
           {/* Questions Badge Overlay */}
+          <div className="absolute bottom-4 left-4 bg-black/60 text-white rounded px-2 py-1 text-sm flex items-center">
+            <span className="mr-1">{calculateDuration()}</span>
+            <span>
+              {/* {game.questions.length === 1 ? "Question" : "Questions"} */}
+            </span>
+          </div>
+
+          {/* Duration Badge Overlay */}
           <div className="absolute bottom-4 right-4 bg-black/60 text-white rounded px-2 py-1 text-sm flex items-center">
             <span className="mr-1">{game.questions.length}</span>
             <span>

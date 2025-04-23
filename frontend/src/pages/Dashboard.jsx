@@ -50,7 +50,6 @@ function Dashboard() {
       setError(null);
       const gamesData = await fetchGames(token);
       setGames(gamesData || []);
-      // TODO: Go through games and set which ones are active
     } catch (error) {
       console.error("Error fetching games:", error);
       setError("Failed to load games. Please try again later.");
@@ -179,7 +178,6 @@ function Dashboard() {
 
   // Handles stopping a session with quizId
   const handleStopSession = async (quizId) => {
-    console.log("Stopping game with ID:", quizId);
     try {
       // Find the game to get its details
       const game = games.find((g) => g.id === quizId);
@@ -213,21 +211,14 @@ function Dashboard() {
           setSelectedSessionIndex(null);
         }
       }
-    } catch (error) {
+    } catch (err) {
+      setError(`Failed to start game session. Please try again ${err}`);
       console.error("Failed to start game session:", error);
-      setError("Failed to start game session. Please try again.");
     }
   };
 
   // Handler for going to an active session
   const handleGoToSessionClick = (quizId, sessionId) => {
-    console.log(
-      "Going to session for game with ID:",
-      quizId,
-      "Session ID:",
-      sessionId
-    );
-
     // Find the game to get its details
     const game = games.find((g) => g.id === quizId);
     if (!game) return;
@@ -313,23 +304,44 @@ function Dashboard() {
             My Games
           </h1>
           {games ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3
+            loading ? (
+              <div className="text-center text-gray-600 py-10">
+                Loading your games...
+              </div>
+            ) : games.length === 0 ? (
+              <div className="text-center py-10">
+                <p className="text-gray-600 mb-4">
+                  You have not created any games yet.
+                </p>
+                <Link
+                  to="/quiz/create"
+                  className={`${orangeButtonClass} inline-flex items-center gap-2`}
+                >
+                  <RiAddCircleLine className="text-xl" /> Create your first game
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3
               [@media(min-width:1800px)]:grid-cols-4 gap-8">
-              {games.map((game, i) => (
-                <GameDashboardTile
-                  key={i}
-                  game={game}
-                  onDelete={handleDeleteClick}
-                  onEdit={handleEditClick}
-                  onPreviousSessionResults={handlePreviousSessionResults}
-                  onPlay={handleStartSession}
-                  onStop={handleStopSession}
-                  onGoToSession={handleGoToSessionClick}
-                />
-              ))}
-            </div>
+                {games.map((game, i) => (
+                  <GameDashboardTile
+                    key={i}
+                    game={game}
+                    onDelete={handleDeleteClick}
+                    onEdit={handleEditClick}
+                    onPreviousSessionResults={handlePreviousSessionResults}
+                    onPlay={handleStartSession}
+                    onStop={handleStopSession}
+                    onGoToSession={handleGoToSessionClick}
+                  />
+                ))}
+              </div>
+            )
           ) : (
-            <></>
+            <div className="flex flex-col items-center justify-center w-full py-20">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-solid mb-4"></div>
+              <p className="text-xl text-gray-600">Dashboard is loading...</p>
+            </div>
           )}
         </div>
       </div>

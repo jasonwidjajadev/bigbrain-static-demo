@@ -1,11 +1,11 @@
 import { Chart as ChartJS } from "chart.js/auto";
-import { Bar, Radar, Line } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import ScoreboardComponent from "./ScoreboardComponent";
 import PercentageChartComponent from "./PercentageChartComponent";
 import ResponseTimeComponent from "./ResponseTimeComponent";
 
 function ResultsDisplay({ gameData, sessionResults }) {
+  ChartJS.register();
   const [processedData, setProcessedData] = useState({
     players: [],
     questions: [],

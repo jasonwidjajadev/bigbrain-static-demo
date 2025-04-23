@@ -153,8 +153,8 @@ function QuestionEditor() {
         currentGame.questions = [];
       }
     } catch (err) {
-      console.error("Error fetching game data:", err);
-      setError("Failed to load game data");
+      setError(`Failed to load game data ${err}`);
+      console.error("Error fetching game data:", error);
     } finally {
       setLoading(false);
     }
@@ -271,8 +271,17 @@ function QuestionEditor() {
   };
 
   // Helper function to extract YouTube video ID from URL
+  // Updated extractVideoId function to handle embed URLs
   const extractVideoId = (url) => {
     if (!url) return null;
+
+    // Handle embed URLs
+    if (url.includes("youtube.com/embed/")) {
+      const embedMatch = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+      return embedMatch ? embedMatch[1] : null;
+    }
+
+    // Handle standard YouTube URLs
     const match = url.match(
       /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
@@ -281,17 +290,38 @@ function QuestionEditor() {
 
   // Updated handleYouTubeVideoSelect function in QuestionEditor.jsx
   const handleYouTubeVideoSelect = (youtubeUrl) => {
-    // Update the question state with just the URL
-    setQuestion({
-      ...question,
-      video: youtubeUrl,
-      image: "", // Clear any existing image
-    });
+    // Extract the video ID from the URL
+    const videoId = extractVideoId(youtubeUrl);
 
-    // Set preview state with just the URL
-    setPreviewVideo(youtubeUrl);
-    console.log("Youtube URL is", youtubeUrl);
-    console.log("Preview video", previewVideo);
+    // If a valid video ID was found, create the embed URL
+    if (videoId) {
+      // Create the embed URL format: https://www.youtube.com/embed/VIDEO_ID
+      const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+
+      // Update the question state with the embed URL
+      setQuestion({
+        ...question,
+        video: embedUrl,
+        image: "", // Clear any existing image
+      });
+
+      // Set preview state with the embed URL
+      setPreviewVideo(embedUrl);
+    } else {
+      // If no valid video ID was found, use the original URL (fallback)
+      setQuestion({
+        ...question,
+        video: youtubeUrl,
+        image: "", // Clear any existing image
+      });
+
+      // Set preview state with the original URL
+      setPreviewVideo(youtubeUrl);
+      console.log(
+        "Could not extract video ID, using original URL:",
+        youtubeUrl
+      );
+    }
 
     // Clear any existing image preview
     setPreviewImage(null);
@@ -563,7 +593,11 @@ function QuestionEditor() {
                       <div className="flex flex-col justify-center mt-2 border rounded p-2">
                         <div className="aspect-w-16 aspect-h-9">
                           <iframe
-                            src={`https://www.youtube.com/embed/${extractVideoId(previewVideo)}`}
+                            src={
+                              previewVideo.includes("embed")
+                                ? previewVideo
+                                : `https://www.youtube.com/embed/${extractVideoId(previewVideo)}`
+                            }
                             className="w-full h-24"
                             allowFullScreen
                             title="YouTube video"

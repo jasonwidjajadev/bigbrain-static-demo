@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { LuUpload } from "react-icons/lu";
 import { orangeButtonClass } from "@/components/ui/tailwind";
@@ -6,7 +6,6 @@ import { orangeButtonClass } from "@/components/ui/tailwind";
 function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
-  const fileInputRef = useRef(null);
 
   if (!isOpen) return null;
 
