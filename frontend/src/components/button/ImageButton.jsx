@@ -6,6 +6,7 @@ const ImageButton = ({ onClick }) => {
     <button
       type="button"
       onClick={onClick}
+      aria-label="Add image"
       className={`flex justify-center items-center w-[60%] md:w-[30%] lg:w-[30%] gap-2 ${blueButtonClassSmall} min-w-[100px]`}
     >
       <LuImage size={24} className="shrink-0" />
