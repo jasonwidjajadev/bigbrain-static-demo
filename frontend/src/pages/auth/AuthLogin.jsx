@@ -4,9 +4,10 @@ import { useAuthContext } from '@/context/useAuthContext';
 import { apiCall } from '@/util/apiCall';
 import register_img from '@/assets/door.jpg';
 
-import { orangeButtonClass, input } from '@/components/ui/tailwind';
+import { orangeButtonClass } from '@/components/ui/tailwind';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 import JoinGameButton from '@/components/button/JoinGameButton';
+import FormInput from '@/components/inputs/FormInput';
 
 /**
  * AuthLogin component handles user authentication via email and password.
@@ -81,6 +82,7 @@ function AuthLogin() {
       {/* Main Content*/}
       <div className="flex-1 flex justify-center items-center px-6 py-8 bg-[#f7f7f7]">
         <div className="flex w-full max-w-5xl bg-white shadow-lg rounded-2xl overflow-hidden min-h-[500px] max-h-[630px]">
+
           {/* //*Left: Image */}
           <div className="hidden md:block md:w-[55%] bg-white rounded-r-2xl overflow-hidden">
             <div className="p-4 w-full h-full relative flex items-center justify-center">
@@ -107,28 +109,29 @@ function AuthLogin() {
               <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
 
                 {/* Email */}
-                <div>
-                  <label htmlFor="emailInput" className="block mb-1 text-sm font-medium">Email address</label>
-                  <input type="email" id="emailInput" name="email" required autoComplete="email" value={emailInput} className={input}
-                    placeholder='Enter your email'
-                    onChange={(e) => {
-                      setEmailInput(e.target.value);
-                      setErrorMessage('');
-                    }}
-                  />
-                </div>
-
+                <FormInput
+                  id="loginEmail"
+                  labelContent="Email address"      placeholder="Enter your email"
+                  type="email"                      autoComplete="email"
+                  name="email"                      value={emailInput}
+                  autoFocus={false}
+                  onChange={(e) => {
+                    setEmailInput(e.target.value);
+                    setErrorMessage('');
+                  }}
+                />
                 {/* Password */}
-                <div>
-                  <label htmlFor="password" className="block mb-1 text-sm font-medium">Password</label>
-                  <input type="password" id="password" name="password" required autoComplete="password" value={password} className={input}
-                    placeholder='Enter your password'
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      setErrorMessage('');
-                    }}
-                  />
-                </div>
+                <FormInput
+                  id="loginPassword"
+                  labelContent="Password"           placeholder="Enter your password"
+                  type="password"                   autoComplete="current-password"
+                  name="password"                   value={password}
+                  autoFocus={false}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrorMessage('');
+                  }}
+                />
 
                 {/* Backend Error */}
                 {errorMessage && (<div className="text-red-500 text-sm mt-2" role="alert">{errorMessage}</div>)}

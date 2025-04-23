@@ -19,7 +19,7 @@ function FormInput({
   placeholder = '',
 
   type = 'text',
-  autoComplete = 'off', // name | useranme | email | current-password | new-password | on/off
+  autoComplete = 'off', // name | username | email | current-password | new-password | on/off
 
   name,
   value,

@@ -16,42 +16,6 @@ vi.mock('lottie-web', () => {
   };
 });
 
-/**
- * Test Auth Registration Form
- *  - npm run test
- *
-vi.fn()	                                          Vitest’s mock function (same as jest.fn())
-render(...)	                                      Renders your React component into a test DOM
-
-screen.getByText('Login')	                        Fails if not found,find an element with exact text "login"
-screen.queryByText('Error')	                      Returns null if not found (no fail)
-
-screen.getByLabelText	                            Only for form elements with <label>, Selects element associated with a <label for="...">
-screen.getByLabelText('Email');                   Find input/textarea by <label>
-
-getByRole('heading')	                            Use when targeting elements by semantic role
-screen.getByRole	                                Grabs element by ARIA role (e.g., alert, button, textbox)
-screen.getByRole('button')	                      find a <button>, <textbox>, etc. For accessibility
-
-
-screen.getByLabelText('Email')	                  Matches <label> text
-screen.getByPlaceholderText('Search')	            Matches input placeholder, find by placeholder attribute
-
-getByText('Text')	                                Use when you're trying to find visible text
-<div>Hello world</div>                            expect(screen.getByText('Hello world')).toBeInTheDocument();
-
-getByTestId('some-id')	                          Use when nothing else is reliable (as fallback)
-<div data-testid="myDiv">Custom component</div>   expect(screen.getByTestId('myDiv')).toHaveTextContent('Custom component');
-
-fireEvent                                         Simulates DOM events like typing, clicking, focusing, etc.
-fireEvent.change(...)	                            Simulates user typing or interaction (you can also use click, etc.)
-fireEvent.click(screen.getByText('Submit'));      Click submit button
-
-expect(...).toBe...()	                            Asserts the result of the interaction or query
-
-
-
- */
 describe('FormInput Component Test2', () => {
   // 1. Interaction test (simulate typing/clicking)
   it('calls onChange when user types in input', () => {

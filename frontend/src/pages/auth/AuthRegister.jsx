@@ -8,6 +8,7 @@ import { orangeButtonClass } from '@/components/ui/tailwind';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 import JoinGameButton from '@/components/button/JoinGameButton';
 import FormInput from '@/components/inputs/FormInput';
+
 /**
  * AuthRegister component handles user registration.
  *
