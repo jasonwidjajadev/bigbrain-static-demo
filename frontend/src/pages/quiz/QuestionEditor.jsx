@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { IoReturnUpBackSharp } from "react-icons/io5";
 
 import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
@@ -464,12 +465,12 @@ function QuestionEditor() {
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
         <div className="flex gap-3 items-center">
-          <button
+          {/* <button
             onClick={() => navigate(`/quiz/edit/${quizId}`)}
             className={orangeButtonClass}
           >
             Back to Quiz
-          </button>
+          </button> */}
           <Link to="/auth/logout" className={`${orangeButtonClass} px-5`}>
             Log out
           </Link>
@@ -480,19 +481,31 @@ function QuestionEditor() {
       <main className="flex-1 flex items-center justify-center text-center p-8">
         {/* <div className="flex flex-col w-full gap-5"> */}
         <div className="w-full xl:w-[90%]">
-          <h1 className="text-4xl sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold mb-6 sm:mb-8">
-            {questionId === "new" ? "Add New Question" : "Edit Question"}
-          </h1>
+          <div className="flex flex-row justify-between w-full mb-6 sm:mb-8 items-center">
+            <div className={`${orangeButtonClass} px-5 h-[44px]`}>
+              <Link to={`/quiz/edit/${quizId}`}>
+                <IoReturnUpBackSharp size={30}/>
+              </Link>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold">
+              {questionId === "new" ? "Add New Question" : "Edit Question"}
+            </h1>
+            <div className="w-[70px] hidden sm:block"></div>
+          </div>
 
           <form className="w-full" onSubmit={saveQuestion}>
             <div className="w-full bg-white rounded-lg shadow-md mb-6">
-              {/* Add question box heading */}
-              <div className="flex flex-wrap justify-center md:justify-between items-center bg-orange-200 rounded border-b-3 border-orange-500 px-4 py-2 gap-4">
-                <div className="flex gap-4 flex-wrap justify-center">
-                  {/* Question Type */}
-                  <div className="flex flex-col items-start">
+
+              {/* //* Add question box heading  ============================ */}
+              <div className="flex flex-col sm:flex-row flex-wrap justify-between items-center bg-orange-200 rounded border-b-3 border-orange-500 px-6 py-4 gap-4">
+
+
+                <div className="flex flex-wrap gap-4 w-full sm:w-auto">
+
+                  {/* Question Types */}
+                  <div className="w-full sm:w-auto  flex flex-col items-start">
                     <span className="font-medium">Question Type:</span>
-                    {/* TODO: Potentially put in icons */}
                     <select
                       className="select"
                       value={question.type}
@@ -505,21 +518,19 @@ function QuestionEditor() {
                   </div>
 
                   {/* Points */}
-                  <div className="flex flex-col items-start">
+                  <div className="w-full sm:w-auto flex flex-col items-start">
                     <span className="font-medium">Points:</span>
-                    <div>
-                      <input
-                        type="number"
-                        value={question.points}
-                        onChange={handlePointsChange}
-                        className="input validator"
-                        required
-                      />
-                    </div>
+                    <input
+                      type="number"
+                      value={question.points}
+                      onChange={handlePointsChange}
+                      className="input validator"
+                      required
+                    />
                   </div>
 
                   {/* Time Limit */}
-                  <div className="flex flex-col items-start">
+                  <div className="w-full sm:w-auto flex flex-col items-start">
                     <span className="font-medium">Time Limit (seconds):</span>
 
                     <input
@@ -539,7 +550,7 @@ function QuestionEditor() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex justify-end gap-4">
+                <div className="flex justify-end gap-4 w-full sm:w-auto">
                   {/* Cancel button */}
                   <button
                     type="button"
@@ -559,6 +570,7 @@ function QuestionEditor() {
                 </div>
               </div>
 
+              {/* //* Question Content + Choices =========================== */}
               <section className="sm:p-8">
                 {/* Question content */}
                 <div className="flex flex-col pt-6 sm:pt-0 sm:flex-row gap-4 mb-9">

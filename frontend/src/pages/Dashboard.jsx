@@ -305,11 +305,11 @@ function Dashboard() {
           </h1>
           {games ? (
             loading ? (
-              <div className="text-center text-gray-600 py-10">
+              <div className="flex flex-col items-center justify-center h-[60vh] text-center text-gray-600 py-10">
                 Loading your games...
               </div>
             ) : games.length === 0 ? (
-              <div className="text-center py-10">
+              <div className="flex flex-col items-center justify-center h-[60vh] text-center">
                 <p className="text-gray-600 mb-4">
                   You have not created any games yet.
                 </p>

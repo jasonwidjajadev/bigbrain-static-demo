@@ -18,7 +18,7 @@ function QuestionInfoTile({ question, index, onEdit, onDelete }) {
         </div>
 
         {/* Question content */}
-        <div className="p-3 px-4">
+        <div className="p-3 px-6 flex justify-start">
           <p className="text-lg text-gray-800">
             {question.text || "How tall am I?"}
           </p>

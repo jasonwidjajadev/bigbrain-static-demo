@@ -157,7 +157,7 @@ function AdminQuizEdit() {
   };
 
   return (
-    <div className="min-h-screen overflow-y-auto flex flex-col font-sans ">
+    <div className="min-h-screen overflow-y-auto flex flex-col font-sans bg-[#f7f7f7]">
       {/* Toast notifications */}
       {toast && (
         <div className="toast toast-center z-50">
@@ -207,7 +207,9 @@ function AdminQuizEdit() {
               {/* Quiz editing UI */}
               {/* Quiz information tile */}
               {loading ? (
-                <div>Loading quiz information...</div>
+                <div className="flex flex-col items-center justify-center h-[60vh] text-center text-gray-600 py-10">
+                  Loading quiz information...
+                </div>
               ) : error ? (
                 <div>{error}</div>
               ) : currentQuiz ? (

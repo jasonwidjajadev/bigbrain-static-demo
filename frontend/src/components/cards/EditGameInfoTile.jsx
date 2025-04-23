@@ -32,7 +32,7 @@ function EditGameInfoTile({
       {/* Game info section */}
       <div className="p-6">
         <div className="mb-4">
-          <h2 className="text-4xl font-bold text-gray-800 mb-2">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">
             {name || "Untitled Game"}
           </h2>
           <p className="text-gray-600">{description || "Testing out a game"}</p>
