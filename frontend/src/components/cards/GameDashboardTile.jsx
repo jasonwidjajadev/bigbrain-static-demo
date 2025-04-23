@@ -1,24 +1,22 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { formatBase64Image } from "@/util/imageUtils";
-import {
-  LuPencil,
-  LuPlay,
-  LuTrash2,
-  LuClipboardPaste,
-  LuCircleStop,
-  LuExternalLink,
-} from "react-icons/lu";
+import { LuPencil, LuPlay, LuTrash2, LuClipboardPaste, LuCircleStop, LuExternalLink } from "react-icons/lu";
 import { cyanButtonClass, redButtonClass } from "@/components/ui/tailwind";
+// import StopGameDialog from "@/components/StopGameDialog";
 
-function GameDashboardTile({
-  game,
-  onDelete,
-  onEdit,
-  onPreviousSessionResults,
-  onPlay,
-  onStop,
-  onGoToSession,
-}) {
-  console.log("Game is", game);
+function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, onPlay, onStop, onGoToSession }) {
+  const [showModal, setShowModal] = useState(false);
+  const [stoppedSessionId, setStoppedSessionId] = useState(null);
+  const onStopClick = () => {
+    console.log("before", game.active);  // Should be the session ID
+    setStoppedSessionId(game.active);    // Store it
+    handleStopClick();                   // Mutate to end the session
+    console.log("after", game.active);   // May now be false/null
+    setShowModal(true);
+  };
+
+  // console.log("Game is", game);
   // Calculate play count from oldSessions length
   const playCount = game.oldSessions?.length || 0;
 
@@ -83,10 +81,35 @@ function GameDashboardTile({
 
   return (
     <>
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-6">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-md px-6 py-8 text-center">
+            <h3 className="text-2xl font-bold mb-2">The Quiz has ended early!</h3>
+            <p className="mb-10">Would you like to view the results?</p>
+            <div className="flex justify-center gap-4">
+              <button onClick={() => setShowModal(false)}
+                className="px-4 py-2 rounded-md bg-gray-300 text-black font-bold no-underline
+                  shadow-[0_4px_0_0_#6b7283] transition-all duration-300 ease-in-out
+                  hover:bg-gray-200 hover:-translate-y-1 w-[125px]">
+                Close
+              </button>
+              <Link
+                to={`/host/${stoppedSessionId}`}
+                className="px-4 py-2 rounded-md bg-green-500 text-white font-bold no-underline
+                  shadow-[0_4px_0_0_#166534] transition-all duration-300 ease-in-out
+                  hover:bg-green-400 hover:-translate-y-1">
+                View Results
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div
         className="w-full min-h-[400px] bg-white rounded-md border border-gray-300 overflow-hidden shadow-md
         hover:scale-105 hover:shadow-lg transition duration-300"
       >
+
         {/* Thumbnail section */}
         <div className="w-full h-[180px] bg-gray-300 relative">
           {game.thumbnail && (
@@ -120,7 +143,7 @@ function GameDashboardTile({
             {game.name}
           </h2>
 
-          <div className="flex items-center mt-2 text-gray-600 text-lg font-semibold">
+          <div className="flex items-center mt-2 text-gray-600 text-lg font-semibold mb-1">
             <LuPlay size={20} className="mr-1" />
             <span className="mr-1">{playCount}</span>
             <span>{playCount === 1 ? "Play" : "Plays"}</span>
@@ -160,9 +183,13 @@ function GameDashboardTile({
               </div>
             </div>
 
+
+
+
+
             {/* Game Mode Buttons */}
             {hasActiveSession ? (
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 w-full">
                 {/* Go to Session button */}
                 <button
                   className={`flex justify-center items-center ${cyanButtonClass}`}
@@ -173,9 +200,17 @@ function GameDashboardTile({
                 </button>
 
                 {/* Stop Session button */}
-                <button
+                {/* <button
                   className={`flex justify-center items-center ${redButtonClass}`}
                   onClick={handleStopClick}
+                >
+                  <LuCircleStop size={20} className="mr-2" />
+                  <span>Stop</span>
+                </button> */}
+
+                <button
+                  className={`flex justify-center items-center ${redButtonClass}`}
+                  onClick={onStopClick}
                 >
                   <LuCircleStop size={20} className="mr-2" />
                   <span>Stop</span>

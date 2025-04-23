@@ -46,6 +46,8 @@ function HostGameView() {
   //* Session loading & game ownership
   //* ==========================================================================
 
+
+
   React.useEffect(() => {
     if (!tokenReady || !token) return;
 
@@ -68,10 +70,17 @@ function HostGameView() {
 
         // Step 2: If session is over, get results
         if (!sessionStatus.active || sessionStatus.position >= sessionQuestions.length) {
-          const results = await apiCall(`/admin/session/${trimmedSessionId}/results`, 'GET', null, token);
-          setHostFinalResults(results.results);
-          setStage('final');
-          return;
+          try {
+            const results = await apiCall(`/admin/session/${trimmedSessionId}/results`, 'GET', null, token);
+            setHostFinalResults(results.results);
+            setStage('final');
+            return;
+
+          } catch (err) {
+            console.warn('Failed to fetch session results:', err.message);
+            navigate('/session/inactive');
+            return;
+          }
         }
 
         // Step 3: Verify user is the quiz owner
