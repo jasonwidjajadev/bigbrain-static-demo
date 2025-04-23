@@ -185,9 +185,7 @@ function PlayerGameView() {
     const fetchSubmittedAnswer = async () => {
       try {
         const res = await apiCall(`/play/${playerId}/answer`, 'GET');
-        setTimeout(() => {
-          setIndividualQuestionResult(res.answers);
-        }, 2000);
+        setIndividualQuestionResult(res.answers);
         clearInterval(interval);
 
       } catch (err) {
