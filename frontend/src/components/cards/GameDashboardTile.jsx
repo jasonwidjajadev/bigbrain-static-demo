@@ -9,10 +9,10 @@ function GameDashboardTile({ game, onDelete, onEdit, onPreviousSessionResults, o
   const [showModal, setShowModal] = useState(false);
   const [stoppedSessionId, setStoppedSessionId] = useState(null);
   const onStopClick = () => {
-    console.log("before", game.active);  // Should be the session ID
+    // console.log("before", game.active);  // Should be the session ID
     setStoppedSessionId(game.active);    // Store it
     handleStopClick();                   // Mutate to end the session
-    console.log("after", game.active);   // May now be false/null
+    // console.log("after", game.active);   // May now be false/null
     setShowModal(true);
   };
 
