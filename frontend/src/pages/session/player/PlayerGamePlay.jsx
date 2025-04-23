@@ -6,6 +6,8 @@ import chalkboard from '@/assets/chalkboard.jpg';
 
 import { orangeButtonClass } from '@/components/ui/tailwind';
 
+import { formatBase64Image } from '@/util/imageUtils';
+
 /**
  * Renders the gameplay screen for a quiz question.
  * Handles countdown timer, answer selection, and submission logic.
@@ -119,7 +121,7 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
                   {/* Image ================================================ */}
                   <div className='w-full max-w-2xl bg-green-500'>
                     {question.image &&
-                      <img src={question.image} alt="quiz-image"
+                      <img src={formatBase64Image(question.image)} alt="quiz-image"
                         className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
                     }
 

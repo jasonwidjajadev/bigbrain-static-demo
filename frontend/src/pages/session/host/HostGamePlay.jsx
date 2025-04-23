@@ -12,6 +12,8 @@ import MusicPlayer from '@/components/music/MusicPlayer';
 import { orangeButtonClass } from '@/components/ui/tailwind';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 
+import { formatBase64Image } from '@/util/imageUtils';
+
 /**
  * HostGamePlay component handles the in-game quiz view from the host's perspective.
  *
@@ -119,7 +121,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
                   {/* Image ================================================ */}
                   <div className='w-full max-w-2xl bg-green-500'>
                     {question.image &&
-                      <img src={question.image} alt="quiz-image"
+                      <img src={formatBase64Image(question.image)} alt="quiz-image"
                         className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
                     }
 
