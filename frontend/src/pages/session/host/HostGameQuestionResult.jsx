@@ -9,6 +9,8 @@ import chalkboard from '@/assets/chalkboard.jpg';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 import { orangeButtonClass } from '@/components/ui/tailwind';
 
+import { formatBase64Image } from '@/util/imageUtils';
+
 /**
  * HostQuestionResult component displays the result of a single quiz question from the host's perspective.
  *
@@ -88,7 +90,7 @@ function HostQuestionResult({ question, position, length, onEnd, onNext}) {
 
             <div className='w-full max-w-2xl bg-green-500'>
               {question.image &&
-                <img src={question.image} alt="quiz-image"
+                <img src={formatBase64Image(question.image)} alt="quiz-image"
                   className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
               }
 
