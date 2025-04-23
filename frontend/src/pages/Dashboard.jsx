@@ -178,7 +178,6 @@ function Dashboard() {
 
   // Handles stopping a session with quizId
   const handleStopSession = async (quizId) => {
-    console.log("Stopping game with ID:", quizId);
     try {
       // Find the game to get its details
       const game = games.find((g) => g.id === quizId);
@@ -212,21 +211,14 @@ function Dashboard() {
           setSelectedSessionIndex(null);
         }
       }
-    } catch (error) {
+    } catch (err) {
+      setError(`Failed to start game session. Please try again ${err}`);
       console.error("Failed to start game session:", error);
-      setError("Failed to start game session. Please try again.");
     }
   };
 
   // Handler for going to an active session
   const handleGoToSessionClick = (quizId, sessionId) => {
-    console.log(
-      "Going to session for game with ID:",
-      quizId,
-      "Session ID:",
-      sessionId
-    );
-
     // Find the game to get its details
     const game = games.find((g) => g.id === quizId);
     if (!game) return;

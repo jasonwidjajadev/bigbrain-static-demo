@@ -153,8 +153,8 @@ function QuestionEditor() {
         currentGame.questions = [];
       }
     } catch (err) {
-      console.error("Error fetching game data:", err);
-      setError("Failed to load game data");
+      setError(`Failed to load game data ${err}`);
+      console.error("Error fetching game data:", error);
     } finally {
       setLoading(false);
     }

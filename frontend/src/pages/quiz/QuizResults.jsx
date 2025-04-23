@@ -102,6 +102,9 @@ function QuizResults() {
       // Then fetch results for each session
       await fetchSessionResults(oldSessionData);
     } catch (error) {
+      if (!sessionIdData) {
+        console.log("No session data saved.");
+      }
       console.error("Error fetching data:", error);
     }
   };
