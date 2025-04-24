@@ -4,10 +4,10 @@ import { useAuthContext } from '@/context/useAuthContext';
 import { apiCall } from '@/util/apiCall';
 import register_img from '@/assets/colorful_brain.png';
 
-import { orangeButtonClass } from '@/components/ui/tailwind';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
-import JoinGameButton from '@/components/button/JoinGameButton';
 import FormInput from '@/components/inputs/FormInput';
+import Button from '@/components/button/Button';
+import { FaPlay } from "react-icons/fa";
 
 /**
  * AuthRegister component handles user registration.
@@ -115,8 +115,8 @@ function AuthRegister() {
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
         <div className="flex gap-3 sm:gap-4 items-center">
-          <JoinGameButton />
-          <Link to="/auth/login" className={`${orangeButtonClass} px-6`}>Log in</Link>
+          <Button to="/join" icon={FaPlay} color='pink'>Join a game</Button>
+          <Button to="/auth/login" color='pink'>Log in</Button>
         </div>
       </nav>
 
@@ -139,7 +139,7 @@ function AuthRegister() {
           </div>
 
           {/* //*Right: Form */}
-          <div className="w-full md:w-[45%] px-8 sm:px-12 py-8 sm:py-10">
+          <div className="w-full md:w-[50%] px-8 sm:px-12 py-8 sm:py-10">
             <h1 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-6 font-Nunito-ExtraBold">Register ✍</h1>
             <p className="text-sm text-gray-500 mb-8 hidden sm:block">
               Welcome to Big Brain — let’s get you suited up!
@@ -211,9 +211,9 @@ function AuthRegister() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`sm:text-xl w-full mt-4 px-6 py-2.5 rounded-md font-semibold text-white shadow-[0_4px_0_0_#c2410c]
+                className={`sm:text-xl w-full mt-4 px-6 py-2.5 rounded-md font-semibold text-white shadow-[0_4px_0_0_#9c004e]
                   transition-all duration-300 ease-in-out
-                  ${loading ? 'bg-orange-300 cursor-not-allowed opacity-60' : 'bg-orange-500 hover:bg-orange-400 hover:-translate-y-1'}`}
+                  ${loading ? 'bg-pink-500 cursor-not-allowed opacity-60' : 'bg-pink-600 hover:bg-pink-400  hover:-translate-y-1'}`}
               >
                 {loading ? 'Registering...' : 'Register'}
               </button>
