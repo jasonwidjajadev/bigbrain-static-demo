@@ -10,70 +10,8 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, getResultsForSessionId } from "@/util/gamesApi";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-import JoinGameButton from "@/components/button/JoinGameButton";
-import { orangeButtonClass } from "@/components/ui/tailwind";
-
+import Button from '@/components/button/Button';
 import TabContent from "@/pages/quiz/charts/TabContent";
-
-/*
-Session results data structure looks as follows:
-[
-  {
-    sessionId: "num",
-    data: {
-      results: [
-        {
-          name: "jason",
-          answers: [
-            {
-              questionStartedAt: '2025-04-20T23:41:12.525Z',
-              answeredAt: '2025-04-20T23:41:23.226Z',
-              answers: [], // Some answer content
-              correct: true
-            },
-            {
-              questionStartedAt: '2025-04-20T23:41:47.078Z',
-              answeredAt: '2025-04-20T23:42:03.912Z',
-              answers: [], // Answer 1, Answer 2
-              correct: true
-            },
-            {
-              questionStartedAt: '2025-04-20T23:42:19.661Z',
-              answeredAt: '2025-04-20T23:42:26.192Z',
-              answers: [], // Some answer content
-              correct: true
-            }
-          ]
-        },
-        {
-          name: "mik",
-          answers: [
-            {
-              questionStartedAt: '2025-04-20T23:41:12.525Z',
-              answeredAt: '2025-04-20T23:41:26.522Z',
-              answers: [], // Some answer content
-              correct: true
-            },
-            {
-              questionStartedAt: '2025-04-20T23:41:47.078Z',
-              answeredAt: '2025-04-20T23:41:58.942Z',
-              answers: [], // Answer 1, Answer 2, Answer 3
-              correct: false
-            },
-            {
-              questionStartedAt: '2025-04-20T23:42:19.661Z',
-              answeredAt: '2025-04-20T23:42:28.363Z',
-              answers: [], // Some answer content
-              correct: false
-            }
-          ]
-        },
-      ]
-    }
-  }
-]
-
-*/
 
 function QuizResults() {
   const navigate = useNavigate();
@@ -147,17 +85,16 @@ function QuizResults() {
       {/* Navbar Left Side*/}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
+
         {/* //* NavBar Right side For Small Screen Dropdown */}
         <div className="dropdown dropdown-bottom dropdown-end sm:hidden">
           {/* Toggle Button */}
-          <div tabIndex={0} role="button" className={orangeButtonClass}>
-            <VscThreeBars className="text-3xl" />
-          </div>
+          <Button tabIndex={0} role="button" icon={VscThreeBars} iconClass="text-3xl" color='pink'></Button>
 
           {/* Dropdown Content */}
           <ul
             tabIndex={0}
-            className="dropdown-content menu p-2 shadow-lg bg-orange-500 rounded-box w-52 z-50 text-xl text-white"
+            className="dropdown-content menu p-2 shadow-lg bg-pink-600 rounded-box w-52 z-50 text-xl text-white"
           >
             <li>
               <Link to="/quiz/create" className="flex items-center gap-[16px]">
@@ -184,21 +121,16 @@ function QuizResults() {
         <div className="hidden sm:block">
           <div className="flex gap-3 items-center">
             {/* Create */}
-            <Link
-              to="/quiz/create"
-              className={`${orangeButtonClass} flex items-center gap-2`}
-            >
-              <RiAddCircleLine className="text-2xl" /> Create
-            </Link>
-            {/* Play */}
-            <JoinGameButton />
-            {/* Logout */}
-            <Link
-              to="/auth/logout"
-              className={`${orangeButtonClass} px-5 flex items-center gap-2`}
-            >
-              <TbLogout className="text-2xl" /> Logout
-            </Link>
+            <Button
+              to="/quiz/create" icon={RiAddCircleLine} iconClass="text-2xl"
+              color='pink' data-testid="quiz-create-button-big-screen">
+              Create
+            </Button>
+            <Button to="/join" icon={FaPlay} color='pink'>Join a game</Button>
+            <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
+              color='pink' data-testid="logout-button-big-screen">
+              Logout
+            </Button>
           </div>
         </div>
       </nav>
@@ -206,7 +138,7 @@ function QuizResults() {
       {/* Quiz Old Sessions Results Page */}
       <div className="flex-1 flex flex-col justify-start md:p-8">
         <div className="w-full max-w-6xl">
-          <h1 className="flex justify-center text-3xl font-semibold text-left p-4 md:p-0 md:mb-4 text-orange-500 font-Nunito-ExtraBold">
+          <h1 className="flex justify-center text-3xl font-semibold text-left p-4 md:p-0 md:mb-4 text-pink-600 font-Nunito-ExtraBold">
             Previous Sessions for {specificGameData.name}
           </h1>
         </div>
