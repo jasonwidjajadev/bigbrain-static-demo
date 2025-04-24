@@ -55,6 +55,7 @@ function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
             <span className="label-text">Upload CSV file</span>
           </label>
           <input
+            id="csv-file-selector"
             type="file"
             accept=".csv"
             className="file-input file-input-bordered w-full max-w-xs"
@@ -90,6 +91,7 @@ function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
             Cancel
           </button>
           <button
+            id="csv-import"
             onClick={handleSubmit}
             className={`${orangeButtonClass}`}
             disabled={!selectedFile}
