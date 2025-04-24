@@ -18,8 +18,7 @@ import DeleteConfirmationModal from "@/components/modals/DeleteConfirmationModal
 import SessionStartModal from "@/components/modals/SessionStartModal";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-import { orangeButtonClass } from "@/components/ui/tailwind";
-import JoinGameButton from "@/components/button/JoinGameButton";
+import Button from '@/components/button/Button';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -242,14 +241,11 @@ function Dashboard() {
         {/* //* NavBar Right side For Small Screen Dropdown */}
         <div className="dropdown dropdown-bottom dropdown-end sm:hidden">
           {/* Toggle Button */}
-          <div tabIndex={0} role="button" className={orangeButtonClass}>
-            <VscThreeBars className="text-3xl" />
-          </div>
-
+          <Button tabIndex={0} role="button" icon={VscThreeBars} iconClass="text-3xl" color='pink'></Button>
           {/* Dropdown Content */}
           <ul
             tabIndex={0}
-            className="dropdown-content menu p-2 shadow-lg bg-orange-500 rounded-box w-52 z-50 text-xl text-white"
+            className="dropdown-content menu p-2 shadow-lg bg-pink-600 rounded-box w-52 z-50 text-xl text-white"
           >
             <li>
               <Link to="/quiz/create" className="flex items-center gap-[16px]">
@@ -258,7 +254,7 @@ function Dashboard() {
             </li>
             <li>
               <Link
-                to="/quiz/join"
+                to="/join"
                 className="font-semibold flex items-center gap-[20px]"
               >
                 <FaPlay className="text-[16px]" /> Join a game
@@ -276,23 +272,16 @@ function Dashboard() {
         <div className="hidden sm:block">
           <div className="flex gap-3 items-center">
             {/* Create */}
-            <Link
-              data-testid="quiz-create-button-big-screen"
-              to="/quiz/create"
-              className={`${orangeButtonClass} flex items-center gap-2`}
-            >
-              <RiAddCircleLine className="text-2xl" /> Create
-            </Link>
-            {/* Play */}
-            <JoinGameButton />
-            {/* Logout */}
-            <Link
-              to="/auth/logout"
-              data-testid="logout-button-big-screen"
-              className={`${orangeButtonClass} px-5 flex items-center gap-2`}
-            >
-              <TbLogout className="text-2xl" /> Logout
-            </Link>
+            <Button
+              to="/quiz/create" icon={RiAddCircleLine} iconClass="text-2xl"
+              color='pink' data-testid="quiz-create-button-big-screen">
+              Create
+            </Button>
+            <Button to="/join" icon={FaPlay} color='pink'>Join a game</Button>
+            <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
+              color='pink' data-testid="logout-button-big-screen">
+              Logout
+            </Button>
           </div>
         </div>
       </nav>
@@ -300,7 +289,7 @@ function Dashboard() {
       {/* //*Games Feed */}
       <div className="flex-1 flex flex-col justify-start items-center text-center p-8">
         <div className="w-full md:w-[90%] xl:w-[80%]">
-          <h1 className="text-5xl  text-left mb-6 text-orange-500 font-Nunito-ExtraBold">
+          <h1 className="text-5xl  text-left mb-6 text-pink-600 font-Nunito-ExtraBold">
             My Games
           </h1>
           {games ? (
@@ -313,12 +302,10 @@ function Dashboard() {
                 <p className="text-gray-600 mb-4">
                   You have not created any games yet.
                 </p>
-                <Link
-                  to="/quiz/create"
-                  className={`${orangeButtonClass} inline-flex items-center gap-2`}
-                >
-                  <RiAddCircleLine className="text-xl" /> Create your first game
-                </Link>
+                <Button
+                  to="/quiz/create" icon={RiAddCircleLine} iconClass="text-2xl" color='pink'>
+                  Create your first game
+                </Button>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3

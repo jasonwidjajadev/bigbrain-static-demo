@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/useAuthContext";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 
@@ -8,11 +8,13 @@ import { convertFileToBase64, formatBase64Image } from "@/util/imageUtils";
 import { LuUpload } from "react-icons/lu";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-import { orangeButtonClass, purpleButtonClass } from "@/components/ui/tailwind";
+// import { orangeButtonClass, purpleButtonClass } from "@/components/ui/tailwind";
 import ImgSelection from "@/components/modals/ImgSelection";
 
 import CsvFileUploadModal from "./csvUtil/CsvFileUploadModal";
 import { parseBigBrainCSV } from "./csvUtil/csvUtils";
+import Button from '@/components/button/Button';
+import { TbLogout } from "react-icons/tb";
 
 function AdminQuizCreate() {
   // State of Form data
@@ -219,9 +221,10 @@ function AdminQuizCreate() {
         {/* Navbar */}
         <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
           <LinkLogoNavBar targetPath="/home" />
-          <Link to="/auth/logout" className={`${orangeButtonClass} px-5`}>
-            Log out
-          </Link>
+          <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
+            color='pink' data-testid="logout-button-big-screen">
+            Logout
+          </Button>
         </nav>
 
         {/* Toast notifications */}
@@ -239,13 +242,11 @@ function AdminQuizCreate() {
         {/* Quiz creation UI can go here */}
         <main className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-[#f7f7f7]">
           <div className="flex flex-row justify-between w-full sm:w-[80%] md:w-[60%] lg:w-[50%] items-center mb-3 sm:mb-5">
-            <div className={`${orangeButtonClass} px-5 h-[45px]`}>
-              <Link to="/dashboard">
-                <IoReturnUpBackSharp size={30} />
-              </Link>
-            </div>
+            <Button to="/dashboard" color='pink' className="h-[45px]" aria-label="Return to dashboard">
+              <IoReturnUpBackSharp size={30} />
+            </Button>
 
-            <h1 className="text-[44px] sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold">
+            <h1 className="text-[44px] sm:text-5xl font-semibold text-pink-600 font-Nunito-ExtraBold">
               Create Quiz
             </h1>
             <div className="w-[70px] hidden [@media(min-width:500px)]:block"></div>
@@ -331,23 +332,31 @@ function AdminQuizCreate() {
               </div>
               <div className="flex flex-row gap-5 w-full justify-center items-center">
                 {/* CSV upload Button */}
-                <button
+                {/* <button
                   type="button"
                   onClick={handleCSVUpload}
                   className={`${purpleButtonClass} flex items-center gap-2 px-5 py-[15px] mt-1`}
                 >
                   <LuUpload className="shrink-0 hidden sm:block" />
                   <span className="text-sm">CSV Import</span>
-                </button>
+                </button> */}
+                <Button color='purple' icon={LuUpload} iconClass="shrink-0 hidden sm:block"
+                  onClick={handleCSVUpload} className="h-[45px]"
+                >
+                  CSV Import
+                </Button>
 
                 {/* Submit Button */}
                 <div>
-                  <button
+                  {/* <button
                     type="submit"
                     className="w-full py-3 px-4 bg-orange-500 text-white font-semibold rounded-lg shadow-[0_4px_0_0_#c2410c] hover:bg-orange-400 hover:-translate-y-1 transition-all duration-300 ease-in-out"
                   >
                     Create Quiz
-                  </button>
+                  </button> */}
+                  <Button type="submit" color='pink'>
+                    Create <span className="hidden sm:block">Quiz</span>
+                  </Button>
                 </div>
               </div>
             </div>

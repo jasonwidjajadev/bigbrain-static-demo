@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { LuUpload } from "react-icons/lu";
-import { orangeButtonClass } from "@/components/ui/tailwind";
+// import { orangeButtonClass } from "@/components/ui/tailwind";
+import Button from '@/components/button/Button';
 
 function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -45,6 +46,8 @@ function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
+            aria-label="Close"
+            title="Close"
           >
             <AiOutlineClose size={24} />
           </button>
@@ -84,20 +87,27 @@ function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
         )}
 
         <div className="flex justify-between mt-6">
-          <button
+          {/* <button
             onClick={onClose}
             className="px-4 py-2 text-gray-600 hover:text-gray-800"
           >
             Cancel
-          </button>
-          <button
+          </button> */}
+          <Button onClick={onClose} color='gray'>
+            Cancel
+          </Button>
+          {/* <button
             id="csv-import"
             onClick={handleSubmit}
             className={`${orangeButtonClass}`}
             disabled={!selectedFile}
           >
             Import
-          </button>
+          </button> */}
+          <Button id="csv-import" onClick={handleSubmit}
+            color='purple'  disabled={!selectedFile}>
+            Import
+          </Button>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-# Please have a look at BigBrain.pdf
+# Please have a look at BigBrain.pdf in the same folder
 
 ## Dashboard
 

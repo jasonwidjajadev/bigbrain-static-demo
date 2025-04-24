@@ -1,9 +1,9 @@
-# Extra Features
+# Extra features, please have a look at BigBrain.pdf in the same folder
 
 ## Branding
 
 - Favicon: on the tab of the webpage to make the site clearly distinguishable
-- Colour: cyan and orange as the primary color, but throughout the game we used bold primary colour to show the fun quiz nature of the game
+- Colour: hot pink and cyan as the primary color, but throughout the game we used bold primary colour to show the fun quiz nature of the game
 - Font Nunito as distinguishable easy to read and fun font
 
 ## Navigation

@@ -44,8 +44,8 @@ const colorVariants = {
   blue:   'bg-blue-600   hover:bg-blue-400    shadow-[0_4px_0_0_#1e3a8a] text-white',
   purple: 'bg-purple-600 hover:bg-purple-400  shadow-[0_4px_0_0_#5901a1] text-white',
 
-  gray:   'bg-gray-300   hover:bg-gray-200    shadow-[0_4px_0_0_#737373] text-black',
-  orange: 'bg-orange-500 hover:bg-orange-400  shadow-[0_4px_0_0_#c2410c] text-white',
+  gray:   'bg-gray-300   hover:bg-gray-200    shadow-[0_4px_0_0_#888686] text-black',
+  orange: 'bg-orange-600 hover:bg-orange-400  shadow-[0_4px_0_0_#c2410c] text-white',
   cyan:   'bg-cyan-300   hover:bg-cyan-400    shadow-[0_4px_0_0_#066b7c] text-white',
   green:  'bg-green-600  hover:bg-green-400   shadow-[0_4px_0_0_#166534] text-white',
 };
@@ -60,7 +60,7 @@ export default function Button({
   iconClass = '',       // optional extra styling for the icon
   children,
 
-  color = 'orange',     // default color variant
+  color = 'pink',     // default color variant
   className = '',       // extra class from outside
   ...rest
 }) {
@@ -73,19 +73,21 @@ export default function Button({
 
   const renderIcon = () => {
     if (!icon) return null;
+    const defaultIconClass = 'shrink-0';
+    const combinedIconClass = twMerge(defaultIconClass, iconClass || '');
 
-    // Case 1: icon is a function or component (like FaPlay)
+    // Case 1: React icon component
     if (typeof icon === 'function' || typeof icon === 'object') {
       const IconComponent = icon;
-      return <IconComponent className={iconClass || 'text-[16px]'} />;
+      return <IconComponent className={combinedIconClass || 'text-[16px]'} />;
     }
 
-    // Case 2: icon is a string path to an image
+    // Case 2: image icon (PNG/SVG path)
     return (
       <img
         src={icon}
         alt="icon"
-        className={iconClass || 'w-5 h-5'}
+        className={combinedIconClass || 'w-5 h-5'}
         draggable="false"
       />
     );
