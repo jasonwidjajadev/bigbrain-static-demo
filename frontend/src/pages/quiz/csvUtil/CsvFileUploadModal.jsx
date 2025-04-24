@@ -54,7 +54,7 @@ function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
         </div>
 
         <div className="form-control w-full max-w-xs mx-auto mb-4">
-          <label className="label">
+          <label htmlFor="csv-file-selector" className="label">
             <span className="label-text">Upload CSV file</span>
           </label>
           <input
@@ -87,23 +87,9 @@ function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
         )}
 
         <div className="flex justify-between mt-6">
-          {/* <button
-            onClick={onClose}
-            className="px-4 py-2 text-gray-600 hover:text-gray-800"
-          >
-            Cancel
-          </button> */}
           <Button onClick={onClose} color='gray'>
             Cancel
           </Button>
-          {/* <button
-            id="csv-import"
-            onClick={handleSubmit}
-            className={`${orangeButtonClass}`}
-            disabled={!selectedFile}
-          >
-            Import
-          </button> */}
           <Button id="csv-import" onClick={handleSubmit}
             color='purple'  disabled={!selectedFile}>
             Import

@@ -8,7 +8,6 @@ import { convertFileToBase64, formatBase64Image } from "@/util/imageUtils";
 import { LuUpload } from "react-icons/lu";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-// import { orangeButtonClass, purpleButtonClass } from "@/components/ui/tailwind";
 import ImgSelection from "@/components/modals/ImgSelection";
 
 import CsvFileUploadModal from "./csvUtil/CsvFileUploadModal";
@@ -100,7 +99,6 @@ function AdminQuizCreate() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setLoading(true);
     try {
       const gamesData = await fetchGames(token);
       console.log("Games data is", gamesData);
@@ -242,7 +240,9 @@ function AdminQuizCreate() {
         {/* Quiz creation UI can go here */}
         <main className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-[#f7f7f7]">
           <div className="flex flex-row justify-between w-full sm:w-[80%] md:w-[60%] lg:w-[50%] items-center mb-3 sm:mb-5">
-            <Button to="/dashboard" color='pink' className="h-[45px]" aria-label="Return to dashboard">
+
+            <Button to="/dashboard" color='pink' className="h-[45px]"
+              aria-label="Return to dashboard" title="Return to dashboard">
               <IoReturnUpBackSharp size={30} />
             </Button>
 
@@ -332,14 +332,6 @@ function AdminQuizCreate() {
               </div>
               <div className="flex flex-row gap-5 w-full justify-center items-center">
                 {/* CSV upload Button */}
-                {/* <button
-                  type="button"
-                  onClick={handleCSVUpload}
-                  className={`${purpleButtonClass} flex items-center gap-2 px-5 py-[15px] mt-1`}
-                >
-                  <LuUpload className="shrink-0 hidden sm:block" />
-                  <span className="text-sm">CSV Import</span>
-                </button> */}
                 <Button color='purple' icon={LuUpload} iconClass="shrink-0 hidden sm:block"
                   onClick={handleCSVUpload} className="h-[45px]"
                 >
@@ -348,12 +340,6 @@ function AdminQuizCreate() {
 
                 {/* Submit Button */}
                 <div>
-                  {/* <button
-                    type="submit"
-                    className="w-full py-3 px-4 bg-orange-500 text-white font-semibold rounded-lg shadow-[0_4px_0_0_#c2410c] hover:bg-orange-400 hover:-translate-y-1 transition-all duration-300 ease-in-out"
-                  >
-                    Create Quiz
-                  </button> */}
                   <Button type="submit" color='pink'>
                     Create <span className="hidden sm:block">Quiz</span>
                   </Button>

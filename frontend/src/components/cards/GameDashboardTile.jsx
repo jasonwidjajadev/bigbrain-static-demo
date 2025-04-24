@@ -11,6 +11,25 @@ import {
 import { cyanButtonClass, redButtonClass } from "@/components/ui/tailwind";
 import QuizEndedModal from "../modals/QuizEndedModal";
 
+/**
+ * GameDashboardTile - A card component that displays game information and controls
+ *
+ * This component represents an individual game as a card in the dashboard interface.
+ * It displays game metadata (name, thumbnail, play count, etc.) and provides controls
+ * for managing the game (edit, delete, play, stop, view previous sessions).
+ * The component adapts its UI based on whether the game has an active session,
+ * showing either play controls or session management controls.
+ *
+ * @param {Object} props - Component props
+ * @param {Game} props.game - The game data to display
+ * @param {Function} props.onDelete - Callback when delete button is clicked, receives (gameId, gameName)
+ * @param {Function} props.onEdit - Callback when edit button is clicked, receives gameId
+ * @param {Function} props.onPreviousSessionResults - Callback when previous sessions button is clicked, receives gameId
+ * @param {Function} props.onPlay - Callback when play button is clicked, receives gameId
+ * @param {Function} props.onStop - Callback when stop button is clicked, receives gameId
+ * @param {Function} props.onGoToSession - Callback when go to session button is clicked, receives (gameId, sessionId)
+ * @returns {JSX.Element} Rendered component
+ */
 function GameDashboardTile({
   game,
   onDelete,
@@ -158,36 +177,30 @@ function GameDashboardTile({
               role="toolbar"
               aria-label="Game management options"
             >
-              <div
+              <button
                 className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-cyan-100"
                 aria-label="Edit game"
                 data-tip="Edit"
                 onClick={handleEditClick}
               >
-                <button>
-                  <LuPencil size={20} />
-                </button>
-              </div>
-              <div
+                <LuPencil size={20} />
+              </button>
+              <button
                 className="tooltip p-2 border-r border-gray-300 flex justify-center items-center text-gray-600 hover:bg-red-100"
                 aria-label="Delete game"
                 data-tip="Delete"
                 onClick={handleDeleteClick}
               >
-                <button>
-                  <LuTrash2 size={20} aria-hidden="true" />
-                </button>
-              </div>
-              <div
+                <LuTrash2 size={20} aria-hidden="true" />
+              </button>
+              <button
                 className="tooltip p-2 border-gray-300 flex justify-center items-center text-gray-600 hover:bg-gray-100"
                 aria-label="View previous sessions"
                 data-tip="Previous Sessions"
                 onClick={handlePreviousSessionResults}
               >
-                <button>
-                  <LuClipboardPaste size={20} aria-hidden="true" />
-                </button>
-              </div>
+                <LuClipboardPaste size={20} aria-hidden="true" />
+              </button>
             </div>
 
             {/* Game Mode Buttons */}

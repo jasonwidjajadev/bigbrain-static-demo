@@ -2,6 +2,16 @@ import { FaEdit } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
 import { cyanButtonWFullClass } from "@/components/ui/tailwind";
 
+/**
+ * Displays a quiz info card with thumbnail, name, description and action buttons
+ *
+ * @param {string} thumbnail - Base64 or URL for the quiz thumbnail image
+ * @param {string} name - Quiz title, displays "Untitled Game" if not provided
+ * @param {string} description - Quiz description, displays default text if not provided
+ * @param {Function} onEditInfo - Callback when Edit Info button is clicked
+ * @param {Function} onSaveQuiz - Callback when Save Quiz button is clicked
+ * @returns {JSX.Element}
+ */
 function EditGameInfoTile({
   thumbnail,
   name,

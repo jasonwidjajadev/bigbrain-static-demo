@@ -65,6 +65,7 @@ function MusicPlayer({ src = '', initialVolume = 0.1 }) {
         onMouseLeave={() => setShowDropdown(false)}
       >
         <button
+          aria-label="Background music controls"
           onClick={toggleMute}
           className="sm:text-xl px-4 py-2 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c] transition-all duration-300 ease-in-out hover:bg-orange-400 flex items-center"
         >
