@@ -96,6 +96,7 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
                 </span>
               </div>
               <button
+                id="start-button-main"
                 onClick={onStart}
                 className={`${orangeButtonClass} flex items-center gap-2 px-5`}>
                 <FaPlay className="text-[16px]"/>Start
