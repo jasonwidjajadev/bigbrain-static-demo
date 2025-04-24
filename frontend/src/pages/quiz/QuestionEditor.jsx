@@ -32,7 +32,7 @@ function QuestionEditor() {
     type: "multiple", // default: multiple choice
     text: "",
     duration: 20, // default: 20 seconds
-    points: 10, // default: 10 points
+    points: 100, // default: 100 points
     video: "",
     image: "",
     answers: [
@@ -117,7 +117,7 @@ function QuestionEditor() {
           type: "multiple",
           text: "",
           duration: 20,
-          points: 10,
+          points: 100,
           video: "",
           image: "",
           answers: [
@@ -465,12 +465,6 @@ function QuestionEditor() {
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
         <div className="flex gap-3 items-center">
-          {/* <button
-            onClick={() => navigate(`/quiz/edit/${quizId}`)}
-            className={orangeButtonClass}
-          >
-            Back to Quiz
-          </button> */}
           <Link to="/auth/logout" className={`${orangeButtonClass} px-5`}>
             Log out
           </Link>
@@ -484,7 +478,7 @@ function QuestionEditor() {
           <div className="flex flex-row justify-between w-full mb-6 sm:mb-8 items-center">
             <div className={`${orangeButtonClass} px-5 h-[44px]`}>
               <Link to={`/quiz/edit/${quizId}`}>
-                <IoReturnUpBackSharp size={30}/>
+                <IoReturnUpBackSharp size={30} />
               </Link>
             </div>
 
@@ -496,13 +490,9 @@ function QuestionEditor() {
 
           <form className="w-full" onSubmit={saveQuestion}>
             <div className="w-full bg-white rounded-lg shadow-md mb-6">
-
               {/* //* Add question box heading  ============================ */}
               <div className="flex flex-col sm:flex-row flex-wrap justify-between items-center bg-orange-200 rounded border-b-3 border-orange-500 px-6 py-4 gap-4">
-
-
                 <div className="flex flex-wrap gap-4 w-full sm:w-auto">
-
                   {/* Question Types */}
                   <div className="w-full sm:w-auto  flex flex-col items-start">
                     <span className="font-medium">Question Type:</span>
@@ -539,12 +529,12 @@ function QuestionEditor() {
                       onChange={handleDurationChange}
                       className="input validator"
                       required
-                      min="5"
-                      max="60"
-                      title="Must be between be 5 to 60"
+                      min="10"
+                      max="120"
+                      title="Must be between be 10 to 120"
                     />
                     <p className="validator-hint hidden text-black-900">
-                      Must be between be 5 to 60
+                      Must be between be 10 to 120
                     </p>
                   </div>
                 </div>
