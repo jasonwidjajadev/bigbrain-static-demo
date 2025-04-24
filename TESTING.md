@@ -3,38 +3,36 @@
 ## Component testing
 
 - setup: https://gist.github.com/in2Unknown/b47cdd304d5fff309a4a7948154c4025
-- todo
 
 ## UI testing
 
 #### Alternative path testing
 
-player-flow-path focuses on the player experience when joining and participating in games. This test is primarily focused on the ability for users to join a game and answer a question successfully. Just noting that it also tests the admins ability to load a game using a csv file (which is different from the happy path).
+The CSV Upload Flow test case documents the alternative path for quiz creation within our application, specifically focusing on the administrator's ability to bulk-import questions via CSV files rather than manually entering them one by one. This comprehensive test validates the entire user journey from initial application access through administrator registration, quiz creation via file import, and game initiation.
 
 Following are the steps and rationale for the test:
 
-1. Website loading
-   - Necessary to create the quiz (duplicates the happy path)
-2. Admin account creation
-   - As the database is empty, we must create an admin account. Again, this is duplicating the happy path, but necessary in order to test the functionality of our alternative path.
-3. Game Creation via CSV Import
-   - Test: Create a quiz by importing a prepared CSV file
-   - Rationale: This tests both the import functionality and creates the necessary content for testing player interactions.
-4. Game Initialization
-   - Test: Start the game and capture the session ID
-   - Rationale: Session IDs are critical for joining games. This step verifies that a unique session is properly created and that the system displays the join information needed for players.
-5. Player Join Process
-   - Test: Visit the join page, enter the session ID and player name
-   - Rationale: Tests the entry point for all players, verifying that the join mechanism works as expected. This is the key way that players access games, so it's critical functionality.
-6. Game Start from Admin Panel
-   - Test: Return to admin view and start the game
-   - Rationale: Tests the admin's ability to control the game flow, which is necessary for synchronized gameplay. This also verifies that the admin panel shows joined players correctly.
-7. Game Participation
-   - Test: Answer questions as a player and verify feedback
-   - Rationale: This tests the core gameplay experience, validating that:
-     - Questions display correctly
-     - Answer submission works
-     - Feedback systems function properly
+1. Website Loading
+   - Test: Verify that the application loads properly
+   - Rationale: This is a fundamental check to ensure the application is accessible before proceeding with more complex testing operations. It establishes that the base environment is functioning correctly.
+
+2 Admin Account Creation
+
+- Test: Register a new admin account with unique credentials
+- Rationale: Since the test database starts empty, we need to create an administrator account to access the quiz creation functionality. This step is prerequisite to testing the CSV upload feature, as only authenticated administrators can create quizzes.
+- Implementation Detail: The test generates a unique email with a timestamp to avoid conflicts from previous test runs.
+
+3 Game Creation via CSV Import
+
+- Test: Create a quiz by importing a prepared CSV file
+- Rationale: This is the central test case that verifies the alternative path for quiz creation. While quizzes can be created manually, the CSV import feature allows administrators to quickly create quizzes from existing question banks.
+  Implementation Detail: The test uploads a fixture file "testing1.csv" and verifies successful import by checking that the dashboard displays the correct number of questions (5) and total quiz duration (2 mins, 40 secs). This is an important verification for ensuring that the correct number of quesitons were uploaded, with the correct total time.
+
+4 Game Initiation Process
+
+- Test: Start the created game and proceed to the player lobby
+- Rationale: This verifies that quizzes created via CSV import are fully functional and can be initiated for gameplay. It confirms that the import process correctly configures all necessary game parameters.
+- Implementation Detail: The test clicks the "Play" button, proceeds to the lobby, and confirms the "Waiting for players..." message is displayed, indicating the game is ready for players to join.
 
 ## User testing
 
