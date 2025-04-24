@@ -17,10 +17,11 @@ import classroom from '@/assets/classroom_overlay.png';
  * @param {number} [props.position] - Current question index (1-based)
  * @param {number} [props.length] - Total number of questions in the quiz
  * @param {Object} [props.question] - The question object (used to determine type)
- * @param {Function} props.onComplete - Callback triggered after countdown ends
+//  * @param {Function} props.onComplete - Callback triggered after countdown ends
  * @returns {JSX.Element} The rendered countdown screen
  */
-function Countdown({position, length, question, onComplete}) {
+// function Countdown({position, length, question, onComplete}) {
+function Countdown({ position, length, question }) {
   const [count, setCount] = React.useState(3);
 
   /**
@@ -29,7 +30,7 @@ function Countdown({position, length, question, onComplete}) {
    */
   React.useEffect(() => {
     if (count <= 0) {
-      if (onComplete) onComplete();
+      // if (onComplete) onComplete();
       return;
     }
 
@@ -38,7 +39,8 @@ function Countdown({position, length, question, onComplete}) {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [count, onComplete]);
+  // }, [count, onComplete]);
+  }, [count]);
 
   // Determine instructions based on question type
   let text = '';

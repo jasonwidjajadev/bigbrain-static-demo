@@ -4,7 +4,7 @@ import { useNavigate,  useParams } from 'react-router-dom';
 import { useAuthContext } from "@/context/useAuthContext";
 import { apiCall } from '@/util/apiCall';
 
-// import Countdown from '@/pages/session/Countdown'
+import Countdown from '@/pages/session/Countdown'
 import HostGameLobby from './HostGameLobby'
 import HostGamePlay from './HostGamePlay'
 import HostGameQuestionResult from './HostGameQuestionResult'
@@ -46,8 +46,6 @@ function HostGameView() {
   //* ==========================================================================
   //* Session loading & game ownership
   //* ==========================================================================
-
-
 
   React.useEffect(() => {
     if (!tokenReady || !token) return;
@@ -125,10 +123,15 @@ function HostGameView() {
         const response = await apiCall(`/admin/session/${sessionId}/status`, 'GET', null, token);
         const updatedSession = response.results;
 
+        // Updating sessions with new player
         setCurrSession(updatedSession);
+
         if (updatedSession.position > -1) {
+
+          // Keep it for robustness?
           setPosition(updatedSession.position);
-          setStage('question');
+
+          //Clear Interval
           clearInterval(interval);
         }
       } catch (err) {
@@ -138,6 +141,29 @@ function HostGameView() {
 
     return () => clearInterval(interval);
   }, [currQuiz, currSession?.position, sessionId, token]);
+
+
+
+  //* ==========================================================================
+  //* End Game
+  //* ==========================================================================
+
+  const handleEndGame = async () => {
+    try {
+
+      // Step 1: End the game
+      await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', { mutationType: 'END' }, token);
+
+      // Step 2: Fetch final results
+      const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
+      setHostFinalResults(resultRes.results);
+      setStage('final');
+
+    } catch (err) {
+      console.error('❌ Failed to end game or fetch results:', err.message);
+      throw new Error(err || "Network error something went wrong");
+    }
+  };
 
   //* ==========================================================================
   //* Start Game
@@ -162,65 +188,49 @@ function HostGameView() {
         return;
       }
 
-      // Otherwise, advance to first question
-      await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', { mutationType: 'ADVANCE'}, token);
-
+      // Otherwise, there must be at least 1 question advance to first question
+      setPosition(0);
+      setStage('countdown');
+      setTimeout(async () => {
+        try {
+          await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', { mutationType: 'ADVANCE' }, token);
+          setStage('question');
+        } catch (err) {
+          console.error("❌ Failed to advance first question:", err.message);
+        }
+      }, 3000);
     } catch (err) {
       console.error("Failed to start game:", err.message);
     }
   };
 
-  //* ==========================================================================
-  //* End Game
-  //* ==========================================================================
-
-  const handleEndGame = async () => {
-    try {
-
-      // Step 1: End the game
-      await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', { mutationType: 'END' }, token);
-
-      // Step 2: Fetch final results
-      const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
-      setHostFinalResults(resultRes.results);
-      setStage('final');
-
-    } catch (err) {
-      console.error('❌ Failed to end game or fetch results:', err.message);
-      throw new Error(err || "Network error something went wrong");
-    }
-  };
+  // React.useEffect(() => {
+  //   console.log('🧭 Position:', position, '| Stage:', stage);
+  // }, [position, stage]);
 
   //* ==========================================================================
   //* [COUNTDOWN → QUESTION → ANSWER] * N
   //* ==========================================================================
 
   const handleNext = async () => {
-    try {
-
-      // Advance to next stage/question
-      await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', { mutationType: 'ADVANCE' }, token);
-
-      const isLastQuestion = position + 1 >= questions.length;
-
-      if (stage === 'question' || stage === 'answer') {
-        if (isLastQuestion) {
-          console.log('🎯 Last question reached — game will auto-end by backend');
-
-          // No need to call END again, just fetch final results
-          const resultRes = await apiCall(`/admin/session/${sessionId}/results`, 'GET', null, token);
-          setHostFinalResults(resultRes.results);
-          setStage('final');
-
-        } else {
-          setPosition((pos) => pos + 1);
-          setStage('question');
-        }
-      }
-
-    } catch (err) {
-      console.error('❌ Failed to advance or fetch results:', err.message);
+    const isLastQuestion = position + 1 >= questions.length;
+    if (isLastQuestion) {
+      console.log('🎯 Last question reached — game will auto-end by backend');
+      handleEndGame();
+      return;
     }
+
+    // Not at the last question
+    setPosition((pos) => pos + 1);
+    setStage('countdown');
+    setTimeout(async () => {
+      try {
+        await apiCall(`/admin/game/${currQuiz.id}/mutate`, 'POST', { mutationType: 'ADVANCE' }, token);
+        setStage('question');
+      } catch (err) {
+        console.error('❌ Failed to advance or fetch results:', err.message);
+      }
+    }, 3000);
   };
 
   //* ==========================================================================
@@ -255,6 +265,14 @@ function HostGameView() {
 
       {questions.length === 0 && (stage === 'question' || stage === 'answer') && (
         <div className="text-center p-6 text-gray-500">Loading question...</div>
+      )}
+
+      {stage === 'countdown' && position >= 0 && questions[position] && (
+        <Countdown
+          position={position + 1}
+          length={questions.length}
+          question={questions[position]}
+        />
       )}
 
       {stage === 'question' && questions[position] && (
