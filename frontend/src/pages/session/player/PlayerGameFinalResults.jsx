@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
-import { orangeButtonClass } from '@/components/ui/tailwind';
+import Button from '@/components/button/Button';
 
 /**
  * Renders the final game results screen for a player after completing the quiz.
@@ -87,7 +86,7 @@ function PlayerGameResults({ results, history }) {
         <div className=" flex-1 text-center text-2xl sm:text-3xl font-Nunito-ExtraBold">
           Quiz Result
         </div>
-        <Link to="/join" className={`${orangeButtonClass} px-5`}>Play again</Link>
+        <Button to="/join" color='pink'>Play again</Button>
       </nav>
       <main className="flex-1 flex justify-center items-center text-center p-6 bg-cyan-800 pb-25 text-white">
         <div className="flex flex-col gap-8 sm:gap-10 w-full sm:w-auto">
@@ -95,7 +94,7 @@ function PlayerGameResults({ results, history }) {
             {data.reduce((acc, q) => acc + (typeof q.points === 'number' ? q.points : 0), 0)}
           </h1>
           <table className="min-w-full bg-white shadow-md rounded-md overflow-hidden font-bold">
-            <thead className="bg-orange-500 text-white text-lg">
+            <thead className="bg-pink-600 text-white text-lg">
               <tr>
                 <th className="p-3">#</th>
                 <th className="p-3 hidden sm:table-cell">Question</th>

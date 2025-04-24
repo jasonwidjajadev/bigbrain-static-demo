@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+import Button from '@/components/button/Button';
 
 function MusicPlayer({ src = '', initialVolume = 0.1 }) {
   const audioRef = useRef(null);
@@ -64,21 +65,17 @@ function MusicPlayer({ src = '', initialVolume = 0.1 }) {
         onMouseEnter={() => setShowDropdown(true)}
         onMouseLeave={() => setShowDropdown(false)}
       >
-        <button
+        <Button
           aria-label="Background music controls"
           onClick={toggleMute}
-          className="sm:text-xl px-4 py-2 rounded-md bg-orange-500 text-white font-semibold no-underline shadow-[0_4px_0_0_#c2410c] transition-all duration-300 ease-in-out hover:bg-orange-400 flex items-center"
-        >
-          {isMuted ? (
-            <FaVolumeMute className="text-[27px]" />
-          ) : (
-            <FaVolumeUp className="text-[27px]" />
-          )}
-        </button>
+          icon={isMuted ? FaVolumeMute : FaVolumeUp }
+          iconClass="text-2xl sm:text-[28px]"
+          color='pink' className='mt-[1px]'>
+        </Button>
 
         {showDropdown && (
           <div
-            className="absolute top-full left-1/2 transform -translate-x-1/2 p-2 bg-orange-500 rounded shadow z-50"
+            className="absolute top-full left-1/2 transform -translate-x-1/2 p-2 bg-pink-600 rounded shadow z-50"
             style={{ height: 120 }}
           >
             <Slider

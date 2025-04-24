@@ -1,6 +1,5 @@
 "use client";
 
-import { Link } from "react-router-dom";
 import { GoHomeFill } from "react-icons/go";
 import classroom from "@/assets/classroom_overlay.png";
 import { TbLogout } from "react-icons/tb";
@@ -10,8 +9,8 @@ import MusicPlayer from '@/components/music/MusicPlayer';
 import final_music from '@/assets/happy-runner-fast-paced-kids-game-music-loop-248099.mp3';
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-import { orangeButtonClass } from "@/components/ui/tailwind";
 import ResultsDisplay from "@/pages/quiz/charts/ResultsDisplay";
+import Button from '@/components/button/Button';
 
 /**
  * HostGameResults component displays the final results after a quiz ends, from the host's perspective.
@@ -41,14 +40,17 @@ function HostGameResults({ quiz, hostFinalResults }) {
           <LinkLogoNavBar targetPath="/dashboard" />
           <div className="flex gap-3 items-center">
             <MusicPlayer src={final_music} className="mb-5"/>
+            <Button to="/dashboard"
+              icon={GoHomeFill} iconClass="text-2xl"
+              color='pink'>
+              Dashboard
+            </Button>
             <div className="hidden sm:block">
-              <Link to="/dashboard" className={`${orangeButtonClass} flex items-center gap-3 px-5`}>
-                <GoHomeFill /> Dashboard
-              </Link>
+              <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
+                color='pink' data-testid="logout-button-big-screen">
+                Logout
+              </Button>
             </div>
-            <Link to="/auth/logout" className={`${orangeButtonClass} px-5 flex items-center gap-2`}>
-              <TbLogout className="text-2xl" /> Logout
-            </Link>
           </div>
         </nav>
 

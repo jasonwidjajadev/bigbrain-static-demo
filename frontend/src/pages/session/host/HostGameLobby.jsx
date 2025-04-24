@@ -8,8 +8,9 @@ import classroom from '@/assets/classroom_overlay.png';
 import lobby_music from '@/assets/positive-orchestral-loop-287417.mp3';
 import MusicPlayer from '@/components/music/MusicPlayer';
 
-import { orangeButtonClass, lobbyNameClass } from '@/components/ui/tailwind';
+import { lobbyNameClass } from '@/components/ui/tailwind';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
+import Button from '@/components/button/Button';
 
 /**
  * HostGameLobby component displays the waiting lobby before a quiz starts.
@@ -48,21 +49,22 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
 
         {/* For Small Screen */}
         <div className="flex gap-3 sm:gap-4 items-center">
-          <MusicPlayer src={lobby_music} className="mb-5"/>
-          <button
-            className={`${orangeButtonClass} flex items-center gap-3 px-2`}
+          <MusicPlayer src={lobby_music}/>
+          <Button
             onClick={showResults}
-          >
-            <FaStop className="text-[22px]"/>End
-          </button>
+            icon={FaStop} iconClass="text-2xl"
+            color='pink'>
+            End
+          </Button>
+
           <div className='block sm:hidden'>
             <div className='flex items-center gap-4 text-cyan-800'>
-              <button
-                className={`${orangeButtonClass} flex items-center gap-2 px-5`}
+              <Button
                 onClick={onStart}
-              >
-                <FaPlay className="text-[16px]"/>Start
-              </button>
+                icon={FaPlay} iconClass="text-xl"
+                color='pink'>
+                Start
+              </Button>
             </div>
           </div>
         </div>
@@ -95,12 +97,13 @@ function HostGameLobby({sessionId, showResults, players, onStart}) {
                   {players.length}
                 </span>
               </div>
-              <button
+              <Button
                 id="start-button-main"
                 onClick={onStart}
-                className={`${orangeButtonClass} flex items-center gap-2 px-5`}>
-                <FaPlay className="text-[16px]"/>Start
-              </button>
+                icon={FaPlay} iconClass="text-xl"
+                color='pink'>
+                Start
+              </Button>
             </div>
           </div>
         </div>

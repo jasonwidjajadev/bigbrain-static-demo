@@ -17,10 +17,8 @@ import classroom from '@/assets/classroom_overlay.png';
  * @param {number} [props.position] - Current question index (1-based)
  * @param {number} [props.length] - Total number of questions in the quiz
  * @param {Object} [props.question] - The question object (used to determine type)
-//  * @param {Function} props.onComplete - Callback triggered after countdown ends
  * @returns {JSX.Element} The rendered countdown screen
  */
-// function Countdown({position, length, question, onComplete}) {
 function Countdown({ position, length, question }) {
   const [count, setCount] = React.useState(3);
 
@@ -29,17 +27,12 @@ function Countdown({ position, length, question }) {
    * Once the counter reaches 0, the `onComplete` callback is triggered.
    */
   React.useEffect(() => {
-    if (count <= 0) {
-      // if (onComplete) onComplete();
-      return;
-    }
-
+    if (count <= 0) return;
     const timer = setTimeout(() => {
       setCount(prev => prev - 1);
     }, 1000);
 
     return () => clearTimeout(timer);
-  // }, [count, onComplete]);
   }, [count]);
 
   // Determine instructions based on question type
@@ -64,7 +57,7 @@ function Countdown({ position, length, question }) {
       <div className='flex-1 flex flex-col justify-center items-center pb-20'>
         {position && length && <h1 className="text-5xl sm:text-7xl font-Nunito-ExtraBold mb-15 text-black">Question {position}/{length}</h1>}
         {!position && !length && <h1 className="text-5xl sm:text-7xl font-Nunito-ExtraBold mb-15 text-black">Countdown</h1>}
-        <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0 mb-10">
+        <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-pink-600 flex justify-center items-center text-white shrink-0 mb-10">
           {count}
         </div>
         {question && (

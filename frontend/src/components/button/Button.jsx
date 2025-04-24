@@ -122,14 +122,3 @@ export default function Button({
     </button>
   );
 }
-
-/*
-const colorClasses = [
-  { base: 'bg-blue-400', hover: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
-  { base: 'bg-pink-400', hover: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
-  { base: 'bg-green-400', hover: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
-  { base: 'bg-amber-400', hover: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
-  { base: 'bg-purple-400', hover: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
-  { base: 'bg-cyan-300', hover: 'bg-cyan-400', shadow: 'shadow-[0_4px_0_0_#066b7c]' },
-];
-*/

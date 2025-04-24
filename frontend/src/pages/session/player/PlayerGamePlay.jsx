@@ -3,8 +3,8 @@ import React from 'react';
 import classroom from '@/assets/classroom_overlay.png';
 import chalkboard from '@/assets/chalkboard.jpg';
 
-import { orangeButtonClass } from '@/components/ui/tailwind';
 import { formatBase64Image } from '@/util/imageUtils';
+import Button from '@/components/button/Button';
 
 /**
  * Renders the gameplay screen for a quiz question.
@@ -74,15 +74,15 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
       {question.type === 'multiple' &&
         <div className='block sm:hidden'>
           <nav className=" flex justify-end px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
-            <button
+            <Button
+              color='pink'
               onClick={() =>
                 handleSubmit(selected.map(i => filteredAnswers[i]?.id))
               }
               disabled={submitted}
-              className={`${orangeButtonClass} px-6 py-2`}
             >
               Submit
-            </button>
+            </Button>
           </nav>
         </div>
       }
@@ -101,19 +101,19 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
 
             {/* Timer ================================================ */}
             <div className="hidden sm:flex flex-col items-center gap-5">
-              <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0">{count}</div>
+              <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-pink-600 flex justify-center items-center text-white shrink-0">{count}</div>
             </div>
 
             {/* Image ================================================ */}
             <div className='w-full max-w-2xl bg-gray-300'>
               {question.image &&
                 <img src={formatBase64Image(question.image)} alt="quiz-image"
-                  className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
+                  className="w-full h-auto max-h-[200px] sm:max-h-[400px] lg:h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
               }
 
               {!question.video && !question.image &&
                 <div
-                  className='h-[200px] sm:h-[400px] w-full
+                  className='h-[200px] sm:h-[400px] w-full lg:h-[400px]
                     text-4xl sm:text-6xl md:text-7xl text-emerald-100 font-ChalkLineOutline
                     border-10 sm:border-13 border-orange-300 shadow-md
                     flex justify-center items-center bg-cover bg-center break-words'
@@ -125,7 +125,7 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
               {question.video &&
                 <div className="w-full border-10 sm:border-13 border-orange-300 shadow-md">
                   <iframe
-                    className="w-full h-[200px] sm:h-[400px] object-cover"
+                    className="w-full h-[200px] sm:h-[400px] object-cover lg:h-[400px]"
                     src={question.video}
                     title="YouTube video player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -138,15 +138,15 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
             {/* Submit button on large screens ======================= */}
             <div className='w-35 hidden sm:block'>
               {question.type === 'multiple' &&
-                <button
+                <Button
+                  color='pink'
                   onClick={() =>
                     handleSubmit(selected.map(i => filteredAnswers[i]?.id))
                   }
                   disabled={submitted}
-                  className={`${orangeButtonClass} px-7 py-3`}
                 >
                   Submit
-                </button>
+                </Button>
               }
             </div>
           </div>
@@ -160,7 +160,7 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
                   //For single and judgement choice
                   const colorClasses = [
                     { hover: 'bg-blue-400', base: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
-                    { hover: 'bg-pink-400', base: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
+                    { hover: 'bg-red-400', base: 'bg-red-500', shadow: 'shadow-[0_4px_0_0_#8c0007]' },
                     { hover: 'bg-green-400', base: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
                     { hover: 'bg-amber-400', base: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
                     { hover: 'bg-purple-400', base: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
@@ -190,7 +190,7 @@ function PlayerGamePlay({question, onSubmit, onComplete, answered}) {
                 {filteredAnswers.map((choice, index) => {
                   const colorClasses = [
                     { base: 'bg-cyan-900', hover: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
-                    { base: 'bg-cyan-900', hover: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
+                    { base: 'bg-cyan-900', hover: 'bg-red-500', shadow: 'shadow-[0_4px_0_0_#8c0007]' },
                     { base: 'bg-cyan-900', hover: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
                     { base: 'bg-cyan-900', hover: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
                     { base: 'bg-cyan-900', hover: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },

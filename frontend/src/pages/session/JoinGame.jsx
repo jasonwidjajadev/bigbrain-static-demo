@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuthContext } from '@/context/useAuthContext';
 import { apiCall } from '@/util/apiCall';
@@ -7,7 +7,7 @@ import Typewriter from 'typewriter-effect';
 
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 import LogoBigRotate from '@/components/logo/LogoBigRotate';
-import { orangeButtonClass } from '@/components/ui/tailwind';
+import Button from '@/components/button/Button';
 
 /**
  * JoinGame component allows players to join a game session using a Game PIN and nickname.
@@ -91,7 +91,11 @@ function JoinGame() {
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <LinkLogoNavBar targetPath="/home" />
-        <Link to={authLink.path} className={`${orangeButtonClass} px-6`}>{authLink.label}</Link>
+        <Button
+          to={authLink.path}
+          color='pink'>
+          {authLink.label}
+        </Button>
       </nav>
 
       {/* Join Game Form */}
@@ -102,7 +106,7 @@ function JoinGame() {
       >
         <div className="flex items-center mb-6 gap-5" >
           <LogoBigRotate sizeClass="h-[50px] sm:h-[70px]"/>
-          <div className="text-4xl sm:text-5xl text-orange-500 whitespace-nowrap font-Nunito-ExtraBold">
+          <div className="text-4xl sm:text-5xl text-pink-500 whitespace-nowrap font-Nunito-ExtraBold">
             <Typewriter
               options={{
                 strings: ['Big Brain', 'Big Fun', 'Think Fast', 'Game On!'],
@@ -141,7 +145,11 @@ function JoinGame() {
                 }
               }}
               onFocus={() => setErrorMessage('')}
-              className="placeholder:font-Nunito-Bold placeholder:text-gray-400 p-3 text-lg border-2 border-gray-200 rounded-md w-[290px] text-center focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-400 text-md font-Nunito-Bold"
+              className="placeholder:font-Nunito-Bold placeholder:text-gray-400 p-3
+                border-2 border-gray-200 rounded-md w-[290px]
+                text-center text-lg font-Nunito-Bold
+                focus:border-pink-400 focus:ring-pink-300
+                focus:outline-none focus:ring focus:ring-opacity-400"
             />
           </div>
 
@@ -164,7 +172,11 @@ function JoinGame() {
                 setIsNickFocused(true);
               }}
               onBlur={() => setIsNickFocused(false)}
-              className="placeholder:font-Nunito-Bold placeholder:text-gray-400 p-3 text-lg border-2 border-gray-200 rounded-md w-[290px] text-center focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-400 font-Nunito-Bold"
+              className="placeholder:font-Nunito-Bold placeholder:text-gray-400 p-3
+                border-2 border-gray-200 rounded-md w-[290px]
+                text-lg text-center
+                focus:border-pink-400 focus:ring-pink-300
+                focus:outline-none focus:ring focus:ring-opacity-400 font-Nunito-Bold"
             />
           </div>
 
@@ -172,8 +184,8 @@ function JoinGame() {
             type="submit"
             disabled={loading || !(sessionIdInput && nickName)}
             aria-label="Join game now"
-            className={`sm:text-xl w-full px-8 py-2 rounded-md font-semibold transition-all duration-300 ease-in-out shadow-[0_4px_0_0_#c2410c]
-              ${ loading || !(sessionIdInput && nickName) ? 'bg-orange-300 cursor-not-allowed text-white' : 'bg-orange-500 text-white hover:bg-orange-400 hover:-translate-y-1'}`}
+            className={`sm:text-xl w-full px-8 py-2 rounded-md font-semibold transition-all duration-300 ease-in-out shadow-[0_4px_0_0_#9c004e]
+              ${ loading || !(sessionIdInput && nickName) ? 'bg-pink-300 cursor-not-allowed text-white' : 'bg-pink-600 text-white hover:bg-pink-400 hover:-translate-y-1'}`}
           >
             {loading ? 'Joining...' : 'Join'}
           </button>

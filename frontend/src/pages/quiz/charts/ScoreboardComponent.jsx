@@ -10,7 +10,7 @@ function ScoreboardComponent({ scoreboardData }) {
             key={index}
             className={`flex justify-between items-center px-6 py-3 rounded-md shadow
                   text-xl sm:text-xl font-Nunito-ExtraBold
-                  ${index === 0 ? "bg-orange-500" : "bg-cyan-800"}`}
+                  ${index === 0 ? "bg-pink-500" : "bg-cyan-800"}`}
           >
             <span className="text-white">{result.nickName}</span>
             <span className="text-white">{result.score}</span>

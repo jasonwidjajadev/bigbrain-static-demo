@@ -163,7 +163,7 @@ function ResultsDisplay({ gameData, sessionResults }) {
         </code>
         <p className="mt-3 text-sm text-center">
           Answering instantly earns full points. Waiting too long gives fewer
-          points. Wrong answers get 0.
+          points. <br />Wrong answers get 0.
         </p>
       </div>
     </div>

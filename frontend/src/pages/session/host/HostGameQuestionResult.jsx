@@ -7,9 +7,8 @@ import classroom from '@/assets/classroom_overlay.png';
 import chalkboard from '@/assets/chalkboard.jpg';
 
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
-import { orangeButtonClass } from '@/components/ui/tailwind';
-
 import { formatBase64Image } from '@/util/imageUtils';
+import Button from '@/components/button/Button';
 
 /**
  * HostQuestionResult component displays the result of a single quiz question from the host's perspective.
@@ -39,19 +38,21 @@ function HostQuestionResult({ question, position, length, onEnd, onNext}) {
       <nav className=" flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] text-center">
         <LinkLogoNavBar targetPath="/dashboard" />
         <div className='flex gap-4'>
-          <button
+          <Button
             onClick={onEnd}
-            className={`${orangeButtonClass} flex items-center gap-3`}>
-            <FaStop className="text-[22px]"/>End
-          </button>
+            icon={FaStop} iconClass="text-2xl"
+            color='pink'>
+            End
+          </Button>
 
           {/* For Smaller Screen */}
           <div className='block sm:hidden'>
-            <button
+            <Button
               onClick={onNext}
-              className={`${orangeButtonClass} flex items-center gap-3`}>
-              <TbPlayerTrackNextFilled className="text-[22px]"/>Next
-            </button>
+              icon={TbPlayerTrackNextFilled} iconClass="text-2xl"
+              color='pink'>
+              Next
+            </Button>
           </div>
         </div>
       </nav>
@@ -71,32 +72,15 @@ function HostQuestionResult({ question, position, length, onEnd, onNext}) {
             {/* Timer is hidden */}
             <div className='w-[150px] hidden md:block'></div>
 
-            {/*<div className='w-full max-w-3xl bg-white rounded-md shadow p-4'>
-              <div className="flex items-end justify-between sm:justify-around gap-2 sm:gap-4 w-full h-[200px] sm:h-[300px]">
-                {color.map((item, index) => (
-                  <div key={index} className="flex flex-col items-center flex-1">
-                    <div
-                      className={`${item.color} ${item.shadow} transition-all duration-300 w-full`}
-                      style={{ height: `${(item.count / max) * maxBarHeight}px` }}
-                    ></div>
-                    <div className="mt-2 text-sm sm:text-lg font-bold text-wrap text-center w-full break-words">
-                      {item.label} {item.count}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className='font-Nunito-Bold text-xl pt-4'>3 player(s) did not submit an answer</div>
-            </div> */}
-
             <div className='w-full max-w-2xl bg-gray-300'>
               {question.image &&
                 <img src={formatBase64Image(question.image)} alt="quiz-image"
-                  className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
+                  className="w-full h-auto max-h-[200px] sm:max-h-[400px] lg:h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
               }
 
               {!question.video && !question.image &&
                 <div
-                  className='h-[200px] sm:h-[400px] w-full
+                  className='h-[200px] sm:h-[400px] w-full lg:h-[400px]
                     text-[45px] sm:text-6xl md:text-7xl text-emerald-100 font-ChalkLineOutline
                     border-10 sm:border-13 border-orange-300 shadow-md
                     flex justify-center items-center bg-cover bg-center break-words'
@@ -108,7 +92,7 @@ function HostQuestionResult({ question, position, length, onEnd, onNext}) {
               {question.video &&
                 <div className="w-full border-10 sm:border-13 border-orange-300 shadow-md">
                   <iframe
-                    className="w-full h-[200px] sm:h-[400px] object-cover"
+                    className="w-full h-[200px] sm:h-[400px] lg:h-[400px] object-cover"
                     src={question.video}
                     title="YouTube video player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -122,11 +106,12 @@ function HostQuestionResult({ question, position, length, onEnd, onNext}) {
             <div className='hidden sm:block'>
               <div className="flex flex-col justify-center items-center gap-8">
                 <div className="font-Nunito-Black text-2xl">Question {position}/{length}</div>
-                <button
+                <Button
                   onClick={onNext}
-                  className={`${orangeButtonClass} flex items-center gap-3 px-7 py-3`}>
-                  <TbPlayerTrackNextFilled className="text-[22px]"/>Next
-                </button>
+                  icon={TbPlayerTrackNextFilled} iconClass="text-2xl"
+                  color='pink'>
+                  Next
+                </Button>
               </div>
             </div>
           </div>
@@ -136,7 +121,7 @@ function HostQuestionResult({ question, position, length, onEnd, onNext}) {
             {filteredAnswers.map((choice, index) => {
               const colorClasses = [
                 { base: 'bg-blue-200', hover: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
-                { base: 'bg-pink-200', hover: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
+                { base: 'bg-red-200', hover: 'bg-red-500', shadow: 'shadow-[0_4px_0_0_#8c0007]' },
                 { base: 'bg-green-200', hover: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
                 { base: 'bg-amber-200', hover: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
                 { base: 'bg-purple-200', hover: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },

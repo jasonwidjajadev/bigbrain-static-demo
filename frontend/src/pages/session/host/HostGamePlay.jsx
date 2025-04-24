@@ -7,10 +7,10 @@ import chalkboard from '@/assets/chalkboard.jpg';
 import music_multiple from '@/assets/multiple_puzzle-game-bright-casual-video-game-music-249202.mp3';
 
 import MusicPlayer from '@/components/music/MusicPlayer';
-import { orangeButtonClass } from '@/components/ui/tailwind';
 import LinkLogoNavBar from '@/components/logo/LogoNavBar';
 
 import { formatBase64Image } from '@/util/imageUtils';
+import Button from '@/components/button/Button';
 
 /**
  * HostGamePlay component handles the in-game quiz view from the host's perspective.
@@ -64,20 +64,22 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
         <LinkLogoNavBar targetPath="/dashboard" />
         <div className='flex gap-3 sm:gap-4'>
           <MusicPlayer src={music_multiple} className="mb-5"/>
-          <button
+          <Button
             onClick={onEnd}
-            className={`${orangeButtonClass} flex items-center gap-3`}>
-            <FaStop className="text-[22px]"/>End
-          </button>
+            icon={FaStop} iconClass="text-2xl"
+            color='pink'>
+            End
+          </Button>
 
           {/* For Smaller Screen */}
           <div className='block sm:hidden'>
-            <button
+            <Button
               onClick={onNext}
               disabled={count === 0}
-              className={`${orangeButtonClass} flex items-center gap-3 py-2.5`}>
-              <TbPlayerTrackNextFilled className="text-[22px]"/>Skip
-            </button>
+              icon={TbPlayerTrackNextFilled} iconClass="text-2xl"
+              color='pink'>
+              Skip
+            </Button>
           </div>
         </div>
       </nav>
@@ -85,7 +87,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
       {/* //*Main */}
       <main className="flex-1 flex flex-col justify-start items-center text-center p-4 sm:p-8">
         <div className="flex sm:hidden  flex-col items-center w-[150px] mb-4">
-          <div className="text-4xl font-Nunito-Bold h-20 w-20 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0">{count}</div>
+          <div className="text-4xl font-Nunito-Bold h-20 w-20 rounded-full bg-pink-600 flex justify-center items-center text-white shrink-0">{count}</div>
         </div>
 
         <div className="w-full sm:w-[90%] mx-auto space-y-4 sm:space-y-8">
@@ -100,19 +102,19 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
 
             {/* Timer ================================================ */}
             <div className="hidden sm:flex flex-col items-center w-[150px]">
-              <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-orange-500 flex justify-center items-center text-white shrink-0">{count}</div>
+              <div className="text-7xl font-Nunito-Bold h-35 w-35 rounded-full bg-pink-600 flex justify-center items-center text-white shrink-0">{count}</div>
             </div>
 
             {/* Image ================================================ */}
             <div className='w-full max-w-2xl bg-gray-300'>
               {question.image &&
                 <img src={formatBase64Image(question.image)} alt="quiz-image"
-                  className="w-full h-auto max-h-[200px] sm:max-h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
+                  className="w-full h-auto max-h-[200px] sm:max-h-[400px] lg:h-[400px] border-10 sm:border-13 border-orange-300 shadow-md object-cover" />
               }
 
               {!question.video && !question.image &&
                 <div
-                  className='h-[200px] sm:h-[400px] w-full
+                  className='h-[200px] sm:h-[400px] w-full lg:h-[400px]
                     text-[45px] sm:text-6xl md:text-7xl text-emerald-100 font-ChalkLineOutline
                     border-10 sm:border-13 border-orange-300 shadow-md
                     flex justify-center items-center bg-cover bg-center break-words'
@@ -124,7 +126,7 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
               {question.video &&
                 <div className="w-full border-10 sm:border-13 border-orange-300 shadow-md">
                   <iframe
-                    className="w-full h-[200px] sm:h-[400px] object-cover"
+                    className="w-full h-[200px] sm:h-[400px] lg:h-[400px] object-cover"
                     src={question.video}
                     title="YouTube video player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -138,12 +140,13 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
             <div className='hidden sm:block'>
               <div className="flex flex-col justify-center items-center gap-8">
                 <div className="font-Nunito-Black text-2xl">Question {position}/{length}</div>
-                <button
+                <Button
                   onClick={onNext}
                   disabled={count === 0}
-                  className={`${orangeButtonClass} flex items-center gap-3 px-7 py-3`}>
-                  <TbPlayerTrackNextFilled className="text-[22px]"/>Skip
-                </button>
+                  icon={TbPlayerTrackNextFilled} iconClass="text-2xl"
+                  color='pink'>
+                  Skip
+                </Button>
               </div>
             </div>
 
@@ -154,12 +157,13 @@ function HostGamePlay({question, position, length, onEnd, onNext, onComplete}) {
             {filteredAnswers.map((choice, index) => {
               const colorClasses = [
                 { base: 'bg-blue-400', hover: 'bg-blue-500', shadow: 'shadow-[0_4px_0_0_#1e3a8a]' },
-                { base: 'bg-pink-400', hover: 'bg-pink-500', shadow: 'shadow-[0_4px_0_0_#9d174d]' },
+                { base: 'bg-red-400', hover: 'bg-red-500', shadow: 'shadow-[0_4px_0_0_#8c0007]' },
                 { base: 'bg-green-400', hover: 'bg-green-500', shadow: 'shadow-[0_4px_0_0_#166534]' },
                 { base: 'bg-amber-400', hover: 'bg-amber-500', shadow: 'shadow-[0_4px_0_0_#ca8a04]' },
                 { base: 'bg-purple-400', hover: 'bg-purple-500', shadow: 'shadow-[0_4px_0_0_#5901a1]' },
                 { base: 'bg-cyan-300', hover: 'bg-cyan-400', shadow: 'shadow-[0_4px_0_0_#066b7c]' },
               ];
+
               const color = colorClasses[index % colorClasses.length];
               const baseStyle = `min-h-20 sm:min-h-25 w-full flex justify-between p-6 sm:p-6 gap-3 items-center rounded-md
               text-white break-all transition-all duration-300 ease-in-out hover:-translate-y-1`;
