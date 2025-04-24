@@ -1,7 +1,15 @@
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
-import { TbArrowsShuffle } from "react-icons/tb";
 
+/**
+ * Displays a question card with text, duration, and edit/delete controls
+ *
+ * @param {Object} question - Question data with id, text, and duration properties
+ * @param {number} index - Position in question list (zero-based)
+ * @param {Function} onEdit - Callback when edit clicked, receives question.id
+ * @param {Function} onDelete - Callback when delete clicked, receives question.id
+ * @returns {JSX.Element}
+ */
 function QuestionInfoTile({ question, index, onEdit, onDelete }) {
   return (
     <div className="w-full bg-white rounded-md shadow-md mb-4 overflow-hidden">
@@ -29,14 +37,13 @@ function QuestionInfoTile({ question, index, onEdit, onDelete }) {
           <div>
             <button
               onClick={() => onDelete && onDelete(question.id)}
-              className="p-2 text-gray-500 hover:text-red-500"
+              className="p-2 text-gray-500 hover:text-red-700"
               title="Delete question"
             >
               <FaTrash />
             </button>
           </div>
           <div className="flex items-center gap-2">
-            <TbArrowsShuffle className="text-gray-500" />
             <span className="bg-gray-700 text-white px-2 py-1 rounded text-sm">
               {question.duration || 20} sec
             </span>
