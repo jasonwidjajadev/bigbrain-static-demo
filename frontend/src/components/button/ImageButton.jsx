@@ -1,6 +1,13 @@
 import { LuImage } from "react-icons/lu";
 import { blueButtonClassSmall } from "@/components/ui/tailwind";
 
+/**
+ * A button component that allows users to add images
+ *
+ * @param {Object} props - Component props
+ * @param {Function} props.onClick - Handler function called when button is clicked
+ * @returns {JSX.Element} A button with an image icon and label
+ */
 const ImageButton = ({ onClick }) => {
   return (
     <button
