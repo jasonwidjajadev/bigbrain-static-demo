@@ -10,10 +10,10 @@ Question #,Question Text,Answer 1,Answer 2,"Answer 3
 (Max: 60 seconds)","Correct Answer(s)
 (Only include Answer #)"
 1,What is the colour of the sky?,Blue,Yellow,Purple,Green,,,100,20,1
-2,,,,,,,,,,
-3,,,,,,,,,,
-4,,,,,,,,,,
-5,,,,,,,,,,
+2,What is 2 + 2?,4,3,2,Four,,,100,30,"1,4"
+,Which planet is known as the Red Planet?,Earth,Mars,Venus,Jupiter,,,100,60,2
+4,What is the chemical symbol for water?,O2,CO2,H2O,N2,,,100,20,3
+5,Which of these animals is a mammal?,Snake,Bird,Fish,Dolphin,Lizard,,100,30,4
 6,,,,,,,,,,
 7,,,,,,,,,,
 8,,,,,,,,,,
