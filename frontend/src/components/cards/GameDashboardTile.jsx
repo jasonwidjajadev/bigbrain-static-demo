@@ -8,8 +8,7 @@ import {
   LuCircleStop,
   LuExternalLink,
 } from "react-icons/lu";
-import { cyanButtonClass, redButtonClass } from "@/components/ui/tailwind";
-import QuizEndedModal from "../modals/QuizEndedModal";
+import QuizEndedModal from "@/components/modals/QuizEndedModal";
 import Button from '@/components/button/Button';
 
 /**
@@ -208,26 +207,22 @@ function GameDashboardTile({
             {hasActiveSession ? (
               <div className="flex flex-col gap-4 w-full">
                 {/* Go to Session button */}
-                <button
-                  className={`flex justify-center items-center ${cyanButtonClass}`}
+                <Button
                   onClick={handleGoToSessionClick}
                   aria-label="Go to active game session"
-                >
-                  <LuExternalLink
-                    size={20}
-                    className="mr-2"
-                    aria-hidden="true"
-                  />
-                  <span>Go to Session</span>
-                </button>
-                <button
-                  className={`flex justify-center items-center ${redButtonClass}`}
+                  className="w-full flex justify-center items-center"
+                  icon={LuExternalLink} iconClass="text-2xl"
+                  color='green'>
+                  Go to Session
+                </Button>
+                <Button
                   onClick={onStopClick}
                   aria-label="Stop active game session"
-                >
-                  <LuCircleStop size={20} className="mr-2" aria-hidden="true" />
-                  <span>Stop</span>
-                </button>
+                  className="w-full flex justify-center items-center"
+                  icon={LuCircleStop} iconClass="text-2xl"
+                  color='red'>
+                  Stop
+                </Button>
               </div>
             ) : (
               <Button

@@ -48,7 +48,8 @@ const colorVariants = {
   gray500:'bg-gray-500   hover:bg-gray-400    shadow-[0_4px_0_0_#1f2937] text-white',
   orange: 'bg-orange-600 hover:bg-orange-400  shadow-[0_4px_0_0_#c2410c] text-white',
   cyan:   'bg-cyan-600   hover:bg-cyan-400    shadow-[0_4px_0_0_#066b7c] text-white',
-  green:  'bg-green-600  hover:bg-green-400   shadow-[0_4px_0_0_#166534] text-white',
+  green:  'bg-green-700  hover:bg-green-400   shadow-[0_4px_0_0_#002f15] text-white',
+  red:    'bg-red-600  hover:bg-red-400     shadow-[0_4px_0_0_#820008] text-white',
 };
 
 export default function Button({

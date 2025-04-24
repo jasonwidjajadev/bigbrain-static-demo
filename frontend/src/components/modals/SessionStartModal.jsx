@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { LuCopy, LuCopyCheck, LuX } from "react-icons/lu";
-import { orangeButtonClass } from "@/components/ui/tailwind";
+import Button from '@/components/button/Button';
 
 function SessionStartModal({
   isOpen,
@@ -73,12 +73,12 @@ function SessionStartModal({
           </div>
 
           <div className="flex justify-center">
-            <button
+            <Button
               onClick={onContinue}
-              className={`${orangeButtonClass} w-full`}
-            >
+              className="w-full flex justify-center items-center"
+              color='pink'>
               Continue
-            </button>
+            </Button>
           </div>
         </div>
       </div>

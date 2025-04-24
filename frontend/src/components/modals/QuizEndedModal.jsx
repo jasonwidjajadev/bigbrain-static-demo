@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Button from '@/components/button/Button';
 
 function QuizEndedModal({ isOpen, onClose, sessionId }) {
   if (!isOpen) return null;
@@ -9,22 +9,18 @@ function QuizEndedModal({ isOpen, onClose, sessionId }) {
         <h3 className="text-2xl font-bold mb-2">The Quiz has ended early!</h3>
         <p className="mb-10">Would you like to view the results?</p>
         <div className="flex justify-center gap-4">
-          <button
+          <Button
             onClick={onClose}
-            className="px-4 py-2 rounded-md bg-gray-300 text-black font-bold no-underline
-              shadow-[0_4px_0_0_#6b7283] transition-all duration-300 ease-in-out
-              hover:bg-gray-200 hover:-translate-y-1 w-[125px]"
-          >
+            aria-label="Close modal" className='w-[140px] sm:w-[163px] flex justify-center items-center'
+            color='gray500'>
             Close
-          </button>
-          <Link
+          </Button>
+          <Button
             to={`/host/${sessionId}`}
-            className="px-4 py-2 rounded-md bg-green-500 text-white font-bold no-underline
-              shadow-[0_4px_0_0_#166534] transition-all duration-300 ease-in-out
-              hover:bg-green-400 hover:-translate-y-1"
-          >
+            aria-label="View Results"
+            color='green'>
             View Results
-          </Link>
+          </Button>
         </div>
       </div>
     </div>
