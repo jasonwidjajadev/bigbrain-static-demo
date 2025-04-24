@@ -15,6 +15,49 @@ import EditGameInfoTile from "@/components/cards/EditGameInfoTile";
 import EditQuizMetaDataModal from "@/components/modals/EditQuizMetaDataModal";
 import QuestionInfoTile from "@/components/cards/QuestionInfoTile";
 
+/**
+ * @typedef {Object} Question
+ * @property {number} id - Unique identifier for the question
+ * @property {string} [text] - The question text
+ * @property {number} [duration] - Time allowed for the question in seconds
+ * @property {Array} [answers] - Possible answers for the question
+ * @property {string} [image] - Optional image for the question, typically base64 encoded
+ */
+
+/**
+ * @typedef {Object} Quiz
+ * @property {number} id - Unique identifier for the quiz
+ * @property {string} name - Display name of the quiz
+ * @property {string} [description] - Description of the quiz
+ * @property {Question[]} questions - Array of questions in the quiz
+ * @property {string} [thumbnail] - Base64 encoded image for the quiz thumbnail
+ * @property {Array} [oldSessions] - Array of previous quiz sessions
+ * @property {string|null} [active] - ID of the active session, or null if no active session
+ */
+
+/**
+ * @typedef {Object} Toast
+ * @property {string} message - The message to display in the toast
+ * @property {'success'|'error'} type - The type of toast, affecting its styling
+ */
+
+/**
+ * AdminQuizEdit - Quiz editing interface component
+ *
+ * This component provides a comprehensive interface for editing an existing quiz.
+ * It handles fetching quiz data, editing quiz metadata, and managing questions
+ * (adding, editing, deleting). The component also provides feedback to the user
+ * through toast notifications.
+ *
+ * The page is structured with:
+ * - A navigation bar with links to home and quiz creation
+ * - A main content section showing quiz metadata and allowing edits
+ * - A questions section displaying all questions and allowing for management
+ *
+ * Authentication is required - unauthenticated users are redirected to the home page.
+ *
+ * @returns {JSX.Element} Rendered component
+ */
 function AdminQuizEdit() {
   const [allGames, setAllGames] = useState([]);
   const [currentQuiz, setCurrentQuiz] = useState(null);
@@ -190,11 +233,14 @@ function AdminQuizEdit() {
         <div className="w-full xl:w-[90%]">
           <main className="flex flex-col items-center lg:flex-row lg:items-start lg:gap-10 text-center">
             <section className="w-full md:w-[80%] flex flex-col lg:flex-2">
-
               <div className="flex flex-row justify-between w-full mb-3 sm:mb-5 items-center">
                 <div className={`${orangeButtonClass} px-5 h-[44px] mr-3`}>
-                  <Link to="/dashboard">
-                    <IoReturnUpBackSharp size={30}/>
+                  <Link
+                    to="/dashboard"
+                    aria-label="Return to dashboard"
+                    title="Return to dashboard"
+                  >
+                    <IoReturnUpBackSharp size={30} />
                   </Link>
                 </div>
 

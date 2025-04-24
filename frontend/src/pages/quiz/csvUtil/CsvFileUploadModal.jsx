@@ -45,13 +45,14 @@ function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
+            aria-label="Close dialog"
           >
             <AiOutlineClose size={24} />
           </button>
         </div>
 
         <div className="form-control w-full max-w-xs mx-auto mb-4">
-          <label className="label">
+          <label htmlFor="csv-file-selector" className="label">
             <span className="label-text">Upload CSV file</span>
           </label>
           <input

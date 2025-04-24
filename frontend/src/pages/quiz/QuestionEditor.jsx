@@ -477,7 +477,11 @@ function QuestionEditor() {
         <div className="w-full xl:w-[90%]">
           <div className="flex flex-row justify-between w-full mb-6 sm:mb-8 items-center">
             <div className={`${orangeButtonClass} px-5 h-[44px]`}>
-              <Link to={`/quiz/edit/${quizId}`}>
+              <Link
+                to={`/quiz/edit/${quizId}`}
+                aria-label="Return to dashboard"
+                title="Return to dashboard"
+              >
                 <IoReturnUpBackSharp size={30} />
               </Link>
             </div>
@@ -495,8 +499,9 @@ function QuestionEditor() {
                 <div className="flex flex-wrap gap-4 w-full sm:w-auto">
                   {/* Question Types */}
                   <div className="w-full sm:w-auto  flex flex-col items-start">
-                    <span className="font-medium">Question Type:</span>
+                    <label htmlFor="question-type-select">Question Type:</label>
                     <select
+                      id="question-type-select"
                       className="select"
                       value={question.type}
                       onChange={(e) => handleTypeChange(e.target.value)}
@@ -509,8 +514,9 @@ function QuestionEditor() {
 
                   {/* Points */}
                   <div className="w-full sm:w-auto flex flex-col items-start">
-                    <span className="font-medium">Points:</span>
+                    <label htmlFor="question-points">Points:</label>
                     <input
+                      id="question-points"
                       type="number"
                       value={question.points}
                       onChange={handlePointsChange}
@@ -521,8 +527,9 @@ function QuestionEditor() {
 
                   {/* Time Limit */}
                   <div className="w-full sm:w-auto flex flex-col items-start">
-                    <span className="font-medium">Time Limit (seconds):</span>
-
+                    <label htmlFor="question-time-limit">
+                      Time Limit (seconds):
+                    </label>
                     <input
                       type="number"
                       value={question.duration}
@@ -625,6 +632,7 @@ function QuestionEditor() {
                   <div className="flex flex-col flex-4">
                     <div className="mb-2 text-2xl font-bold">Question</div>
                     <textarea
+                      id="question-text"
                       type="text"
                       value={question.text}
                       onChange={handleQuestionChange}
@@ -671,6 +679,7 @@ function QuestionEditor() {
                           <div className="flex items-center">
                             <div className="w-10 h-10 border-2 border-white rounded-md flex items-center justify-center">
                               <input
+                                id={`answer-correct-${index}`}
                                 type={
                                   question.type === "multiple"
                                     ? "checkbox"
@@ -686,12 +695,14 @@ function QuestionEditor() {
                                 }
                                 name="correct-answer"
                                 className="h-6 w-6"
+                                aria-label={`Mark answer ${index + 1} as correct`}
                               />
                             </div>
                           </div>
 
                           <div className="flex items-center justify-center h-full w-full">
                             <input
+                              id={`answer-text-${index}`}
                               type="text"
                               value={answer.text}
                               onChange={(e) =>

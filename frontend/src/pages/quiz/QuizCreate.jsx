@@ -240,7 +240,11 @@ function AdminQuizCreate() {
         <main className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-[#f7f7f7]">
           <div className="flex flex-row justify-between w-full sm:w-[80%] md:w-[60%] lg:w-[50%] items-center mb-3 sm:mb-5">
             <div className={`${orangeButtonClass} px-5 h-[45px]`}>
-              <Link to="/dashboard">
+              <Link
+                to="/dashboard"
+                aria-label="Return to dashboard"
+                title="Return to dashboard"
+              >
                 <IoReturnUpBackSharp size={30} />
               </Link>
             </div>
