@@ -4,7 +4,7 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
-import { convertFileToBase64 } from "@/util/imageUtils";
+import { convertFileToBase64, formatBase64Image } from "@/util/imageUtils";
 import { LuUpload } from "react-icons/lu";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
@@ -22,6 +22,7 @@ function AdminQuizCreate() {
     image: null,
   });
   const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   // Toast state
   const [toast, setToast] = useState(null);
@@ -49,7 +50,6 @@ function AdminQuizCreate() {
     setToast({ message, type });
   };
 
-  //TODO logic
   // Update any form field
   const handleChange = (e) => {
     setFormData({
@@ -58,15 +58,42 @@ function AdminQuizCreate() {
     });
   };
 
-  // Handles image change (passed to ImgSelection component)
-  const handleImgChange = (e) => {
+  // Handles image change
+  const handleImgChange = async (e) => {
     if (e.target.files && e.target.files[0]) {
-      console.log(e.target.files[0]);
-      setFormData({
-        ...formData,
-        image: e.target.files[0],
-      });
+      try {
+        const file = e.target.files[0];
+        const fileType = file.type;
+        const fileName = file.name.toLowerCase();
+        const base64 = await convertFileToBase64(file, true);
+
+        // Detect if this is an SVG file
+        const isSvg = fileType === "image/svg+xml" || fileName.endsWith(".svg");
+
+        // Update form data with image file
+        setFormData({
+          ...formData,
+          image: file,
+        });
+
+        // Set preview image with the correct MIME type
+        const mimeType = isSvg ? "image/svg+xml" : "image/jpeg";
+        setPreviewImage(formatBase64Image(base64, mimeType));
+      } catch (err) {
+        console.error("Error converting image:", err);
+        showToast("Failed to process image", "error");
+      }
     }
+  };
+
+  // Handle image removal
+  const handleRemoveImage = () => {
+    setFormData({
+      ...formData,
+      image: null,
+    });
+    setPreviewImage(null);
+    showToast("Image removed", "success");
   };
 
   const handleSubmit = async (e) => {
@@ -82,8 +109,6 @@ function AdminQuizCreate() {
         try {
           // Use the new async function here
           base64Img = await convertFileToBase64(formData.image);
-          // If you only want the base64 string without the data URL prefix:
-          // base64Img = await convertFileToBase64(formData.image, true);
         } catch (imgError) {
           console.error("Failed to convert image:", imgError);
         }
@@ -113,7 +138,6 @@ function AdminQuizCreate() {
       }
 
       // Success! Navigate to the dashboard
-      // TODO: Update this to be edit page when we have an edit page
       console.log("Quiz created successfully!");
       navigate(`/dashboard`);
 
@@ -217,7 +241,7 @@ function AdminQuizCreate() {
           <div className="flex flex-row justify-between w-full sm:w-[80%] md:w-[60%] lg:w-[50%] items-center mb-3 sm:mb-5">
             <div className={`${orangeButtonClass} px-5 h-[45px]`}>
               <Link to="/dashboard">
-                <IoReturnUpBackSharp size={30}/>
+                <IoReturnUpBackSharp size={30} />
               </Link>
             </div>
 
@@ -227,16 +251,42 @@ function AdminQuizCreate() {
             <div className="w-[70px] hidden [@media(min-width:500px)]:block"></div>
           </div>
 
-          {/* Quiz creation UI can go here */}
+          {/* Quiz creation UI */}
           <form
             onSubmit={handleSubmit}
             className="w-full sm:w-[80%] md:w-[60%] lg:w-[50%]"
           >
-            {/* Pass the image handler to the child component */}
-            <ImgSelection handleImgChange={handleImgChange} />
-            <div className="w-full flex flex-col bg-white border border-gray-200 drop-shadow-md/25
-              rounded-lg p-8 mb-6 items-center justify-center transition-colors">
+            {/* Image Selection Section */}
+            <div className="w-full flex flex-col bg-white border border-gray-200 drop-shadow-md/25 rounded-lg p-6 mb-6">
+              <h2 className="text-gray-700 text-xl font-medium mb-4 text-left">
+                Quiz Image
+              </h2>
 
+              <div className="flex flex-col">
+                {previewImage ? (
+                  <div className="flex flex-col justify-center mt-2 border rounded p-2 w-full">
+                    <img
+                      src={previewImage}
+                      alt="Quiz thumbnail"
+                      className="max-w-full h-auto max-h-48 object-contain"
+                    />
+                    <button
+                      type="button"
+                      className="text-xs text-red-600 mt-1"
+                      onClick={handleRemoveImage}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ) : (
+                  <ImgSelection handleImgChange={handleImgChange} />
+                )}
+              </div>
+            </div>
+            <div
+              className="w-full flex flex-col bg-white border border-gray-200 drop-shadow-md/25
+              rounded-lg p-8 mb-6 items-center justify-center transition-colors"
+            >
               {/* Title Field */}
               <div className="mb-6 w-full">
                 <div className="flex justify-between items-center mb-2">
@@ -286,7 +336,7 @@ function AdminQuizCreate() {
                   onClick={handleCSVUpload}
                   className={`${purpleButtonClass} flex items-center gap-2 px-5 py-[15px] mt-1`}
                 >
-                  <LuUpload className="shrink-0 hidden sm:block"/>
+                  <LuUpload className="shrink-0 hidden sm:block" />
                   <span className="text-sm">CSV Import</span>
                 </button>
 
