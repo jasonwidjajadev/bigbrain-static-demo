@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { TbLogout } from "react-icons/tb";
 import { RiAddCircleLine } from "react-icons/ri";
 import { LuSquarePlus } from "react-icons/lu";
 import { IoReturnUpBackSharp } from "react-icons/io5";
@@ -8,8 +9,7 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-
-import { orangeButtonClass } from "@/components/ui/tailwind";
+import Button from '@/components/button/Button';
 
 import EditGameInfoTile from "@/components/cards/EditGameInfoTile";
 import EditQuizMetaDataModal from "@/components/modals/EditQuizMetaDataModal";
@@ -216,15 +216,15 @@ function AdminQuizEdit() {
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
         <div className="flex gap-3 items-center">
-          <Link
-            to="/quiz/create"
-            className={`${orangeButtonClass} flex items-center gap-2`}
-          >
-            <RiAddCircleLine className="text-2xl" /> Create
-          </Link>
-          <Link to="/auth/logout" className={`${orangeButtonClass} px-5`}>
-            Log out
-          </Link>
+          <Button
+            to="/quiz/create" icon={RiAddCircleLine} iconClass="text-2xl"
+            color='pink' data-testid="quiz-create-button-big-screen">
+            Create
+          </Button>
+          <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
+            color='pink' data-testid="logout-button-big-screen">
+            Logout
+          </Button>
         </div>
       </nav>
 
@@ -234,17 +234,12 @@ function AdminQuizEdit() {
           <main className="flex flex-col items-center lg:flex-row lg:items-start lg:gap-10 text-center">
             <section className="w-full md:w-[80%] flex flex-col lg:flex-2">
               <div className="flex flex-row justify-between w-full mb-3 sm:mb-5 items-center">
-                <div className={`${orangeButtonClass} px-5 h-[44px] mr-3`}>
-                  <Link
-                    to="/dashboard"
-                    aria-label="Return to dashboard"
-                    title="Return to dashboard"
-                  >
-                    <IoReturnUpBackSharp size={30} />
-                  </Link>
-                </div>
+                <Button to="/dashboard" color='pink' className="h-[45px] mr-3"
+                  aria-label="Return to dashboard" title="Return to dashboard">
+                  <IoReturnUpBackSharp size={30} />
+                </Button>
 
-                <h1 className="text-[44px] sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold whitespace-nowrap">
+                <h1 className="text-[44px] sm:text-5xl font-semibold text-pink-600 font-Nunito-ExtraBold whitespace-nowrap">
                   Quiz Edit
                 </h1>
                 <div className="w-[70px]"></div>
@@ -284,12 +279,12 @@ function AdminQuizEdit() {
             {/* TODO: Add number of questions heading here */}
             <section className="flex flex-col w-full md:w-[80%] lg:w-[65%] gap-4">
               <div className="lg:flex lg:flex-3 gap-2 mb-2">
-                <button
-                  onClick={handleAddQuestion}
-                  className={`${orangeButtonClass} flex items-center gap-1 px-5 h-[47px]`}
-                >
-                  <LuSquarePlus /> Add Question
-                </button>
+                <Button
+                  onClick={handleAddQuestion} aria-label="Play this game" className="h-[47px]"
+                  icon={LuSquarePlus} iconClass="text-2xl"
+                  color='pink'>
+                  Add Question
+                </Button>
               </div>
 
               {/* Display questions for current quiz */}
@@ -312,4 +307,5 @@ function AdminQuizEdit() {
     </div>
   );
 }
+
 export default AdminQuizEdit;

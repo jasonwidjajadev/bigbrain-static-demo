@@ -10,6 +10,7 @@ import {
 } from "react-icons/lu";
 import { cyanButtonClass, redButtonClass } from "@/components/ui/tailwind";
 import QuizEndedModal from "../modals/QuizEndedModal";
+import Button from '@/components/button/Button';
 
 /**
  * GameDashboardTile - A card component that displays game information and controls
@@ -229,14 +230,12 @@ function GameDashboardTile({
                 </button>
               </div>
             ) : (
-              <button
-                className={`flex justify-center items-center ${cyanButtonClass}`}
-                onClick={handlePlayClick}
-                aria-label="Play this game"
-              >
-                <LuPlay size={20} className="mr-2" aria-hidden="true" />
-                <span>Play</span>
-              </button>
+              <Button
+                onClick={handlePlayClick} aria-label="Play this game"
+                icon={LuPlay} iconClass="text-2xl"
+                color='blue'>
+                Play
+              </Button>
             )}
           </div>
         </div>

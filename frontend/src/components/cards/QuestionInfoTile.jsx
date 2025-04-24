@@ -19,7 +19,7 @@ function QuestionInfoTile({ question, index, onEdit, onDelete }) {
           <h3 className="text-lg font-semibold">Question {index + 1}</h3>
           <button
             onClick={() => onEdit && onEdit(question.id)}
-            className="bg-cyan-500 hover:bg-cyan-600 text-white py-1 px-3 rounded-md flex items-center gap-1"
+            className="bg-blue-600 hover:bg-blue-400 text-white py-1 px-3 rounded-md flex items-center gap-1"
           >
             <FaEdit /> Edit
           </button>

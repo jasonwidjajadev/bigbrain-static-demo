@@ -45,8 +45,9 @@ const colorVariants = {
   purple: 'bg-purple-600 hover:bg-purple-400  shadow-[0_4px_0_0_#5901a1] text-white',
 
   gray:   'bg-gray-300   hover:bg-gray-200    shadow-[0_4px_0_0_#888686] text-black',
+  gray500:'bg-gray-500   hover:bg-gray-400    shadow-[0_4px_0_0_#1f2937] text-white',
   orange: 'bg-orange-600 hover:bg-orange-400  shadow-[0_4px_0_0_#c2410c] text-white',
-  cyan:   'bg-cyan-300   hover:bg-cyan-400    shadow-[0_4px_0_0_#066b7c] text-white',
+  cyan:   'bg-cyan-600   hover:bg-cyan-400    shadow-[0_4px_0_0_#066b7c] text-white',
   green:  'bg-green-600  hover:bg-green-400   shadow-[0_4px_0_0_#166534] text-white',
 };
 

@@ -1,6 +1,7 @@
 import { FaEdit } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
-import { cyanButtonWFullClass } from "@/components/ui/tailwind";
+// import { cyanButtonWFullClass } from "@/components/ui/tailwind";
+import Button from '@/components/button/Button';
 
 /**
  * Displays a quiz info card with thumbnail, name, description and action buttons
@@ -60,13 +61,12 @@ function EditGameInfoTile({
 
         {/* Save Set button */}
         <div className="mt-6">
-          <button
-            className={`${cyanButtonWFullClass} flex items-center justify-center gap-2`}
-            onClick={onSaveQuiz}
-          >
-            <LuSave />
+          <Button
+            onClick={onSaveQuiz} className="w-full flex justify-center items-center"
+            icon={LuSave} iconClass="text-2xl"
+            color='blue'>
             Save Quiz
-          </button>
+          </Button>
         </div>
       </div>
     </div>

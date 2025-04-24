@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 
 import { useAuthContext } from "@/context/useAuthContext";
@@ -11,11 +11,8 @@ import VideoButton from "@/components/button/VideoButton";
 import ImageButton from "@/components/button/ImageButton";
 import ImageUploaderModal from "@/components/modals/ImageUploaderModal";
 import YouTubeUrlModal from "@/components/modals/YouTubeUrlModal";
-import {
-  orangeButtonClass,
-  cyanButtonClassSmall,
-  greyButtonClassSmall,
-} from "@/components/ui/tailwind";
+import Button from '@/components/button/Button';
+import { TbLogout } from "react-icons/tb";
 
 function QuestionEditor() {
   // STATE VARIABLES //////////////////////////
@@ -464,29 +461,21 @@ function QuestionEditor() {
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
-        <div className="flex gap-3 items-center">
-          <Link to="/auth/logout" className={`${orangeButtonClass} px-5`}>
-            Log out
-          </Link>
-        </div>
+        <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
+          color='pink' data-testid="logout-button-big-screen">
+          Logout
+        </Button>
       </nav>
 
       {/* Question Editor */}
       <main className="flex-1 flex items-center justify-center text-center p-8">
-        {/* <div className="flex flex-col w-full gap-5"> */}
         <div className="w-full xl:w-[90%]">
           <div className="flex flex-row justify-between w-full mb-6 sm:mb-8 items-center">
-            <div className={`${orangeButtonClass} px-5 h-[44px]`}>
-              <Link
-                to={`/quiz/edit/${quizId}`}
-                aria-label="Return to dashboard"
-                title="Return to dashboard"
-              >
-                <IoReturnUpBackSharp size={30} />
-              </Link>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl font-semibold text-orange-500 font-Nunito-ExtraBold">
+            <Button to={`/quiz/edit/${quizId}`} color='pink' className="h-[45px]"
+              aria-label="Return to quiz" title="Return to quiz">
+              <IoReturnUpBackSharp size={30} />
+            </Button>
+            <h1 className="text-4xl sm:text-5xl font-semibold text-pink-600 font-Nunito-ExtraBold">
               {questionId === "new" ? "Add New Question" : "Edit Question"}
             </h1>
             <div className="w-[70px] hidden sm:block"></div>
@@ -549,21 +538,21 @@ function QuestionEditor() {
                 {/* Action Buttons */}
                 <div className="flex justify-end gap-4 w-full sm:w-auto">
                   {/* Cancel button */}
-                  <button
+                  <Button
                     type="button"
+                    color='gray500'
                     onClick={() => navigate(`/quiz/edit/${quizId}`)}
-                    className={`${greyButtonClassSmall} px-4 py-2`}
                   >
                     Cancel
-                  </button>
+                  </Button>
                   {/* Save button */}
-                  <button
+                  <Button
                     type="submit"
-                    className={`${cyanButtonClassSmall} px-4 py-2`}
+                    color='blue'
                     disabled={loading}
                   >
                     {loading ? "Saving..." : "Save"}
-                  </button>
+                  </Button>
                 </div>
               </div>
 

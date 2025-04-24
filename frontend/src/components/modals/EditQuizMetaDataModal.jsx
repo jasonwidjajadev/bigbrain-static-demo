@@ -97,7 +97,7 @@ function EditQuizMetaDataModal({ quiz, isOpen, onClose, onSave }) {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-11/12 max-w-lg mx-auto max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold text-orange-500">
+          <h2 className="text-3xl font-bold text-pink-600">
             Edit Quiz Information
           </h2>
           <button
@@ -179,9 +179,9 @@ function EditQuizMetaDataModal({ quiz, isOpen, onClose, onSave }) {
             <button
               type="submit"
               disabled={!hasChanges || loading}
-              className={`px-4 py-2 bg-orange-500 text-white rounded-lg ${
+              className={`px-4 py-2 bg-pink-600 text-white rounded-lg ${
                 hasChanges && !loading
-                  ? "hover:bg-orange-400"
+                  ? "hover:bg-pink-400"
                   : "opacity-50 cursor-not-allowed"
               }`}
             >
