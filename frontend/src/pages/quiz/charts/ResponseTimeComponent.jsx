@@ -1,5 +1,12 @@
 import { Line } from "react-chartjs-2";
 
+/**
+ * Renders a line chart showing average response time for each question
+ *
+ * @param {Object} props - Component props
+ * @param {Array} props.questionStats - Array of question statistics
+ * @returns {React.ReactElement} Response time line chart component
+ */
 const ResponseTimeComponent = ({ questionStats }) => {
   // Extract data for the chart
   const labels = questionStats.map((stat, index) => `Q${index + 1}`); // Short labels for x-axis

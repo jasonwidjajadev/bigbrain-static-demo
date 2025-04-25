@@ -4,6 +4,15 @@ import ScoreboardComponent from "./ScoreboardComponent";
 import PercentageChartComponent from "./PercentageChartComponent";
 import ResponseTimeComponent from "./ResponseTimeComponent";
 
+/**
+ * Displays comprehensive quiz results with charts, scoreboard, and scoring explanation
+ *
+ * @param {Object} props - Component props
+ * @param {Object} props.gameData - Quiz game configuration data
+ * @param {Array} props.sessionResults - Results from all players in the quiz session
+ * @returns {React.ReactElement} Quiz results dashboard
+ */
+
 function ResultsDisplay({ gameData, sessionResults }) {
   ChartJS.register();
   const [processedData, setProcessedData] = useState({
@@ -163,7 +172,8 @@ function ResultsDisplay({ gameData, sessionResults }) {
         </code>
         <p className="mt-3 text-sm text-center">
           Answering instantly earns full points. Waiting too long gives fewer
-          points. <br />Wrong answers get 0.
+          points. <br />
+          Wrong answers get 0.
         </p>
       </div>
     </div>

@@ -1,3 +1,12 @@
+/**
+ * Displays a ranking of players based on their quiz scores
+ *
+ * @param {Object} props - Component props
+ * @param {Array} props.scoreboardData - Array of player scores sorted in descending order
+ * @param {string} props.scoreboardData[].nickName - Player's name
+ * @param {number} props.scoreboardData[].score - Player's total score
+ * @returns {React.ReactElement} Scoreboard component
+ */
 function ScoreboardComponent({ scoreboardData }) {
   return (
     <div className="w-full max-w-3xl space-y-3 bg-cyan-50 rounded p-2">

@@ -1,5 +1,12 @@
 import { Bar } from "react-chartjs-2";
 
+/**
+ * Renders a bar chart showing percentage of correct answers for each question
+ *
+ * @param {Object} props - Component props
+ * @param {Array} props.questionStats - Array of question statistics
+ * @returns {React.ReactElement} Percentage correct bar chart component
+ */
 function PercentageChartComponent({ questionStats }) {
   // Extract data for the chart
   const labels = questionStats.map((stat, index) => `Q${index + 1}`); // Short labels for x-axis
