@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
 import logonoborder from '@/assets/logonoborder.png';
 
+/**
+* A navigation bar logo component that links to a specified path
+* 
+* @param {Object} props - Component props
+* @param {string} props.targetPath - The route path to navigate to when clicked
+* @returns {JSX.Element} A Link component containing a logo image with hover effects
+* @description Renders a clickable logo that slightly lifts up and adds a pink shadow
+* on hover, providing visual feedback for navigation
+*/
 const LinkLogoNavBar= ({targetPath}) => {
   return (
     <Link to={targetPath} className="shrink-0">
