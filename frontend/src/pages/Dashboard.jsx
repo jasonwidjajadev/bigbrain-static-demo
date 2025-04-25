@@ -18,8 +18,13 @@ import DeleteConfirmationModal from "@/components/modals/DeleteConfirmationModal
 import SessionStartModal from "@/components/modals/SessionStartModal";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-import Button from '@/components/button/Button';
+import Button from "@/components/button/Button";
 
+/**
+ * Dashboard for managing quiz games
+ *
+ * @returns {JSX.Element} Dashboard interface with game tiles and navigation
+ */
 function Dashboard() {
   const navigate = useNavigate();
   const { token } = useAuthContext();
@@ -241,7 +246,13 @@ function Dashboard() {
         {/* //* NavBar Right side For Small Screen Dropdown */}
         <div className="dropdown dropdown-bottom dropdown-end sm:hidden">
           {/* Toggle Button */}
-          <Button tabIndex={0} role="button" icon={VscThreeBars} iconClass="text-3xl" color='pink'></Button>
+          <Button
+            tabIndex={0}
+            role="button"
+            icon={VscThreeBars}
+            iconClass="text-3xl"
+            color="pink"
+          ></Button>
           {/* Dropdown Content */}
           <ul
             tabIndex={0}
@@ -273,13 +284,24 @@ function Dashboard() {
           <div className="flex gap-3 items-center">
             {/* Create */}
             <Button
-              to="/quiz/create" icon={RiAddCircleLine} iconClass="text-2xl"
-              color='pink' data-testid="quiz-create-button-big-screen">
+              to="/quiz/create"
+              icon={RiAddCircleLine}
+              iconClass="text-2xl"
+              color="pink"
+              data-testid="quiz-create-button-big-screen"
+            >
               Create
             </Button>
-            <Button to="/join" icon={FaPlay} color='pink'>Join a game</Button>
-            <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
-              color='pink' data-testid="logout-button-big-screen">
+            <Button to="/join" icon={FaPlay} color="pink">
+              Join a game
+            </Button>
+            <Button
+              to="/auth/logout"
+              icon={TbLogout}
+              iconClass="text-2xl"
+              color="pink"
+              data-testid="logout-button-big-screen"
+            >
               Logout
             </Button>
           </div>
@@ -303,7 +325,11 @@ function Dashboard() {
                   You have not created any games yet.
                 </p>
                 <Button
-                  to="/quiz/create" icon={RiAddCircleLine} iconClass="text-2xl" color='pink'>
+                  to="/quiz/create"
+                  icon={RiAddCircleLine}
+                  iconClass="text-2xl"
+                  color="pink"
+                >
                   Create your first game
                 </Button>
               </div>
