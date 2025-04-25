@@ -5,7 +5,6 @@ export const fetchGames = async (adminToken) => {
   // GET implementation
   const data = await apiCall("/admin/games", "GET", null, adminToken);
   if (data.error) {
-    // TODO: Handle error
     console.error("Error fetching games:", data.error);
     throw new Error(data.error);
   }

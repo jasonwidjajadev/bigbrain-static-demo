@@ -1,7 +1,3 @@
-// import imageToBase64 from "image-to-base64/browser";
-
-// TODO: This does not work as expected, i need to figure out
-
 // Converts a File object to base64 string
 export async function convertFileToBase64(file, stripPrefix = false) {
   if (!file) {
