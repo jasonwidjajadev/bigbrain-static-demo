@@ -4,6 +4,14 @@ import 'rc-slider/assets/index.css';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 import Button from '@/components/button/Button';
 
+/**
+* Music player component with volume control and mute functionality
+* 
+* @param {Object} props - Component props
+* @param {string} [props.src=''] - Audio source URL
+* @param {number} [props.initialVolume=0.1] - Initial volume level
+* @returns {React.ReactElement} Music player component
+*/
 function MusicPlayer({ src = '', initialVolume = 0.1 }) {
   const audioRef = useRef(null);
   const [volume, setVolume] = useState(initialVolume);

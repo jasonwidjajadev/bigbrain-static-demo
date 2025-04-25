@@ -1,4 +1,11 @@
-// A simple tooltip wrapper component
+/**
+ * Tooltip wrapper component to add hover tooltips to child elements
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child elements to be wrapped with tooltip
+ * @param {string} props.text - Tooltip text to display
+ * @returns {React.ReactElement} Tooltip-enabled component
+ */
 const WithToolTip = ({ children, text }) => {
   return (
     <div className="relative group">
