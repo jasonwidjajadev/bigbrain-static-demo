@@ -11,9 +11,15 @@ import VideoButton from "@/components/button/VideoButton";
 import ImageButton from "@/components/button/ImageButton";
 import ImageUploaderModal from "@/components/modals/ImageUploaderModal";
 import YouTubeUrlModal from "@/components/modals/YouTubeUrlModal";
-import Button from '@/components/button/Button';
+import Button from "@/components/button/Button";
 import { TbLogout } from "react-icons/tb";
 
+/**
+ * Renders a question editor for creating or editing quiz questions
+ *
+ * @param {Object} props - Component props (No explicit props passed, uses route params)
+ * @returns {React.ReactElement} Question editor interface
+ */
 function QuestionEditor() {
   // STATE VARIABLES //////////////////////////
   const { quizId, questionId } = useParams();
@@ -269,7 +275,6 @@ function QuestionEditor() {
   };
 
   // Helper function to extract YouTube video ID from URL
-  // Updated extractVideoId function to handle embed URLs
   const extractVideoId = (url) => {
     if (!url) return null;
 
@@ -370,7 +375,6 @@ function QuestionEditor() {
     if (e) {
       e.preventDefault();
     }
-    // console.log("Save question clicked, with following data: ", question);
     try {
       setLoading(true);
 
@@ -461,8 +465,13 @@ function QuestionEditor() {
       {/* Navbar */}
       <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
         <LinkLogoNavBar targetPath="/home" />
-        <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
-          color='pink' data-testid="logout-button-big-screen">
+        <Button
+          to="/auth/logout"
+          icon={TbLogout}
+          iconClass="text-2xl"
+          color="pink"
+          data-testid="logout-button-big-screen"
+        >
           Logout
         </Button>
       </nav>
@@ -471,8 +480,13 @@ function QuestionEditor() {
       <main className="flex-1 flex items-center justify-center text-center p-8">
         <div className="w-full xl:w-[90%]">
           <div className="flex flex-row justify-between w-full mb-6 sm:mb-8 items-center">
-            <Button to={`/quiz/edit/${quizId}`} color='pink' className="h-[45px]"
-              aria-label="Return to quiz" title="Return to quiz">
+            <Button
+              to={`/quiz/edit/${quizId}`}
+              color="pink"
+              className="h-[45px]"
+              aria-label="Return to quiz"
+              title="Return to quiz"
+            >
               <IoReturnUpBackSharp size={30} />
             </Button>
             <h1 className="text-4xl sm:text-5xl font-semibold text-pink-600 font-Nunito-ExtraBold">
@@ -540,17 +554,13 @@ function QuestionEditor() {
                   {/* Cancel button */}
                   <Button
                     type="button"
-                    color='gray500'
+                    color="gray500"
                     onClick={() => navigate(`/quiz/edit/${quizId}`)}
                   >
                     Cancel
                   </Button>
                   {/* Save button */}
-                  <Button
-                    type="submit"
-                    color='blue'
-                    disabled={loading}
-                  >
+                  <Button type="submit" color="blue" disabled={loading}>
                     {loading ? "Saving..." : "Save"}
                   </Button>
                 </div>

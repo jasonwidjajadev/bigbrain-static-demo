@@ -10,9 +10,15 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, getResultsForSessionId } from "@/util/gamesApi";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-import Button from '@/components/button/Button';
+import Button from "@/components/button/Button";
 import TabContent from "@/pages/quiz/charts/TabContent";
 
+/**
+ * Displays results from previous sessions of a specific quiz
+ *
+ * @param {Object} props - Component props (No explicit props passed)
+ * @returns {React.ReactElement} Quiz results interface with session tabs
+ */
 function QuizResults() {
   const navigate = useNavigate();
   const { token } = useAuthContext();
@@ -89,7 +95,13 @@ function QuizResults() {
         {/* //* NavBar Right side For Small Screen Dropdown */}
         <div className="dropdown dropdown-bottom dropdown-end sm:hidden">
           {/* Toggle Button */}
-          <Button tabIndex={0} role="button" icon={VscThreeBars} iconClass="text-3xl" color='pink'></Button>
+          <Button
+            tabIndex={0}
+            role="button"
+            icon={VscThreeBars}
+            iconClass="text-3xl"
+            color="pink"
+          ></Button>
 
           {/* Dropdown Content */}
           <ul
@@ -122,13 +134,24 @@ function QuizResults() {
           <div className="flex gap-3 items-center">
             {/* Create */}
             <Button
-              to="/quiz/create" icon={RiAddCircleLine} iconClass="text-2xl"
-              color='pink' data-testid="quiz-create-button-big-screen">
+              to="/quiz/create"
+              icon={RiAddCircleLine}
+              iconClass="text-2xl"
+              color="pink"
+              data-testid="quiz-create-button-big-screen"
+            >
               Create
             </Button>
-            <Button to="/join" icon={FaPlay} color='pink'>Join a game</Button>
-            <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
-              color='pink' data-testid="logout-button-big-screen">
+            <Button to="/join" icon={FaPlay} color="pink">
+              Join a game
+            </Button>
+            <Button
+              to="/auth/logout"
+              icon={TbLogout}
+              iconClass="text-2xl"
+              color="pink"
+              data-testid="logout-button-big-screen"
+            >
               Logout
             </Button>
           </div>

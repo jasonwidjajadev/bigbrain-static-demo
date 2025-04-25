@@ -9,54 +9,17 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { fetchGames, updateAllGames } from "@/util/gamesApi";
 
 import LinkLogoNavBar from "@/components/logo/LogoNavBar";
-import Button from '@/components/button/Button';
+import Button from "@/components/button/Button";
 
 import EditGameInfoTile from "@/components/cards/EditGameInfoTile";
 import EditQuizMetaDataModal from "@/components/modals/EditQuizMetaDataModal";
 import QuestionInfoTile from "@/components/cards/QuestionInfoTile";
 
 /**
- * @typedef {Object} Question
- * @property {number} id - Unique identifier for the question
- * @property {string} [text] - The question text
- * @property {number} [duration] - Time allowed for the question in seconds
- * @property {Array} [answers] - Possible answers for the question
- * @property {string} [image] - Optional image for the question, typically base64 encoded
- */
-
-/**
- * @typedef {Object} Quiz
- * @property {number} id - Unique identifier for the quiz
- * @property {string} name - Display name of the quiz
- * @property {string} [description] - Description of the quiz
- * @property {Question[]} questions - Array of questions in the quiz
- * @property {string} [thumbnail] - Base64 encoded image for the quiz thumbnail
- * @property {Array} [oldSessions] - Array of previous quiz sessions
- * @property {string|null} [active] - ID of the active session, or null if no active session
- */
-
-/**
- * @typedef {Object} Toast
- * @property {string} message - The message to display in the toast
- * @property {'success'|'error'} type - The type of toast, affecting its styling
- */
-
-/**
- * AdminQuizEdit - Quiz editing interface component
+ * Provides an interface for editing an existing quiz, including quiz metadata and questions
  *
- * This component provides a comprehensive interface for editing an existing quiz.
- * It handles fetching quiz data, editing quiz metadata, and managing questions
- * (adding, editing, deleting). The component also provides feedback to the user
- * through toast notifications.
- *
- * The page is structured with:
- * - A navigation bar with links to home and quiz creation
- * - A main content section showing quiz metadata and allowing edits
- * - A questions section displaying all questions and allowing for management
- *
- * Authentication is required - unauthenticated users are redirected to the home page.
- *
- * @returns {JSX.Element} Rendered component
+ * @param {Object} props - Component props (No explicit props passed)
+ * @returns {React.ReactElement} Quiz editing interface
  */
 function AdminQuizEdit() {
   const [allGames, setAllGames] = useState([]);
@@ -217,12 +180,21 @@ function AdminQuizEdit() {
         <LinkLogoNavBar targetPath="/home" />
         <div className="flex gap-3 items-center">
           <Button
-            to="/quiz/create" icon={RiAddCircleLine} iconClass="text-2xl"
-            color='pink' data-testid="quiz-create-button-big-screen">
+            to="/quiz/create"
+            icon={RiAddCircleLine}
+            iconClass="text-2xl"
+            color="pink"
+            data-testid="quiz-create-button-big-screen"
+          >
             Create
           </Button>
-          <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
-            color='pink' data-testid="logout-button-big-screen">
+          <Button
+            to="/auth/logout"
+            icon={TbLogout}
+            iconClass="text-2xl"
+            color="pink"
+            data-testid="logout-button-big-screen"
+          >
             Logout
           </Button>
         </div>
@@ -234,8 +206,13 @@ function AdminQuizEdit() {
           <main className="flex flex-col items-center lg:flex-row lg:items-start lg:gap-10 text-center">
             <section className="w-full md:w-[80%] flex flex-col lg:flex-2">
               <div className="flex flex-row justify-between w-full mb-3 sm:mb-5 items-center">
-                <Button to="/dashboard" color='pink' className="h-[45px] mr-3"
-                  aria-label="Return to dashboard" title="Return to dashboard">
+                <Button
+                  to="/dashboard"
+                  color="pink"
+                  className="h-[45px] mr-3"
+                  aria-label="Return to dashboard"
+                  title="Return to dashboard"
+                >
                   <IoReturnUpBackSharp size={30} />
                 </Button>
 
@@ -280,9 +257,13 @@ function AdminQuizEdit() {
             <section className="flex flex-col w-full md:w-[80%] lg:w-[65%] gap-4">
               <div className="lg:flex lg:flex-3 gap-2 mb-2">
                 <Button
-                  onClick={handleAddQuestion} aria-label="Play this game" className="h-[47px]"
-                  icon={LuSquarePlus} iconClass="text-2xl"
-                  color='pink'>
+                  onClick={handleAddQuestion}
+                  aria-label="Play this game"
+                  className="h-[47px]"
+                  icon={LuSquarePlus}
+                  iconClass="text-2xl"
+                  color="pink"
+                >
                   Add Question
                 </Button>
               </div>

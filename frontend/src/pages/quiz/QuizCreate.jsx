@@ -12,9 +12,15 @@ import ImgSelection from "@/components/modals/ImgSelection";
 
 import CsvFileUploadModal from "./csvUtil/CsvFileUploadModal";
 import { parseBigBrainCSV } from "./csvUtil/csvUtils";
-import Button from '@/components/button/Button';
+import Button from "@/components/button/Button";
 import { TbLogout } from "react-icons/tb";
 
+/**
+ * Renders a quiz creation form with options to manually create or import via CSV
+ *
+ * @param {Object} props - Component props (No explicit props passed)
+ * @returns {React.ReactElement} Quiz creation interface
+ */
 function AdminQuizCreate() {
   // State of Form data
   const [formData, setFormData] = useState({
@@ -151,7 +157,6 @@ function AdminQuizCreate() {
       // Put updated games data back to the database
     } catch (error) {
       console.error("Error creating game:", error);
-      // Set error state or show error message
     }
   };
 
@@ -219,8 +224,13 @@ function AdminQuizCreate() {
         {/* Navbar */}
         <nav className="flex justify-between items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px]">
           <LinkLogoNavBar targetPath="/home" />
-          <Button to="/auth/logout" icon={TbLogout} iconClass="text-2xl"
-            color='pink' data-testid="logout-button-big-screen">
+          <Button
+            to="/auth/logout"
+            icon={TbLogout}
+            iconClass="text-2xl"
+            color="pink"
+            data-testid="logout-button-big-screen"
+          >
             Logout
           </Button>
         </nav>
@@ -240,9 +250,13 @@ function AdminQuizCreate() {
         {/* Quiz creation UI can go here */}
         <main className="flex-1 flex flex-col justify-center items-center text-center p-8 bg-[#f7f7f7]">
           <div className="flex flex-row justify-between w-full sm:w-[80%] md:w-[60%] lg:w-[50%] items-center mb-3 sm:mb-5">
-
-            <Button to="/dashboard" color='pink' className="h-[45px]"
-              aria-label="Return to dashboard" title="Return to dashboard">
+            <Button
+              to="/dashboard"
+              color="pink"
+              className="h-[45px]"
+              aria-label="Return to dashboard"
+              title="Return to dashboard"
+            >
               <IoReturnUpBackSharp size={30} />
             </Button>
 
@@ -332,15 +346,19 @@ function AdminQuizCreate() {
               </div>
               <div className="flex flex-row gap-5 w-full justify-center items-center">
                 {/* CSV upload Button */}
-                <Button color='purple' icon={LuUpload} iconClass="shrink-0 hidden sm:block"
-                  onClick={handleCSVUpload} className="h-[45px]"
+                <Button
+                  color="purple"
+                  icon={LuUpload}
+                  iconClass="shrink-0 hidden sm:block"
+                  onClick={handleCSVUpload}
+                  className="h-[45px]"
                 >
                   CSV Import
                 </Button>
 
                 {/* Submit Button */}
                 <div>
-                  <Button type="submit" color='pink'>
+                  <Button type="submit" color="pink">
                     Create <span className="hidden sm:block">Quiz</span>
                   </Button>
                 </div>
