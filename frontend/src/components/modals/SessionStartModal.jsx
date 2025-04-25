@@ -2,6 +2,17 @@ import { useState, useEffect } from "react";
 import { LuCopy, LuCopyCheck, LuX } from "react-icons/lu";
 import Button from '@/components/button/Button';
 
+/**
+* Modal displayed when a quiz session starts
+* 
+* @param {Object} props - Component props
+* @param {boolean} props.isOpen - Controls modal visibility
+* @param {Function} props.onClose - Handler for closing the modal
+* @param {Function} props.onContinue - Handler for continuing to the next step
+* @param {string} props.sessionId - Unique identifier for the game session
+* @param {string} props.gameTitle - Title of the game being hosted
+* @returns {JSX.Element|null} A modal with join link and session ID information, or null when closed
+*/
 function SessionStartModal({
   isOpen,
   onClose,

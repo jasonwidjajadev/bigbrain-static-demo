@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { LuUpload } from "react-icons/lu";
 
+/**
+* Image selection component with file upload functionality
+* 
+* @param {Object} props - Component props
+* @param {Function} props.handleImgChange - Handler function called when an image is selected
+* @returns {JSX.Element} A UI component for selecting and uploading images
+*/
 const ImgSelection = ({ handleImgChange }) => {
   const [fileName, setFileName] = useState(null);
 

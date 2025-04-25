@@ -2,8 +2,12 @@ import { useState } from "react";
 import { LuLink, LuX } from "react-icons/lu";
 
 /**
- * Modal component for attaching YouTube videos via URL
- * Follows the same pattern as ImageUploaderModal but for YouTube links
+ * Modal for adding YouTube video by URL
+ * @param {Object} props - Component props
+ * @param {boolean} props.isOpen - Whether modal is open
+ * @param {() => void} props.onClose - Closes the modal
+ * @param {(url: string) => void} props.onVideoSelect - Handles video URL selection
+ * @returns {React.ReactElement|null} Modal component or null
  */
 const YouTubeUrlModal = ({ isOpen, onClose, onVideoSelect }) => {
   // State for the YouTube URL input

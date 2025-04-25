@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { LuUpload, LuX } from "react-icons/lu";
 
+/**
+* A modal component for uploading images
+* 
+* @param {Object} props - Component props
+* @param {boolean} props.isOpen - Controls modal visibility
+* @param {Function} props.onClose - Handler for closing the modal
+* @param {Function} props.onImageSelect - Handler called when an image file is selected
+* @returns {JSX.Element|null} A modal with file input for image uploading or null when closed
+*/
 const ImageUploaderModal = ({ isOpen, onClose, onImageSelect }) => {
   const [fileName, setFileName] = useState(null);
 

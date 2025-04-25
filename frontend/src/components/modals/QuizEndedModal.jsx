@@ -1,5 +1,14 @@
 import Button from '@/components/button/Button';
 
+/**
+* Modal displayed when a quiz session ends early
+* 
+* @param {Object} props - Component props
+* @param {boolean} props.isOpen - Controls modal visibility
+* @param {Function} props.onClose - Handler for closing the modal
+* @param {string} props.sessionId - ID of the quiz session for viewing results
+* @returns {JSX.Element|null} A modal with options to close or view results, or null when closed
+*/
 function QuizEndedModal({ isOpen, onClose, sessionId }) {
   if (!isOpen) return null;
 
