@@ -21,7 +21,6 @@ import { twMerge } from 'tailwind-merge';
  * @param {string} [props.className] - Additional Tailwind classes
  * @param {Object} [props.rest] - Any additional props passed to <button> or <Link>
  */
-
 const baseClass =
   `
   inline-flex items-center gap-2
