@@ -4,7 +4,7 @@ import ImgSelection from "@/components/modals/ImgSelection";
 
 /**
  * Modal for editing quiz metadata including title, description, and thumbnail
- * 
+ *
  * @param {Object} props - Component props
  * @param {Object} props.quiz - The quiz object containing metadata to edit
  * @param {boolean} props.isOpen - Controls modal visibility
@@ -13,6 +13,7 @@ import ImgSelection from "@/components/modals/ImgSelection";
  * @returns {JSX.Element|null} A modal form with fields for editing quiz metadata or null when closed
  */
 function EditQuizMetaDataModal({ quiz, isOpen, onClose, onSave }) {
+
   // State of Form data
   const [formData, setFormData] = useState({
     title: "",

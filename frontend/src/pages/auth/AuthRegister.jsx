@@ -9,6 +9,7 @@ import FormInput from '@/components/inputs/FormInput';
 import Button from '@/components/button/Button';
 import { FaPlay } from "react-icons/fa";
 
+import { validateEmail } from '@/util/inputValidation';
 /**
  * AuthRegister component handles user registration.
  *
@@ -94,14 +95,28 @@ function AuthRegister() {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    let hasError = false;
+
+    // Email validation
+    if (!validateEmail(emailInput.trim())) {
+      setEmailErrors('Your email should look like: example@email.com');
+      hasError = true;
+    }
+
+    // Password validation
     if (password.length < 6) {
       setPasswordErrors('Password must be at least 6 characters.');
-      return;
+      hasError = true;
     }
+
     if (password !== confirmPassword) {
       setConfirmPasswordErrors('Passwords do not match.');
-      return;
+      hasError = true;
     }
+
+    if (hasError) return;
+
     clearAllErrors();
     submit();
   };

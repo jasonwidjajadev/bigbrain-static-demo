@@ -4,7 +4,7 @@ import Button from '@/components/button/Button';
 
 /**
 * Modal displayed when a quiz session starts
-* 
+*
 * @param {Object} props - Component props
 * @param {boolean} props.isOpen - Controls modal visibility
 * @param {Function} props.onClose - Handler for closing the modal

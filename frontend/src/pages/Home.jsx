@@ -38,6 +38,7 @@ function Home() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col sm:flex-row items-center justify-center w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-0 sm:pt-8 pb-30 gap-0 sm:gap-6">
+
         {/* //* Left Side Animation */}
         <div className="w-full sm:w-1/2 flex justify-center items-center">
           <video src={classroom} autoPlay loop muted playsInline className="w-[400px] sm:w-[500px] md:w-[600px]"/>

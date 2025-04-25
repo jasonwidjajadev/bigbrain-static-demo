@@ -2,7 +2,7 @@ import confetti from "canvas-confetti";
 
 /**
 * Triggers confetti cannons from both sides of the screen
-* 
+*
 * @param {number} [duration=3000] - Duration in milliseconds for which the confetti effect will run
 * @returns {void}
 * @description Launches confetti particles from the left and right sides of the screen using canvas-confetti.

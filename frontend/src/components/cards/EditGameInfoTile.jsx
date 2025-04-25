@@ -1,6 +1,5 @@
 import { FaEdit } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
-// import { cyanButtonWFullClass } from "@/components/ui/tailwind";
 import Button from '@/components/button/Button';
 
 /**

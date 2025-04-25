@@ -81,6 +81,7 @@
 
 ## File Upload UX (CSV)
 
+- for bigBrain csv template please look at 2.6.csv in the same folder
 - The **Game Upload** feature supports CSV input using a **predefined template format**.
 - Clear instructions and file validation ensure the upload process is easy and error-resistant.
 - Inline error feedback helps users correct issues quickly.

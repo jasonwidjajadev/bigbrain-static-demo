@@ -2,7 +2,7 @@ import logonoborder from '@/assets/logonoborder.png';
 
 /**
 * A rotating logo component that rotattes on hover
-* 
+*
 * @param {Object} props - Component props
 * @param {string} [props.sizeClass="h-[70px] sm:h-[95px]"] - CSS classes for controlling logo size at different breakpoints
 * @param {string} [props.addClassName=""] - Additional CSS classes to apply to the image element

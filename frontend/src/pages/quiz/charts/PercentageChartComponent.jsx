@@ -8,6 +8,7 @@ import { Bar } from "react-chartjs-2";
  * @returns {React.ReactElement} Percentage correct bar chart component
  */
 function PercentageChartComponent({ questionStats }) {
+
   // Extract data for the chart
   const labels = questionStats.map((stat, index) => `Q${index + 1}`); // Short labels for x-axis
   const fullQuestionTexts = questionStats.map(

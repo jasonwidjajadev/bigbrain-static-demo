@@ -3,7 +3,7 @@ import { LuUpload, LuX } from "react-icons/lu";
 
 /**
 * A modal component for uploading images
-* 
+*
 * @param {Object} props - Component props
 * @param {boolean} props.isOpen - Controls modal visibility
 * @param {Function} props.onClose - Handler for closing the modal

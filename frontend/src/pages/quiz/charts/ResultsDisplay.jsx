@@ -142,7 +142,7 @@ function ResultsDisplay({ gameData, sessionResults }) {
   // Process the data when component mounts or when props change
   useEffect(() => {
     const data = processQuizSessionData(gameData, sessionResults);
-    // console.log("Processed Data:", data);
+    console.log("Processed Data:", data);
     setProcessedData(data);
   }, [gameData, sessionResults]);
 

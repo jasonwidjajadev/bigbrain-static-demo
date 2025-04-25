@@ -1,31 +1,26 @@
-/** Usage:
-import Button from './Button';
-import { FaPlay } from 'react-icons/fa';
-
-// 1. React icon component
-<Button to="/join" icon={FaPlay}>Join a game</Button>
-
-// 2. Custom image icon
-<Button icon="/icons/play.svg">Join a game</Button>
-<Button icon={require('@/assets/play.png')}>Join a game</Button>
-
-// 3. With extra icon styling
-<Button icon="/icons/play.svg" iconClass="w-5 h-5 ml-2">Join a game</Button>
-
-// SVG or PNG as path
-<Button icon="/assets/play.svg" iconClass="w-6 h-6">Join</Button>
-
-// Custom local import
-import playImg from '@/assets/play.png';
-<Button icon={playImg} iconClass="w-4 h-4">Play</Button>
-
-// React icon
-import { FaPlay } from 'react-icons/fa';
-<Button icon={FaPlay} iconClass="text-[18px]">Start</Button>
-*/
-
 import { Link } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
+
+/**
+ * Button component – can render as a <button> or <Link> depending on `to` prop.
+ *
+ * ## Usage:
+ * <Button icon={FaPlay} to="/join">Join a game</Button>
+ * <Button icon="/img/icon.svg">Join a game</Button>
+ *
+ * @component
+ * @param {Object} props
+ * @param {string} [props.to] - If provided, renders a <Link> instead of <button>
+ * @param {'button'|'submit'|'reset'} [props.type='button'] - Button type
+ * @param {function} [props.onClick] - Click handler
+ * @param {boolean} [props.disabled=false] - Whether the button is disabled
+ * @param {React.Component|String} [props.icon] - Icon component (e.g. FaPlay) or image path
+ * @param {string} [props.iconClass] - Additional Tailwind classes for the icon
+ * @param {React.ReactNode} props.children - Button label/content
+ * @param {string} [props.color='pink'] - Color variant (e.g., pink, blue, orange)
+ * @param {string} [props.className] - Additional Tailwind classes
+ * @param {Object} [props.rest] - Any additional props passed to <button> or <Link>
+ */
 
 const baseClass =
   `

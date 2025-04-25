@@ -12,15 +12,10 @@
  */
 function PlayerGameQuestionResult({playerAnswer, correctAnswer, currQuestion, individualQuestionAnswerTime}) {
 
-  /**
-   * Determine if the player's answer is exactly equal to the correct answer (order doesn't matter).
-   */
+  // Determine if the player's answer is exactly equal to the correct answer (order doesn't matter).
   const isCorrect = playerAnswer.length === correctAnswer.length && playerAnswer.every(a => correctAnswer.includes(a));
 
-  /**
-   * Calculate score based on correctness and speed.
-   *
-   */
+  // Calculate score based on correctness and speed.
   const calculateScore = (isCorrect, timeTaken, maxTime, basePoints ) => {
     if (!isCorrect) return 0;
     const timeFactor = 1 - (timeTaken / maxTime);
@@ -28,9 +23,7 @@ function PlayerGameQuestionResult({playerAnswer, correctAnswer, currQuestion, in
     return score;
   }
 
-  /**
-   * Calculate the time the player took to answer the question.
-   */
+  // Calculate the time the player took to answer the question.
   const calculateTimeTaken = (answered, started) => {
     const timeAnswered = new Date(answered);
     const timeStarted = new Date(started);
@@ -40,9 +33,7 @@ function PlayerGameQuestionResult({playerAnswer, correctAnswer, currQuestion, in
   const timeTaken = calculateTimeTaken(individualQuestionAnswerTime, currQuestion.isoTimeLastQuestionStarted);
   const points = calculateScore(isCorrect, timeTaken,currQuestion.duration, currQuestion.points);
 
-  /**
-   * Render the result for the current question.
-   */
+  // Render the result for the current question.
   return (
     <div className={`min-h-screen overflow-y-auto flex flex-col ${isCorrect ? 'bg-green-500' : 'bg-red-400'}`}>
       <nav className="flex items-center px-4 sm:px-8 py-2.5 bg-cyan-200 h-[65px] gap-2 sm:gap-0">

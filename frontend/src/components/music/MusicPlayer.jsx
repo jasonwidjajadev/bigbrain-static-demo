@@ -6,7 +6,7 @@ import Button from '@/components/button/Button';
 
 /**
 * Music player component with volume control and mute functionality
-* 
+*
 * @param {Object} props - Component props
 * @param {string} [props.src=''] - Audio source URL
 * @param {number} [props.initialVolume=0.1] - Initial volume level
@@ -30,7 +30,7 @@ function MusicPlayer({ src = '', initialVolume = 0.1 }) {
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
-              // console.log('✅ Audio playback started');
+              console.log('✅ Audio playback started');
             })
             .catch((error) => {
               console.warn('🚫 Autoplay failed:', error);

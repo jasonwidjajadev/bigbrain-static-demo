@@ -3,9 +3,9 @@ import { useEffect, useRef } from "react";
 /**
  * An accessible confirmation modal for delete actions that implements focus trapping,
  * keyboard navigation, background click dismissal, and prevents scrolling of background
- * content while open. The modal includes "Yes" and "No" buttons for confirming or 
+ * content while open. The modal includes "Yes" and "No" buttons for confirming or
  * canceling the delete action.
- * 
+ *
  * @param {Object} props - Component props
  * @param {boolean} props.isOpen - Controls modal visibility
  * @param {Function} props.onClose - Handler for closing the modal
@@ -110,4 +110,5 @@ function DeleteConfirmationModal({ isOpen, onClose, onConfirm, title }) {
     </div>
   );
 }
+
 export default DeleteConfirmationModal;

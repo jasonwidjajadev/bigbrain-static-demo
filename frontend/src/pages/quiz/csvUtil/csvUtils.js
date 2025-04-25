@@ -1,5 +1,11 @@
 import Papa from "papaparse";
 
+/**
+ * Parses a BigBrain-formatted CSV file and converts it into quiz data.
+ *
+ * @param {File} file - The uploaded CSV file
+ * @returns {Promise<Object>} - A Promise that resolves to a structured quiz object
+ */
 export const parseBigBrainCSV = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

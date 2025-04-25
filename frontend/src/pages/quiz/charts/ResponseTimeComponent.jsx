@@ -8,12 +8,12 @@ import { Line } from "react-chartjs-2";
  * @returns {React.ReactElement} Response time line chart component
  */
 const ResponseTimeComponent = ({ questionStats }) => {
+
   // Extract data for the chart
   const labels = questionStats.map((stat, index) => `Q${index + 1}`); // Short labels for x-axis
   const fullQuestionTexts = questionStats.map(
     (stat) => stat.questionText || `Question ${stat.questionIndex + 1}`
   );
-
   const responseTimeData = questionStats.map((stat) => stat.avgTime);
 
   // Set up chart options and data structure
