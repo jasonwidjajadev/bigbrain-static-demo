@@ -15,13 +15,17 @@ function PlayerGameResults({ results, history }) {
   /**
    * Merges result and history data by matching the question start time.
    */
-  const mergedData = results.map((resItem) => {
-    const matchedHistory = history.find(
-      (histItem) => histItem.isoTimeLastQuestionStarted === resItem.questionStartedAt
-    );
+  const mergedData = history.map((histItem, index) => {
+    const result = results[index] || {
+      answers: [],
+      correct: false,
+      answeredAt: null,
+      questionStartedAt: null,
+    };
+
     return {
-      result: resItem,
-      history: matchedHistory || {}
+      history: histItem,
+      result,
     };
   });
 
@@ -50,29 +54,41 @@ function PlayerGameResults({ results, history }) {
   const data = mergedData.map((item) => {
     const { history, result } = item;
     const answers = history.answers || [];
+
     const selectedIds = result.answers || [];
+    const hasAnswered = selectedIds.length > 0;
 
-    const playerAnswerTexts = answers
-      .filter(ans => selectedIds.includes(ans.id))
-      .map(ans => ans.text)
-      .join(', ');
+    // Show player's answer if answered, otherwise "none"
+    const playerAnswerTexts = hasAnswered
+      ? answers
+        .filter(ans => selectedIds.includes(ans.id))
+        .map(ans => ans.text)
+        .join(', ')
+      : 'none';
 
+    // Always show correct answers, even if unanswered
     const correctAnswerTexts = answers
       .filter(ans => ans.isCorrect)
       .map(ans => ans.text)
-      .join(', ');
+      .join(', ') || 'N/A';
 
-    const timeTaken = calculateTimeTaken(result.answeredAt, result.questionStartedAt);
+    // Use full duration if unanswered
+    const timeTaken = result.answeredAt
+      ? calculateTimeTaken(result.answeredAt, result.questionStartedAt)
+      : history.duration || 0;
+
+    // Show 0 points if unanswered
+    const points = result.answeredAt && history.duration != null && history.points != null
+      ? calculateScore(result.correct, timeTaken, history.duration, history.points)
+      : 0;
 
     return {
-      question: history.text || '',
-      yourAnswer: playerAnswerTexts || 'none',
-      correctAnswer: correctAnswerTexts || '',
-      points: history.duration && history.points != null
-        ? calculateScore(result.correct, timeTaken, history.duration, history.points)
-        : 'N/A',
+      question: history.text || 'N/A',
+      yourAnswer: playerAnswerTexts,
+      correctAnswer: correctAnswerTexts,
+      points,
       time: timeTaken,
-      isCorrect: result.correct,
+      isCorrect: result.correct === true // ensure true only
     };
   });
 
