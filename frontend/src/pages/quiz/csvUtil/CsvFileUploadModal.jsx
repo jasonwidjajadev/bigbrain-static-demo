@@ -1,9 +1,17 @@
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { LuUpload } from "react-icons/lu";
-// import { orangeButtonClass } from "@/components/ui/tailwind";
-import Button from '@/components/button/Button';
+import Button from "@/components/button/Button";
 
+/**
+ * Modal for uploading CSV files with validation and error handling
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} props.isOpen - Whether the modal is open
+ * @param {() => void} props.onClose - Function to close the modal
+ * @param {(file: File) => void} props.onFileUpload - Function called when a file is uploaded
+ * @returns {React.ReactElement|null} CSV file upload modal component
+ */
 function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
@@ -87,11 +95,15 @@ function CsvFileUploadModal({ isOpen, onClose, onFileUpload }) {
         )}
 
         <div className="flex justify-between mt-6">
-          <Button onClick={onClose} color='gray'>
+          <Button onClick={onClose} color="gray">
             Cancel
           </Button>
-          <Button id="csv-import" onClick={handleSubmit}
-            color='purple'  disabled={!selectedFile}>
+          <Button
+            id="csv-import"
+            onClick={handleSubmit}
+            color="purple"
+            disabled={!selectedFile}
+          >
             Import
           </Button>
         </div>
