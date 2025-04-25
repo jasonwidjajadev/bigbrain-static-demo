@@ -1,5 +1,13 @@
 import confetti from "canvas-confetti";
 
+/**
+* Triggers confetti cannons from both sides of the screen
+* 
+* @param {number} [duration=3000] - Duration in milliseconds for which the confetti effect will run
+* @returns {void}
+* @description Launches confetti particles from the left and right sides of the screen using canvas-confetti.
+* The function uses four pastel colors and creates a continuous animation until the specified duration ends.
+*/
 export function TiggerSideCannon(duration = 3000) {
   const end = Date.now() + duration;
   const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];

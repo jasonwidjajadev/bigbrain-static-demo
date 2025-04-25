@@ -3,6 +3,14 @@
 import React from "react";
 import confetti from "canvas-confetti";
 
+/**
+ * Creates a side-firing confetti animation effect for 3 seconds
+ * 
+ * Launches colorful confetti particles from both left and right sides of the screen
+ * toward the center. Component doesn't render any visible elements.
+ * 
+ * @returns {null} Component doesn't render any DOM elements
+ */
 export function ConfettiSideCannons() {
   React.useEffect(() => {
     const end = Date.now() + 3 * 1000;
