@@ -3,7 +3,7 @@
 
 
 
-A real-time multiplayer quiz platform inspired by Kahoot. This project implements a full React single-page application where administrators can
+(Demo Static Version) A real-time multiplayer quiz platform inspired by Kahoot. This project implements a full React single-page application where administrators can
 create and manage quiz games while players join live sessions and compete in real time.
 
 The system supports game creation, live session management, and player participation with dynamic question rendering and scoring.
