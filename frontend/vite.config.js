@@ -5,12 +5,16 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/bigbrain-static-demo/',
+
   plugins: [react(), tailwindcss()],
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
+
   test: {
     globals: true,
     environment: 'jsdom',
@@ -22,6 +26,7 @@ export default defineConfig({
       },
     },
   },
+
   server: {
     port: 3000,
   },

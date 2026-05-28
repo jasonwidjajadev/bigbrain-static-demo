@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import AuthProvider from '@/context/AuthContext';
 
 import NotFound from '@/pages/NotFound';
@@ -24,7 +24,7 @@ import PlayerGameView from '@/pages/session/player/PlayerGameView';
 /**
  * App is the root component that sets up routing and global auth context.
  *
- * - Uses BrowserRouter for client-side routing.
+ * - Uses HashRouter for GitHub Pages-compatible client-side routing.
  * - Wraps the app with AuthProvider for authentication state.
  * - Defines all public, auth, admin, and gameplay routes.
  *
@@ -32,7 +32,7 @@ import PlayerGameView from '@/pages/session/player/PlayerGameView';
  */
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -59,8 +59,15 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
 export default App
+
+/*
+login page URL will be:
+https://jasonwidjajadev.github.io/bigbrain-static-demo/#/auth/login
+
+Not: https://jasonwidjajadev.github.io/bigbrain-static-demo/auth/login
+*/
